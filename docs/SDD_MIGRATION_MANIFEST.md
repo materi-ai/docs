@@ -2,7 +2,7 @@
 
 > **Purpose**: Authoritative mapping between legacy v1 blueprints (`.atlas/.spec/__blueprints__/`) and Atlas docs targets.
 >
-> **Generated**: 2026-01-07 (TASKSET 2 Complete)
+> **Generated**: 2026-01-07 (TASKSET 3 Complete)
 > **Total Legacy Documents**: 75 MDX files
 > **Atlas Target Files**: 475 pages (114 internal)
 
@@ -53,23 +53,29 @@ Strategic documents define business direction, vision, and governance.
 
 System documents translate strategic vision into architecture and design.
 
-| Source File           | Title                         | Lines | Target Path                                                        | Status     | Priority | Refresh Type |
-| --------------------- | ----------------------------- | ----- | ------------------------------------------------------------------ | ---------- | -------- | ------------ |
-| `sdd:sys:sad.mdx`     | System Architecture Document  | 1132  | `internal/architecture/system-design/overview.md`                  | 🟡 PARTIAL | HIGH     | REFRESH      |
-| `sdd:sys:pad.mdx`     | Platform Architecture         | 1408  | `internal/architecture/system-design/platform-services.md`         | 🔴 STUB    | HIGH     | DIRECT PORT  |
-| `sdd:sys:dad.mdx`     | Data Architecture Document    | 980   | `internal/architecture/system-design/data-models.md`               | 🟢 EXISTS  | Medium   | SKIP         |
-| `sdd:sec:sad.mdx`     | Security Architecture         | 1517  | `internal/security/practices/overview.md`                          | 🔴 STUB    | HIGH     | DIRECT PORT  |
-| `sdd:sys:nfr.mdx`     | Non-Functional Requirements   | 1046  | `internal/engineering/performance/slo-sli-sla.md`                  | 🔴 STUB    | HIGH     | REFRESH      |
-| `sdd:sys:drp.mdx`     | Disaster Recovery Plan        | 548   | `developer/operations/runbooks/disaster-recovery.md`               | 🔴 STUB    | HIGH     | DIRECT PORT  |
-| `sdd:sys:rcm.mdx`     | Requirements Continuity Model | 955   | `internal/architecture/specs/requirement-traceability.md`          | 🔴 STUB    | HIGH     | DIRECT PORT  |
-| `sdd:sys:cid.mdx`     | Cloud Infrastructure Document | 579   | `developer/operations/infrastructure/overview.md`                  | 🔴 STUB    | HIGH     | REFRESH      |
-| `sdd:sys:tax.mdx`     | System Taxonomy               | 723   | `internal/architecture/specs/l2-tactical-specs.md`                 | 🔴 STUB    | HIGH     | DIRECT PORT  |
-| `sdd:sys:vif.mdx`     | Vendor Intelligence Framework | 861   | `internal/operations/cost/overview.md`                             | 🔴 STUB    | Medium   | REFRESH      |
-| `sdd:integration.mdx` | Integration Architecture      | 855   | `internal/architecture/system-design/cross-segment-integration.md` | 🔴 STUB    | HIGH     | DIRECT PORT  |
+| Source File           | Title                         | Lines | Target Path                                                        | Status     | Priority   | Refresh Type |
+| --------------------- | ----------------------------- | ----- | ------------------------------------------------------------------ | ---------- | ---------- | ------------ |
+| `sdd:sys:sad.mdx`     | System Architecture Document  | 1132  | `internal/architecture/system-design/overview.md`                  | 🟢 EXISTS  | ✅ DONE    | REFRESH      |
+| `sdd:sys:pad.mdx`     | Platform Architecture         | 1408  | `internal/architecture/system-design/platform-services.md`         | 🟢 EXISTS  | ✅ DONE    | DIRECT PORT  |
+| `sdd:sys:dad.mdx`     | Data Architecture Document    | 980   | `internal/architecture/system-design/data-models.md`               | 🟢 EXISTS  | Low (done) | SKIP         |
+| `sdd:sec:sad.mdx`     | Security Architecture         | 1517  | `internal/security/practices/overview.md`                          | 🟢 EXISTS  | ✅ DONE    | DIRECT PORT  |
+| `sdd:sys:nfr.mdx`     | Non-Functional Requirements   | 1046  | `internal/engineering/performance/slo-sli-sla.md`                  | 🟢 EXISTS  | ✅ DONE    | REFRESH      |
+| `sdd:sys:drp.mdx`     | Disaster Recovery Plan        | 548   | `developer/operations/runbooks/disaster-recovery.md`               | 🟢 EXISTS  | ✅ DONE    | DIRECT PORT  |
+| `sdd:sys:rcm.mdx`     | Requirements Continuity Model | 955   | `internal/architecture/specs/requirement-traceability.md`          | 🔴 STUB    | HIGH       | DIRECT PORT  |
+| `sdd:sys:cid.mdx`     | Cloud Infrastructure Document | 579   | `developer/operations/infrastructure/overview.md`                  | 🔴 STUB    | HIGH       | REFRESH      |
+| `sdd:sys:tax.mdx`     | System Taxonomy               | 723   | `internal/architecture/specs/l2-tactical-specs.md`                 | 🟢 EXISTS  | ✅ DONE    | DIRECT PORT  |
+| `sdd:sys:vif.mdx`     | Vendor Intelligence Framework | 861   | `internal/operations/cost/overview.md`                             | 🔴 STUB    | Medium     | REFRESH      |
+| `sdd:integration.mdx` | Integration Architecture      | 855   | `internal/architecture/system-design/cross-segment-integration.md` | 🟢 EXISTS  | ✅ DONE    | DIRECT PORT  |
 
-**Verification Notes:**
-- ✅ `data-models.md` contains 392 lines of substantive content (verified - includes SQL schemas)
-- 🟡 `overview.md` (system-design) has 165 lines - PARTIAL, needs enrichment from SAD
+**Verification Notes (TASKSET 3 Complete):**
+- ✅ `data-models.md` contains 392 lines of substantive content (pre-existing)
+- ✅ `overview.md` (system-design) now contains 408 lines (SAD content migrated with architecture diagrams)
+- ✅ `platform-services.md` now contains 411 lines (PAD content migrated with service specifications)
+- ✅ `security/practices/overview.md` now contains 410 lines (Security Architecture with zero-trust model)
+- ✅ `slo-sli-sla.md` now contains 439 lines (NFR content with SLO/SLI/SLA framework)
+- ✅ `disaster-recovery.md` now contains 412 lines (DRP with recovery procedures)
+- ✅ `cross-segment-integration.md` now contains 412 lines (Integration Architecture with event schemas)
+- ✅ `l2-tactical-specs.md` now contains 307 lines (System Taxonomy with ADRs)
 
 ---
 
@@ -276,7 +282,7 @@ When migrating content:
 | ------- | ----------- | ------------------------------------- |
 | 1       | ✅ COMPLETE | Inventory & Mapping                   |
 | 2       | ✅ COMPLETE | L1-Strategic Layer Refresh            |
-| 3       | ⏳ PENDING  | L2-System Architecture Refresh        |
+| 3       | ✅ COMPLETE | L2-System Architecture Refresh        |
 | 4       | ⏳ PENDING  | L3-Technical Implementation Refresh   |
 | 5       | ⏳ PENDING  | L4-Operational Refresh                |
 | 6       | ⏳ PENDING  | Validation & Cross-Reference          |
