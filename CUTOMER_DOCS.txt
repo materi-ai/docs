@@ -1,0 +1,108 @@
+{
+                "tab": "Customer Docs",
+                "groups": [
+                    {
+                        "group": "Overview",
+                        "icon": "sparkles",
+                        "pages": [
+                            "customer/overview/what-is-materi",
+                            "customer/overview/key-features",
+                            "customer/overview/use-cases",
+                            "customer/overview/pricing"
+                        ]
+                    },
+                    {
+                        "group": "Getting Started",
+                        "icon": "flag-checkered",
+                        "pages": [
+                            "customer/getting-started/sign-up",
+                            "customer/getting-started/first-document",
+                            "customer/getting-started/workspace-setup",
+                            "customer/getting-started/invite-team"
+                        ]
+                    },
+                    {
+                        "group": "Document Management",
+                        "icon": "file-lines",
+                        "pages": [
+                            "customer/documents/creating-documents",
+                            "customer/documents/editing-documents",
+                            "customer/documents/organizing-documents",
+                            "customer/documents/sharing-documents",
+                            "customer/documents/version-history",
+                            "customer/documents/templates"
+                        ]
+                    },
+                    {
+                        "group": "Workspaces & Teams",
+                        "icon": "building",
+                        "pages": [
+                            "customer/workspaces/creating-workspaces",
+                            "customer/workspaces/managing-members",
+                            "customer/workspaces/roles-permissions",
+                            "customer/workspaces/workspace-settings",
+                            "customer/workspaces/billing"
+                        ]
+                    },
+                    {
+                        "group": "Real-Time Collaboration",
+                        "icon": "users",
+                        "pages": [
+                            "customer/collaboration/overview",
+                            "customer/collaboration/presence",
+                            "customer/collaboration/comments",
+                            "customer/collaboration/mentions",
+                            "customer/collaboration/conflict-resolution",
+                            "customer/collaboration/offline-mode"
+                        ]
+                    },
+                    {
+                        "group": "AI Features",
+                        "icon": "wand-magic-sparkles",
+                        "pages": [
+                            "customer/ai/overview",
+                            "customer/ai/content-generation",
+                            "customer/ai/summarization",
+                            "customer/ai/enhancement-suggestions",
+                            "customer/ai/code-analysis",
+                            "customer/ai/diagram-analysis",
+                            "customer/ai/safety-gates"
+                        ]
+                    },
+                    {
+                        "group": "Integrations",
+                        "icon": "plug",
+                        "pages": [
+                            "customer/integrations/overview",
+                            "customer/integrations/github",
+                            "customer/integrations/slack",
+                            "customer/integrations/google-drive",
+                            "customer/integrations/notion",
+                            "customer/integrations/webhooks"
+                        ]
+                    },
+                    {
+                        "group": "Security & Privacy",
+                        "icon": "shield-halved",
+                        "pages": [
+                            "customer/security/overview",
+                            "customer/security/authentication",
+                            "customer/security/data-encryption",
+                            "customer/security/access-controls",
+                            "customer/security/audit-logs",
+                            "customer/security/gdpr-compliance"
+                        ]
+                    },
+                    {
+                        "group": "Support & Resources",
+                        "icon": "headset",
+                        "pages": [
+                            "customer/support/contact-support",
+                            "customer/support/faq",
+                            "customer/support/troubleshooting",
+                            "customer/support/keyboard-shortcuts",
+                            "customer/support/video-tutorials"
+                        ]
+                    }
+                ]
+            },
