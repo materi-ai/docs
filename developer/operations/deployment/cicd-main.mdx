@@ -1,0 +1,660 @@
+---
+title: Main CI/CD workflow
+description: Main CI/CD workflow
+icon: cog
+source: operations/.workflows/main-cicd.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.043722Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+name: 🚀 Materi CI/CD Pipeline
+
+on:
+    push:
+        branches: [main, develop, staging]
+        tags: ["v*"]
+    pull_request:
+        branches: [main, develop]
+        types: [opened, synchronize, reopened, ready_for_review]
+
+    # Manual deployment trigger
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: "Target environment"
+                required: true
+                default: "staging"
+                type: choice
+                options:
+                    - staging
+                    - production
+            skip_tests:
+                description: "Skip tests (emergency only)"
+                required: false
+                default: "false"
+                type: choice
+                options:
+                    - "false"
+                    - "true"
+            services:
+                description: "Services to deploy (comma-separated, empty=all)"
+                required: false
+                type: string
+
+env:
+    # Registry configuration
+    REGISTRY: ghcr.io
+    REGISTRY_USERNAME: ${{ github.actor }}
+
+    # Build configuration
+    RUST_VERSION: "1.78"
+    GO_VERSION: "1.25"
+    PYTHON_VERSION: "3.11"
+
+    # Security configuration
+    TRIVY_VERSION: "0.46.0"
+    COSIGN_VERSION: "2.2.0"
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    # ============================================
+    # DETECT CHANGES
+    # ============================================
+
+    changes:
+        name: 🔍 Detect Changes
+        runs-on: ubuntu-latest
+        outputs:
+            api: ${{ steps.changes.outputs.api }}
+            shield: ${{ steps.changes.outputs.shield }}
+            relay: ${{ steps.changes.outputs.relay }}
+            infrastructure: ${{ steps.changes.outputs.infrastructure }}
+            any: ${{ steps.changes.outputs.any }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Detect file changes
+              uses: dorny/paths-filter@v2
+              id: changes
+              with:
+                  filters: |
+                      api:
+                        - 'api/**'
+                        - 'go.mod'
+                        - 'go.sum'
+                        - '.github/workflows/*'
+                      shield:
+                        - 'shield/**'
+                        - 'pyproject.toml'
+                        - 'poetry.lock'
+                        - '.github/workflows/*'
+                      relay:
+                        - 'relay/**'
+                        - 'Cargo.toml'
+                        - 'Cargo.lock'
+                        - '.github/workflows/*'
+                      infrastructure:
+                        - 'docker-compose*.yml'
+                        - 'folio/**'
+                        - 'gitops/**'
+                        - 'terraform/**'
+                        - '.github/workflows/*'
+                      any:
+                        - '**'
+
+    # ============================================
+    # QUALITY GATES - TESTS
+    # ============================================
+
+    test-api:
+        name: 🧪 Test API Service
+        if: needs.changes.outputs.api == 'true' || github.event_name == 'workflow_dispatch'
+        needs: changes
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+
+        services:
+            postgres:
+                image: postgres:15-alpine
+                env:
+                    POSTGRES_DB: materi_test
+                    POSTGRES_USER: test
+                    POSTGRES_PASSWORD: test
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+
+            redis:
+                image: redis:7-alpine
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 6379:6379
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: ${{ env.GO_VERSION }}
+                  cache: true
+                  cache-dependency-path: api/go.sum
+
+            - name: Run go vet
+              working-directory: ./api
+              run: go vet ./...
+
+            - name: Run unit tests
+              working-directory: ./api
+              run: |
+                  go test -v -race -coverprofile=coverage.out ./internal/models/... ./internal/services/... -timeout 10m
+                  go tool cover -func=coverage.out | tail -1
+
+            - name: Run integration tests
+              working-directory: ./api
+              env:
+                  DATABASE_URL: postgres://test:test@localhost:5432/materi_test?sslmode=disable
+                  REDIS_URL: redis://localhost:6379/0
+              run: |
+                  go test -v -race -tags=integration ./internal/repositories/... -timeout 10m
+
+            - name: Upload coverage
+              uses: codecov/codecov-action@v3
+              with:
+                  files: ./api/coverage.out
+                  flags: api
+                  name: api-coverage
+
+    test-shield:
+        name: 🧪 Test Shield Service
+        if: needs.changes.outputs.shield == 'true' || github.event_name == 'workflow_dispatch'
+        needs: changes
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+
+        services:
+            postgres:
+                image: postgres:15-alpine
+                env:
+                    POSTGRES_DB: shield_test
+                    POSTGRES_USER: test
+                    POSTGRES_PASSWORD: test
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5434:5432
+
+            redis:
+                image: redis:7-alpine
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 6381:6379
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+                  cache: poetry
+                  cache-dependency-path: shield/poetry.lock
+
+            - name: Install Poetry
+              run: pipx install poetry
+
+            - name: Install dependencies
+              working-directory: ./shield
+              run: poetry install --no-root
+
+            - name: Run linting
+              working-directory: ./shield
+              run: |
+                  poetry run black --check .
+                  poetry run isort --check-only .
+                  poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+            - name: Run unit tests
+              working-directory: ./shield
+              env:
+                  DATABASE_URL: postgresql://test:test@localhost:5434/shield_test
+                  REDIS_URL: redis://localhost:6381
+              run: |
+                  poetry run pytest apps/ --cov=apps --cov-report=xml --cov-report=term --tb=short -v
+
+            - name: Upload coverage
+              uses: codecov/codecov-action@v3
+              with:
+                  files: ./shield/coverage.xml
+                  flags: shield
+                  name: shield-coverage
+
+    test-relay:
+        name: 🧪 Test Relay Service
+        if: needs.changes.outputs.relay == 'true' || github.event_name == 'workflow_dispatch'
+        needs: changes
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+
+        services:
+            postgres:
+                image: postgres:15-alpine
+                env:
+                    POSTGRES_DB: materi_relay_test
+                    POSTGRES_USER: test
+                    POSTGRES_PASSWORD: test
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5433:5432
+
+            redis:
+                image: redis:7-alpine
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 6380:6379
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  toolchain: ${{ env.RUST_VERSION }}
+
+            - name: Cache Rust
+              uses: Swatinem/rust-cache@v2
+              with:
+                  workspaces: relay
+
+            - name: Run clippy
+              working-directory: ./relay
+              run: cargo clippy --all-targets --all-features -- -D warnings
+
+            - name: Run tests
+              working-directory: ./relay
+              env:
+                  DATABASE_URL: postgresql://test:test@localhost:5433/materi_relay_test
+                  REDIS_URL: redis://localhost:6380/0
+                  RUST_LOG: info
+              run: |
+                  cargo test --verbose --all-features --workspace
+
+            - name: Run doc tests
+              working-directory: ./relay
+              run: cargo test --doc
+
+    # ============================================
+    # QUALITY GATES - SECURITY
+    # ============================================
+
+    security-scan:
+        name: 🔒 Security Scanning
+        runs-on: ubuntu-latest
+        needs: [test-api, test-shield, test-relay]
+        if: always() && (needs.test-api.result == 'success' || needs.test-shield.result == 'success' || needs.test-relay.result == 'success')
+        timeout-minutes: 15
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Run Trivy vulnerability scanner
+              uses: aquasecurity/trivy-action@master
+              with:
+                  scan-type: fs
+                  scan-ref: "."
+                  format: sarif
+                  output: trivy-results.sarif
+                  severity: CRITICAL,HIGH
+
+            - name: Upload Trivy results
+              uses: github/codeql-action/upload-sarif@v2
+              with:
+                  sarif_file: trivy-results.sarif
+                  category: trivy
+
+            - name: Setup Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: ${{ env.GO_VERSION }}
+
+            - name: Run govulncheck
+              working-directory: ./api
+              run: |
+                  go install golang.org/x/vuln/cmd/govulncheck@latest
+                  govulncheck ./...
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+
+            - name: Run bandit security scanner
+              working-directory: ./shield
+              run: |
+                  pip install bandit
+                  bandit -r apps/ -f json -o bandit-report.json || true
+                  bandit -r apps/ || true
+
+            - name: Run gitleaks secret scanning
+              uses: gitleaks/gitleaks-action@v2
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # ============================================
+    # BUILD PHASE
+    # ============================================
+
+    build-api:
+        name: 🔨 Build API Docker Image
+        if: needs.changes.outputs.api == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        needs: [changes, security-scan]
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Log in to Container Registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v4
+              with:
+                  images: ${{ env.REGISTRY }}/materi/api
+                  tags: |
+                      type=ref,event=branch
+                      type=semver,pattern={{version}}
+                      type=semver,pattern={{major}}.{{minor}}
+                      type=sha,prefix={{branch}}-
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v4
+              with:
+                  context: ./api
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=registry,ref=${{ env.REGISTRY }}/materi/api:buildcache
+                  cache-to: type=registry,ref=${{ env.REGISTRY }}/materi/api:buildcache,mode=max
+                  build-args: |
+                      VERSION=${{ github.sha }}
+                      BUILD_TIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+                      GIT_COMMIT=${{ github.sha }}
+
+    build-shield:
+        name: 🔨 Build Shield Docker Image
+        if: needs.changes.outputs.shield == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        needs: [changes, security-scan]
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Log in to Container Registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v4
+              with:
+                  images: ${{ env.REGISTRY }}/materi/shield
+                  tags: |
+                      type=ref,event=branch
+                      type=semver,pattern={{version}}
+                      type=semver,pattern={{major}}.{{minor}}
+                      type=sha,prefix={{branch}}-
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v4
+              with:
+                  context: ./shield
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=registry,ref=${{ env.REGISTRY }}/materi/shield:buildcache
+                  cache-to: type=registry,ref=${{ env.REGISTRY }}/materi/shield:buildcache,mode=max
+
+    build-relay:
+        name: 🔨 Build Relay Docker Image
+        if: needs.changes.outputs.relay == 'true' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+        needs: [changes, security-scan]
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        permissions:
+            contents: read
+            packages: write
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Log in to Container Registry
+              uses: docker/login-action@v2
+              with:
+                  registry: ${{ env.REGISTRY }}
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v4
+              with:
+                  images: ${{ env.REGISTRY }}/materi/relay
+                  tags: |
+                      type=ref,event=branch
+                      type=semver,pattern={{version}}
+                      type=semver,pattern={{major}}.{{minor}}
+                      type=sha,prefix={{branch}}-
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v4
+              with:
+                  context: ./relay
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  cache-from: type=registry,ref=${{ env.REGISTRY }}/materi/relay:buildcache
+                  cache-to: type=registry,ref=${{ env.REGISTRY }}/materi/relay:buildcache,mode=max
+
+    # ============================================
+    # DEPLOYMENT
+    # ============================================
+
+    deploy-staging:
+        name: 🚀 Deploy to Staging
+        if: github.ref == 'refs/heads/develop' && (needs.build-api.result == 'success' || needs.build-shield.result == 'success' || needs.build-relay.result == 'success')
+        needs: [build-api, build-shield, build-relay]
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        environment: staging
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy to Staging via ArgoCD
+              run: |
+                  echo "📦 Staging deployment initiated"
+                  echo "Services deployed:"
+                  echo "  - API: ${{ env.REGISTRY }}/materi/api"
+                  echo "  - Shield: ${{ env.REGISTRY }}/materi/shield"
+                  echo "  - Relay: ${{ env.REGISTRY }}/materi/relay"
+                  echo ""
+                  echo "🔄 Rolling out updates..."
+                  echo "✅ Staging deployment would occur here with ArgoCD"
+
+            - name: Notify Slack
+              if: always()
+              uses: 8398a7/action-slack@v3
+              with:
+                  status: ${{ job.status }}
+                  text: "Staging deployment ${{ job.status }}"
+                  webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+                  fields: repo,message,commit,author,action
+
+    deploy-production:
+        name: 🚀 Deploy to Production
+        if: |
+            (startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push') ||
+            (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+        needs: [build-api, build-shield, build-relay]
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        environment:
+            name: production
+            url: https://materi.com
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Deploy to Production via ArgoCD
+              run: |
+                  echo "🚀 Production deployment initiated"
+                  echo "Reference: ${{ github.ref }}"
+                  echo "Commit: ${{ github.sha }}"
+                  echo ""
+                  echo "Services deployed:"
+                  echo "  - API: ${{ env.REGISTRY }}/materi/api"
+                  echo "  - Shield: ${{ env.REGISTRY }}/materi/shield"
+                  echo "  - Relay: ${{ env.REGISTRY }}/materi/relay"
+                  echo ""
+                  echo "🔄 Blue-Green deployment strategy..."
+                  echo "✅ Production deployment would occur here with ArgoCD"
+
+            - name: Run smoke tests
+              run: |
+                  echo "🧪 Running smoke tests..."
+                  echo "✅ Smoke tests would run here"
+
+            - name: Notify Slack
+              if: always()
+              uses: 8398a7/action-slack@v3
+              with:
+                  status: ${{ job.status }}
+                  text: "Production deployment ${{ job.status }} - ${{ github.ref }}"
+                  webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+                  fields: repo,message,commit,author,action
+
+    # ============================================
+    # SUMMARY
+    # ============================================
+
+    pipeline-summary:
+        name: 📊 Pipeline Summary
+        if: always()
+        runs-on: ubuntu-latest
+        needs:
+            [
+                changes,
+                test-api,
+                test-shield,
+                test-relay,
+                security-scan,
+                build-api,
+                build-shield,
+                build-relay,
+                deploy-staging,
+                deploy-production,
+            ]
+
+        steps:
+            - name: Check test results
+              run: |
+                  echo "## Pipeline Summary"
+                  echo ""
+                  echo "### Changes Detected"
+                  echo "- API: ${{ needs.changes.outputs.api }}"
+                  echo "- Shield: ${{ needs.changes.outputs.shield }}"
+                  echo "- Relay: ${{ needs.changes.outputs.relay }}"
+                  echo ""
+                  echo "### Test Results"
+                  echo "- API Tests: ${{ needs.test-api.result }}"
+                  echo "- Shield Tests: ${{ needs.test-shield.result }}"
+                  echo "- Relay Tests: ${{ needs.test-relay.result }}"
+                  echo "- Security Scan: ${{ needs.security-scan.result }}"
+                  echo ""
+                  echo "### Build Results"
+                  echo "- API Build: ${{ needs.build-api.result }}"
+                  echo "- Shield Build: ${{ needs.build-shield.result }}"
+                  echo "- Relay Build: ${{ needs.build-relay.result }}"
+                  echo ""
+                  echo "### Deployment Results"
+                  echo "- Staging: ${{ needs.deploy-staging.result }}"
+                  echo "- Production: ${{ needs.deploy-production.result }}"
+
+            - name: Fail on test failures
+              if: |
+                  (needs.test-api.result == 'failure') ||
+                  (needs.test-shield.result == 'failure') ||
+                  (needs.test-relay.result == 'failure') ||
+                  (needs.security-scan.result == 'failure')
+              run: exit 1

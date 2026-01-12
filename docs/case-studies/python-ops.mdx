@@ -1,0 +1,39 @@
+---
+title: 'Python: Operational Automation'
+sidebarTitle: 'Python Ops'
+description: 'Scripting Game Days and chaos engineering.'
+---
+
+# The Python "Ops Glue"
+
+While Rust and Go handle the high-performance path, Python is our weapon of choice for **Automation and Verification**.
+
+In the Atlas, we use Python to:
+
+1.  Run "Game Days" (load testing).
+2.  Verify system integrity (e2e tests).
+3.  Orchestrate complex startup sequences.
+
+## The Game Day Script
+
+Located in `platform/atlas/apps/python-ops/game_day.py`.
+
+This script generates synthetic traffic to the Rust API to generate **Telemetry**. Without traffic, your Grafana dashboards are empty.
+
+### Usage
+
+```bash
+cd platform/atlas/apps/python-ops
+pip install -r requirements.txt
+python game_day.py
+```
+
+This will:
+
+1.  Hit `http://localhost/manuscript/sync`.
+2.  Generate random latency (via server-side or network simulation).
+3.  Populate your **Rate/Errors/Duration (RED)** metrics in Grafana.
+
+## N8N Integration
+
+Detailed in the next section, but Python scripts are often triggered by N8N webhooks to perform remediation actions (e.g., "Restart Service" or "Scale Up").

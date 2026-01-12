@@ -1,7 +1,8 @@
 ---
-title: "@Mentions & Notifications"
-description: "Notify team members, create accountability, and streamline communication with @mentions"
-icon: "at"
+title: @Mentions & Notifications
+description: Notify team members, create accountability, and streamline communication with @mentions
+icon: at
+relatedPages: []
 ---
 
 # @Mentions & Notifications

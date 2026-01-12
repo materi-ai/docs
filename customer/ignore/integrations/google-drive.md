@@ -1,7 +1,8 @@
 ---
-title: "Google Drive Integration"
-description: "Import documents from Google Drive and keep content synchronized across platforms"
-icon: "google-drive"
+title: Google Drive Integration
+description: Import documents from Google Drive and keep content synchronized across platforms
+icon: google-drive
+relatedPages: []
 ---
 
 # Google Drive Integration

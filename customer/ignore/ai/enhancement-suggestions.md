@@ -1,7 +1,8 @@
 ---
-title: "AI Enhancement Suggestions"
-description: "Improve your writing with intelligent grammar, clarity, tone, and style suggestions powered by Aria"
-icon: "wand-magic-sparkles"
+title: AI Enhancement Suggestions
+description: Improve your writing with intelligent grammar, clarity, tone, and style suggestions powered by Aria
+icon: wand-magic-sparkles
+relatedPages: []
 ---
 
 # AI Enhancement Suggestions

@@ -1,0 +1,638 @@
+---
+title: "Traceo Integration Matrix"
+description: "Complete mapping of Traceo integrations across Shield, Folio, n8n, and Redis"
+icon: "🔗"
+source: "Materi Internal Analysis"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastUpdated: "2026-01-09T20:10:00Z"
+status: "production"
+classification: "internal"
+tags:
+  - traceo
+  - integrations
+  - architecture
+  - shield
+  - folio
+  - n8n
+  - redis
+relatedPages:
+  - /developer/traceo/TRACEO_TECHNICAL_SPECIFICATION.mdx
+---
+
+# Traceo Integration Matrix
+
+**Complete mapping of all integration points across the Materi platform**
+
+---
+
+## Integration Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                       │
+│                        TRACEO MCP SERVER                              │
+│                      (698 Requirements)                               │
+│                                                                       │
+└────┬─────────────────┬──────────────────┬──────────────┬──────────────┘
+     │                 │                  │              │
+     ▼                 ▼                  ▼              ▼
+┌─────────┐      ┌──────────┐      ┌────────────┐  ┌────────┐
+│  SHIELD │      │  FOLIO   │      │   n8n      │  │ Redis  │
+│ (Auth)  │      │(Observ.) │      │(Automation)│  │ Streams│
+└────┬────┘      └────┬─────┘      └────┬───────┘  └───┬────┘
+     │                │                 │              │
+     ├── Users ───────┼── Metrics ──────┼── Events ───┤
+     ├── Roles ───────┼── Dashboards ───┼── Workflows │
+     └── Audits ──────┼── Alerts ───────┼── Validation┘
+                      └── SLAs ─────────┘
+```
+
+---
+
+## Detailed Integration Points
+
+### 1. Shield Integration
+
+**Purpose**: Access control, user context, audit trails
+
+| Aspect | Direction | Data Flow | Frequency | Implementation |
+|--------|-----------|-----------|-----------|-----------------|
+| **User Authorization** | ← | User ID + roles | Per request | Middleware validates JWT |
+| **Permission Checking** | ← | Permission matrix | Per operation | RBAC rules applied |
+| **Audit Logging** | → | Operation + actor | Real-time | Every tool execution logged |
+| **User Context** | ← | User profile | Cache (15m) | Used for impact analysis |
+| **Role-based Tools** | ← | Approved actions | On access | Some tools restricted by role |
+
+**API Contracts**:
+
+```python
+# Shield → Traceo (Inbound)
+class UserContext:
+    user_id: str
+    username: str
+    email: str
+    roles: List[str]  # [editor, analyst, admin]
+    permissions: Set[str]  # {view, create, update, delete, export}
+    org_id: str
+    created_at: datetime
+
+# Traceo → Shield (Outbound)
+class AuditEvent:
+    timestamp: datetime
+    user_id: str
+    action: str  # "list_requirements", "analyze_impact", etc.
+    resource: str  # "FR-AUTH-001"
+    status: str  # "success" or "error"
+    duration_ms: float
+    ip_address: str
+    user_agent: str
+```
+
+**Tools Restricted by Role**:
+
+| Tool | Viewer | Editor | Admin |
+|------|--------|--------|-------|
+| list_requirements | ✓ | ✓ | ✓ |
+| get_requirement | ✓ | ✓ | ✓ |
+| search_requirements | ✓ | ✓ | ✓ |
+| trace_requirement | ✓ | ✓ | ✓ |
+| analyze_impact | ✓ | ✓ | ✓ |
+| create_requirement | ✗ | ✓ | ✓ |
+| update_requirement | ✗ | ✓ | ✓ |
+| delete_requirement | ✗ | ✗ | ✓ |
+| get_traceability_matrix | ✓ | ✓ | ✓ |
+
+---
+
+### 2. Folio Observability Integration
+
+**Purpose**: Metrics collection, dashboards, alerting, SLA tracking
+
+#### 2a. Metrics Emitted
+
+```
+# Requirement State Metrics
+traceo_requirement_total{type="functional", status="approved"}         → 150
+traceo_requirement_total{type="system", status="implemented"}          → 200
+traceo_requirement_total{classification="L2-Functional"}               → 180
+traceo_requirement_total{priority="P0-critical"}                       → 45
+
+# Operation Metrics
+traceo_operation_duration_seconds{operation="list_requirements"}       → histogram
+traceo_operation_duration_seconds{operation="search_requirements"}     → histogram
+traceo_operation_duration_seconds{operation="analyze_impact"}          → histogram
+traceo_operation_calls_total{operation="get_requirement", status="ok"} → counter
+traceo_operation_calls_total{operation="get_requirement", status="error"} → counter
+
+# Cache Metrics
+traceo_cache_hits_total                                                → counter
+traceo_cache_misses_total                                              → counter
+traceo_cache_hit_ratio                                                 → gauge
+traceo_cache_size_bytes                                                → gauge
+traceo_cache_items_total                                               → gauge
+
+# Graph Metrics
+traceo_circular_dependencies_detected                                  → gauge
+traceo_orphaned_requirements_total                                     → gauge
+traceo_relationship_edges_total                                        → gauge
+traceo_relationship_depth_max                                          → gauge
+
+# User Activity Metrics
+traceo_users_active_today                                              → gauge
+traceo_users_active_this_week                                          → gauge
+traceo_tool_usage_by_user{tool="list_requirements", user_id="..."}    → histogram
+traceo_api_calls_by_source{source="claude_desktop"}                   → counter
+traceo_api_calls_by_source{source="claude_code"}                      → counter
+
+# SLA Metrics
+traceo_requirement_approval_pending_days{requirement_id="FR-001"}      → gauge
+traceo_requirement_review_overdue_total                                → counter
+traceo_impact_analysis_approval_level{level="executive"}               → counter
+```
+
+#### 2b. Grafana Dashboard
+
+**Dashboard ID**: `traceo-system`
+**Refresh Rate**: 30 seconds
+**Retention**: 30 days
+
+**Panels**:
+
+1. **Status Distribution** (Pie Chart)
+   - Draft: 18
+   - Approved: 680
+   - Implemented: 670
+   - Verified: 650
+   - Obsolete: 0
+
+2. **Priority Breakdown** (Bar Chart)
+   - P0-Critical: 45
+   - P1-High: 120
+   - P2-Medium: 380
+   - P3-Low: 153
+
+3. **Operation Latencies** (Line Graph)
+   - P50: 12ms
+   - P95: 156ms
+   - P99: 2100ms
+   - Max: 8340ms
+
+4. **Cache Performance** (Stat)
+   - Hit ratio: 95.2%
+   - Items: 698
+   - Memory: 18 MB
+
+5. **User Activity** (Heatmap)
+   - Busiest hours: 9-11 AM, 2-4 PM
+   - Users: 23 active today
+
+6. **Graph Health** (Stats)
+   - Circular dependencies: 0
+   - Orphaned: 3
+   - Relationships: 3,775
+
+#### 2c. Alerts
+
+**Alert Name**: `TraceoCircularDependencyDetected`
+```
+- Condition: traceo_circular_dependencies_detected > 0
+- Severity: CRITICAL
+- Action: Email ops@company.com, Slack #traceo-alerts
+- Runbook: /ops/runbooks/traceo-circular-dependency.md
+```
+
+**Alert Name**: `TraceoOperationLatencyHigh`
+```
+- Condition: histogram_quantile(0.95, traceo_operation_duration_seconds) > 500ms
+- Severity: WARNING
+- Action: Slack #traceo-alerts
+- Auto-remedy: Check cache hit ratio, clear cache if < 80%
+```
+
+**Alert Name**: `TraceoRequirementApprovalOverdue`
+```
+- Condition: traceo_requirement_approval_pending_days > 30
+- Severity: MEDIUM
+- Action: Email approvers, Slack notification
+- Escalation: After 60 days, email executives
+```
+
+---
+
+### 3. Redis Streams Integration
+
+**Purpose**: Cross-service event synchronization
+
+#### 3a. Event Streams
+
+| Stream | Producer | Consumers | Purpose | Frequency |
+|--------|----------|-----------|---------|-----------|
+| `traceo:events:requirement:created` | Traceo | Folio, n8n | New requirement added | Variable |
+| `traceo:events:requirement:updated` | Traceo | Folio, n8n, Shield | Requirement changed | Variable |
+| `traceo:events:requirement:deleted` | Traceo | Folio, n8n | Requirement removed | Variable |
+| `traceo:events:requirement:status_changed` | Traceo | Folio, n8n | Status transition (draft→approved) | Variable |
+| `traceo:events:impact:analyzed` | Traceo | Folio, Shield | Impact analysis completed | Variable |
+| `traceo:events:relationship:modified` | Traceo | Folio | Relationship graph changed | Variable |
+| `traceo:events:approval:requested` | Traceo | Shield, n8n | Approval needed | Variable |
+
+#### 3b. Event Payload Structure
+
+```json
+{
+  "event_id": "evt_abc123def456",
+  "event_type": "requirement.updated",
+  "timestamp": "2026-01-09T20:10:00Z",
+  "correlation_id": "req_12345_update_1",
+  "producer": "traceo",
+  "version": "1.0",
+  "data": {
+    "requirement_id": "FR-AUTH-001",
+    "previous_state": {
+      "status": "approved",
+      "updated_by": "user1@company.com",
+      "updated_at": "2026-01-08T10:00:00Z"
+    },
+    "new_state": {
+      "status": "in_progress",
+      "updated_by": "user2@company.com",
+      "updated_at": "2026-01-09T20:10:00Z"
+    },
+    "changes": [
+      {
+        "field": "status",
+        "from": "approved",
+        "to": "in_progress"
+      }
+    ]
+  },
+  "metadata": {
+    "request_id": "req_abc123",
+    "user_id": "user2@company.com",
+    "ip_address": "192.168.1.100",
+    "source": "claude_desktop"
+  }
+}
+```
+
+#### 3c. Consumer Groups
+
+```bash
+# List all Traceo-related consumer groups
+redis-cli XINFO GROUPS traceo:events:requirement:updated
+
+# Group 1: folio-observer
+# Consumer 1: folio-process-1
+# Pending messages: 3
+# Last ID: 1704816600000-0
+
+# Group 2: n8n-workflows
+# Consumer 1: n8n-workflow-trigger
+# Pending messages: 0
+# Last ID: 1704816600000-1
+
+# Group 3: compliance-audit
+# Consumer 1: audit-logger
+# Pending messages: 5
+# Last ID: 1704816535000-2
+```
+
+---
+
+### 4. n8n Workflow Integration
+
+**Purpose**: Automated requirement processing, validation, reporting
+
+#### 4a. Triggered Workflows
+
+**Workflow 1**: CSV to YAML Ingestion
+```
+Trigger: File uploaded to /uploads/requirements.csv
+  ↓
+Action 1: Parse CSV → List of requirement objects
+  ↓
+Action 2: For each requirement → Validate schema
+  ↓
+Action 3: Transform → Generate YAML files
+  ↓
+Action 4: Write → /requirements/{ID}/definition.yml
+  ↓
+Action 5: Publish → traceo:events:requirement:created
+  ↓
+Notify: Email ops@company.com with summary
+```
+
+**Workflow 2**: Daily Requirement Health Report
+```
+Trigger: Every day at 6:00 AM
+  ↓
+Action 1: Call Traceo → get_traceability_matrix()
+  ↓
+Action 2: Analyze:
+         - Count by status/priority
+         - Find circular dependencies
+         - Identify orphaned requirements
+         - Check approval SLAs
+  ↓
+Action 3: Generate HTML report
+  ↓
+Action 4: Email → compliance@company.com
+  ↓
+Action 5: Post to Slack → #daily-standup
+```
+
+**Workflow 3**: SLA Reconciliation
+```
+Trigger: Every Monday at 8:00 AM
+  ↓
+Action 1: Query all APPROVED requirements
+  ↓
+Action 2: For each → Check:
+         - Is it implemented? (status=in_progress or implemented)
+         - Is it within target timeline?
+         - Are acceptance criteria met?
+  ↓
+Action 3: If overdue:
+         - Send reminder email to assignee
+         - Escalate to manager after 7 days
+         - Escalate to executive after 14 days
+  ↓
+Action 4: Generate metrics report for Folio
+```
+
+**Workflow 4**: Compliance Validation
+```
+Trigger: Manual trigger or on requirement:created event
+  ↓
+Action 1: Load requirement from Traceo
+  ↓
+Action 2: Validate:
+         - Required fields present?
+         - Has stakeholder list?
+         - Has acceptance criteria?
+         - Has implementation mapping?
+         - Is it linked to at least one test (VR)?
+  ↓
+Action 3: If validation fails:
+         - Flag requirement as non-compliant
+         - Email compliance officer
+         - Log to audit trail
+  ↓
+Action 4: Generate compliance scorecard
+```
+
+#### 4b. Workflow Execution Patterns
+
+```
+n8n Workflow Instance → POST /traceo/tools/analyze_impact
+                     ← 200 OK + JSON
+                     → Process results
+                     → Store in workflow execution state
+                     → Continue to next step
+```
+
+**Error Handling**:
+```
+If GET_REQUIREMENT fails (404):
+  → Retry 3 times with exponential backoff
+  → If still fails, log error + notify admin
+  → Continue workflow with placeholder data
+
+If ANALYZE_IMPACT times out (> 30s):
+  → Cancel operation
+  → Log timeout warning
+  → Skip this requirement, continue batch
+```
+
+---
+
+## Integration Data Flow Diagrams
+
+### 1. Requirement Update Flow
+
+```
+Claude Desktop User
+  │
+  ├─→ "Update FR-AUTH-001 status to in_progress"
+  │
+  ▼
+Traceo MCP Server
+  │
+  ├─→ update_requirement(id="FR-AUTH-001", status="in_progress")
+  │
+  ▼
+Traceo Services
+  │
+  ├─→ Load requirement from file storage
+  │
+  ├─→ Validate update
+  │
+  ├─→ Check dependencies (will this break anything?)
+  │
+  ├─→ Write to /requirements/FR-AUTH-001/definition.yml
+  │
+  ├─→ Clear cache entry
+  │
+  ▼
+Event Publication
+  │
+  ├─→ Publish to Redis: traceo:events:requirement:updated
+  │      └─→ event_type: "requirement.updated"
+  │      └─→ data: {requirement_id, previous_state, new_state}
+  │
+  ▼
+Downstream Consumers
+  │
+  ├─→ Folio: Record metric + add to dashboard
+  │
+  ├─→ n8n: Trigger SLA reconciliation workflow
+  │
+  ├─→ Shield: Update audit log
+  │
+  └─→ API Cache: Invalidate cached version
+```
+
+### 2. Impact Analysis Flow
+
+```
+Claude Code User
+  │
+  ├─→ "What if we increase API timeout to 150ms?"
+  │
+  ▼
+Traceo MCP Server
+  │
+  ├─→ analyze_impact(requirement_id="SR-API-TIMEOUT", change="150ms")
+  │
+  ▼
+Impact Analysis Service
+  │
+  ├─→ Load SR-API-TIMEOUT requirement
+  │
+  ├─→ Trace downstream dependencies (what depends on this?)
+  │
+  ├─→ For each dependent:
+  │     ├─→ Check if it has SLA constraints
+  │     ├─→ Calculate revenue impact
+  │     └─→ Determine approval level needed
+  │
+  ├─→ Build impact report:
+  │     ├─→ affected_requirements: 23
+  │     ├─→ revenue_at_stake: $500,000
+  │     ├─→ approval_level: "executive"
+  │     └─→ risks: [...]
+  │
+  ▼
+Return to Claude
+  │
+  └─→ User sees complete impact assessment
+       (23 affected features, $500k revenue, needs exec approval)
+```
+
+### 3. Observability Pipeline
+
+```
+Every Traceo Operation
+  │
+  ├─→ Start timer
+  │
+  ├─→ Execute operation
+  │
+  ├─→ Stop timer, record duration
+  │
+  ├─→ Emit metrics:
+  │     ├─→ traceo_operation_duration_ms
+  │     ├─→ traceo_operation_calls_total
+  │     ├─→ traceo_cache_hit (if applicable)
+  │
+  ├─→ Metrics → Prometheus Scraper (every 30s)
+  │
+  ├─→ Prometheus → Folio Time-Series DB
+  │
+  ├─→ Folio → Grafana Dashboard (updates real-time)
+  │
+  └─→ Grafana → Alerting (triggers on thresholds)
+       ├─→ Email ops team
+       ├─→ Slack notification
+       └─→ Auto-remediation (if configured)
+```
+
+---
+
+## Configuration Matrix
+
+### Shield Configuration
+
+```yaml
+# shield/.env
+TRACEO_MCP_ENABLED=true
+TRACEO_RBAC_MODE=advanced
+TRACEO_AUDIT_LOG_ENABLED=true
+TRACEO_AUDIT_LOG_LEVEL=info  # info, debug, error
+TRACEO_CACHE_PERMISSIONS=true
+TRACEO_PERMISSION_CACHE_TTL=900  # 15 minutes
+```
+
+### Folio Configuration
+
+```yaml
+# folio/config.yaml
+traceo:
+  enabled: true
+  metrics_scrape_interval: 30s
+  dashboard_refresh_rate: 30s
+  alerts:
+    - name: CircularDependency
+      severity: critical
+    - name: OperationLatency
+      severity: warning
+      threshold_ms: 500
+    - name: CacheHitRatioDrop
+      severity: warning
+      threshold: 0.80
+```
+
+### n8n Configuration
+
+```yaml
+# n8n workflows that interact with Traceo
+workflows:
+  - name: csv-ingestion
+    enabled: true
+    schedule: manual
+    max_execution_time: 300s
+
+  - name: daily-health-report
+    enabled: true
+    schedule: cron('0 6 * * *')
+    max_execution_time: 600s
+
+  - name: sla-reconciliation
+    enabled: true
+    schedule: cron('0 8 * * 1')  # Monday 8 AM
+    max_execution_time: 1800s
+```
+
+### Redis Configuration
+
+```yaml
+# Redis Streams retention
+traceo:events:*:
+  max_len: 100000           # Keep 100k events
+  retention_ms: 2592000000  # 30 days
+  trim_strategy: MAXLEN     # Auto-trim when over max_len
+```
+
+---
+
+## Integration Health Checks
+
+**Automated Daily Verification**:
+
+```bash
+#!/bin/bash
+echo "=== Traceo Integration Health Check ==="
+
+# 1. Shield connectivity
+curl -s http://shield:8000/health | jq .status
+echo "Shield: OK"
+
+# 2. Redis Streams flowing
+redis-cli XLEN traceo:events:requirement:updated
+echo "Redis events queued: $?"
+
+# 3. Folio metrics collected
+curl -s http://folio:8080/metrics | grep traceo_operation_calls_total | head -1
+echo "Folio metrics: OK"
+
+# 4. n8n workflows active
+curl -s http://n8n:5678/api/workflows | jq '.data | length'
+echo "n8n workflows: OK"
+
+# 5. Traceo MCP responsive
+poetry run python -c "
+import asyncio
+from traceo_mcp_server.services import RequirementService
+asyncio.run(RequirementService().list_requirements(...))
+echo "Traceo MCP: OK"
+"
+```
+
+---
+
+## Compliance & Audit
+
+**Integration Points Logged**:
+
+| Action | Logged To | Retention | Use Case |
+|--------|-----------|-----------|----------|
+| Tool execution | Shield audit log | 7 years | Compliance |
+| Metrics collected | Folio timeseries | 30 days | Observability |
+| Event published | Redis | 30 days | Replay capability |
+| Permission denied | Shield audit log | 7 years | Security investigation |
+| User activity | Folio metrics | 30 days | Usage analytics |
+
+---
+
+**Document Version**: 1.0.0
+**Last Updated**: 2026-01-09T20:10:00Z
+**Status**: PRODUCTION

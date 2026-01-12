@@ -1,3 +1,16 @@
+---
+title: "Ultimate LLM Prompt: Materi Documentation System"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # Ultimate LLM Prompt: Materi Documentation System
 
 **Version:** 1.0.0

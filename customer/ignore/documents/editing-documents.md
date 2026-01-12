@@ -1,7 +1,8 @@
 ---
-title: 'Editing Documents'
-description: 'Master the Materi editor with rich formatting, blocks, and embeds'
-icon: 'pencil'
+title: Editing Documents
+description: Master the Materi editor with rich formatting, blocks, and embeds
+icon: pencil
+relatedPages: []
 ---
 
 Materi's editor is designed for speed and flexibility. This guide covers everything from basic formatting to advanced content blocks.

@@ -1,7 +1,8 @@
 ---
-title: 'Sign Up'
-description: 'Create your Materi account and access your first workspace in minutes'
-icon: 'user-plus'
+title: Sign Up
+description: Create your Materi account and access your first workspace in minutes
+icon: user-plus
+relatedPages: []
 ---
 
 Get started with Materi in just a few minutes. This guide walks you through creating your account and accessing your first workspace.

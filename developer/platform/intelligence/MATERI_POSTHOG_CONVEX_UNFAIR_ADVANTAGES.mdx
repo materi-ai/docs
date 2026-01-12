@@ -1,0 +1,269 @@
+---
+title: Materi + PostHog + Convex — Unfair Advantages
+description: A concrete implementation strategy and deliverables matrix for using PostHog and Convex to create compounding product, growth, and reliability advantages across the Materi platform.
+relatedPages: []
+---
+
+## Why this document exists
+
+Materi already has a strong event-driven backbone (Shield/API/Relay/Printery + Manuscript Proto + Folio). PostHog and Convex become a **product-intelligence + real-time state engine** that can close the loop between:
+
+-   **Ground truth** (canonical state changes in API/Shield/Relay)
+-   **Behavior truth** (what users actually do and what causes retention)
+-   **Control surfaces** (feature flags, experiments, progressive rollout)
+-   **Automations** (real-time nudges, in-app coaching, operational circuit breakers)
+
+The goal is not “analytics dashboards.” The goal is a self-improving system: **instrument → learn → decide → act → verify → repeat**.
+
+## Current architecture alignment (where PostHog/Convex snap in)
+
+### Existing strengths to leverage
+
+-   **Manuscript** provides a typed event contract (envelope, metadata, replay, trace correlation)
+-   **Shield** is your identity + RBAC + admin authority
+-   **API** is your canonical document/workspace service (and already has metrics/middleware hooks)
+-   **Relay** is your real-time collaboration engine (high-signal behavioral stream)
+-   **Printery** is your event processing / resilience / DLQ / replay nucleus
+-   **Folio** is your platform observability engine
+-   **Shredder** gives a path to validate end-to-end correctness
+
+### What PostHog adds
+
+-   Feature flags + experiments + cohorts
+-   Funnels, retention, path analysis, and session replay
+-   “Behavioral segmentation” without building a full data warehouse
+
+### What Convex adds
+
+-   Real-time reactive DB for product-facing state and derived “user state”
+-   Server-side functions (queries/mutations/actions) that can run business logic on demand
+-   A convenient “decision layer” to compute and persist **user/org activation states**
+
+> Important: Convex should not replace your canonical DBs unless you explicitly decide to migrate. In this strategy it starts as a **sidecar state/decision system**.
+
+## Unfair advantages (systems you can build)
+
+### 1) Server-authoritative analytics you can actually trust
+
+**Problem:** Client-only analytics is lossy, spoofable, and biased by ad blockers.
+
+**Approach:** Track a subset of “canonical events” from server boundaries:
+
+-   API mutation commits (document created, shared, exported)
+-   Shield auth + membership changes
+-   Relay collaboration milestones (session started, sustained activity threshold)
+
+**Mechanism:**
+
+-   Emit PostHog events **server-side** from API/Shield/Relay (or from Printery consuming Manuscript events)
+-   Use idempotency keys (e.g., `event_id` from Manuscript envelope or a deterministic `aggregate_id + version + type`)
+
+**Result:** Your funnels and experiments become much closer to truth.
+
+### 2) Closed-loop rollout safety (product flags behave like operational controls)
+
+**Problem:** Shipping fast increases risk; humans are slow at detecting subtle breakage.
+
+**Approach:** Use PostHog feature flags as controlled rollout gates, but enforce invariants server-side.
+
+-   PostHog decides **who** is eligible (cohorts, targeting)
+-   API/Relay/Shield decide **what is allowed** (permissions, billing, rate limits)
+
+**Result:** You can progressively roll out risky features (collaboration changes, AI features, billing) while preventing correctness/security regressions.
+
+### 3) “Activation state machine” (real-time personalization that compounds)
+
+**Approach:** Model activation as a state machine in Convex:
+
+-   `anonymous`
+-   `signed_up`
+-   `created_first_workspace`
+-   `created_first_document`
+-   `invited_teammate`
+-   `collaborated_live`
+-   `exported_or_shared`
+-   `retained_7d`
+
+Convex computes and persists `activation_stage` and `next_best_action` per user/workspace.
+
+PostHog consumes those as person/group properties to:
+
+-   Drive experiment targeting
+-   Gate onboarding UI
+-   Trigger lifecycle emails or in-app tooltips
+
+**Result:** You stop guessing what users need next; the system knows.
+
+### 4) Collaboration intelligence (turn Relay into a product advantage)
+
+Relay generates uniquely high-signal behavioral data:
+
+-   Presence duration
+-   Conflict frequency
+-   Undo/redo patterns
+-   “Edit bursts” and collaborator concurrency
+
+**Unfair advantage:** Use these to create product features competitors won’t have:
+
+-   “Collaboration health score” per document/workspace
+-   “Conflict risk predictor” (flag documents likely to diverge)
+-   “Team flow insights” (which workflows correlate with retention)
+
+### 5) Automated growth loops without spam
+
+By joining canonical state + behavior:
+
+-   Detect an intent signal (e.g., user repeatedly hits Share settings)
+-   Confirm eligibility (plan/permissions)
+-   Trigger a targeted nudge (in-product, not email)
+-   Measure effect via PostHog experiment
+
+This is how you build growth loops that feel like product, not marketing.
+
+## Implementation strategy (phased)
+
+### Phase 0 — Identity + event contract (foundation)
+
+**Goal:** One stable identity spine across Shield/API/Relay/PostHog/Convex.
+
+-   Define canonical identifiers:
+    -   `user_id` (UUID) from Shield as primary
+    -   `workspace_id` for group analytics
+    -   `session_id` for auth/session + replay correlation
+-   Decide PostHog mapping:
+    -   `distinct_id = user_id`
+    -   `groups = { workspace: workspace_id }`
+-   Standardize “event envelope” shape for analytics tracking:
+    -   `event_name`
+    -   `event_id` (idempotency)
+    -   `occurred_at`
+    -   `source_service`
+    -   `correlation_id` / `trace_id`
+    -   `workspace_id`, `document_id` when relevant
+
+### Phase 1 — Server-side tracking for top lifecycle events
+
+**Goal:** Make the core funnel measurable and trustworthy.
+
+Track from server boundaries (not only client):
+
+-   Signup completed
+-   Workspace created
+-   First document created
+-   First share/invite
+-   First real-time collaboration session
+-   First export / publish
+
+### Phase 2 — Feature flags + experiments as first-class platform capability
+
+**Goal:** Every major feature has a rollout plan and measurable outcome.
+
+-   Add PostHog flags to frontend and backend
+-   Enforce “flag + permission + plan” checks
+-   Run experiments against activation milestones (not vanity metrics)
+
+### Phase 3 — Convex as the decision layer
+
+**Goal:** Real-time derived state that drives personalization and automation.
+
+-   Convex ingests a subset of canonical events (from Printery or directly via webhooks)
+-   Convex computes:
+    -   activation stage
+    -   churn risk heuristics
+    -   collaboration health
+    -   org maturity score
+
+These become:
+
+-   PostHog person/group properties
+-   In-app next-best-action experiences
+
+### Phase 4 — Closed-loop automation + anomaly response
+
+**Goal:** The platform reacts to risk and opportunity.
+
+-   PostHog webhooks → trigger Convex actions
+-   Convex actions can:
+    -   open/close flags (via PostHog API)
+    -   nudge users
+    -   alert operators
+    -   throttle risky flows
+
+## Deliverables matrix
+
+The table below is designed to be executed by a small team in parallel.
+
+| Phase | Deliverable                                 | Where it lands                      | Owner            | Definition of Done                                                                    | Primary Risk                   |
+| ----: | ------------------------------------------- | ----------------------------------- | ---------------- | ------------------------------------------------------------------------------------- | ------------------------------ |
+|     0 | Identity contract (`distinct_id`, groups)   | Atlas docs + Shield/API conventions | Platform         | All services emit `user_id/workspace_id`; PostHog persons/groups resolve consistently | Identity drift across services |
+|     0 | Canonical analytics event list (v1)         | Atlas doc + code constants          | Platform/Product | 10–20 events with required props and idempotency rules                                | Event sprawl                   |
+|     1 | Server-side PostHog tracking (API)          | API service                         | Backend          | Top lifecycle events emitted from API with idempotency                                | Double-counting                |
+|     1 | Server-side PostHog tracking (Shield)       | Shield service                      | Backend          | Auth + membership events tracked from Shield                                          | PII leakage                    |
+|     1 | Relay collaboration milestones              | Relay service                       | Backend          | Session start/stop + key collaboration events tracked                                 | High volume costs              |
+|     1 | PostHog dashboards (Activation + Retention) | PostHog project                     | Product          | Clear baseline metrics; segmented by workspace plan/size                              | Misleading metrics             |
+|     2 | Feature flag SDK integrated (frontend)      | Canvas frontend                     | Frontend         | Flags can gate UI safely; fallback behavior is correct                                | Broken UX for control group    |
+|     2 | Feature flag enforcement (backend)          | API/Relay                           | Backend          | Server rejects prohibited behavior regardless of UI flags                             | Security regressions           |
+|     2 | First 2 experiments shipped                 | PostHog experiments                 | Product          | Experiments tied to activation milestones; results recorded                           | Shipping without decision      |
+|     3 | Convex “activation state machine”           | Convex project                      | Platform         | Real-time `activation_stage` per user/workspace; synced to PostHog props              | Two sources of truth           |
+|     3 | Convex event ingestion pipeline             | Printery → Convex (or webhook)      | Platform         | Reliable ingestion with retries + idempotency                                         | Delivery gaps                  |
+|     3 | Next-best-action engine                     | Convex + frontend                   | Product/Eng      | NBA generated + rendered; measurable lift                                             | Over-personalization           |
+|     4 | PostHog → Convex webhooks                   | Convex actions                      | Platform         | Cohort/flag changes can trigger actions                                               | Webhook reliability            |
+|     4 | Closed-loop rollout playbooks               | Atlas docs + runbooks               | Platform/Eng     | Documented “flag rollback” and anomaly response flows                                 | Human confusion                |
+|     4 | Shredder integration tests                  | Shredder suites                     | QA/Eng           | End-to-end tests validate tracking + idempotency                                      | Flaky tests                    |
+
+## Data governance (must be explicit)
+
+### PII rules of thumb
+
+-   PostHog: avoid raw PII in event properties; prefer IDs and coarse metadata
+-   Convex: can store product state, but keep sensitive auth data in Shield
+-   Correlation IDs and trace IDs are OK; treat IP address and user agent carefully
+
+### Retention
+
+-   Define separate retention for:
+    -   raw events
+    -   session replay
+    -   derived user state
+
+## Integration points (where to implement in Materi)
+
+-   **Best place for canonical tracking:** Printery consuming Manuscript `DomainEvent` (one pipeline, many producers)
+-   **Best place for auth identity + group mapping:** Shield
+-   **Best place for collaboration behavior signals:** Relay
+-   **Best place for document lifecycle + billing-adjacent events:** API
+
+## Minimal “v1 event set” (recommended)
+
+-   `user_signed_up`
+-   `user_logged_in`
+-   `workspace_created`
+-   `workspace_member_invited`
+-   `document_created`
+-   `document_shared`
+-   `document_exported`
+-   `collaboration_session_started`
+-   `collaboration_session_sustained` (e.g., > 60s active edits)
+-   `ai_action_invoked` (summarize/generate/enhance)
+
+Each event should include at least:
+
+-   `event_id` (idempotency)
+-   `user_id`
+-   `workspace_id`
+-   `source_service`
+-   `occurred_at`
+-   `correlation_id` (if present)
+
+## Rollout checklist
+
+-   Start with server-side tracking for the v1 event set
+-   Validate counts against DB queries for 3 days
+-   Only then ship experiments/flags tied to those metrics
+-   Add Convex decision layer after metrics are trustworthy
+
+## Next steps
+
+1. Decide whether Manuscript (preferred) or shared/proto is the event source for analytics unification.
+2. Pick a single activation milestone definition (`first_success_at`) and make it authoritative.
+3. Implement v1 server-side tracking in API + Shield + Relay.

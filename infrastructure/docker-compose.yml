@@ -1,0 +1,134 @@
+version: '3.8'
+
+services:
+    # --- Ingress & Networking ---
+    traefik:
+        image: traefik:v3.0
+        command:
+            - '--api.insecure=true'
+            - '--providers.docker=true'
+            - '--providers.docker.exposedbydefault=false'
+            - '--entrypoints.web.address=:80'
+        ports:
+            - '80:80'
+            - '8080:8080' # Dashboard
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock:ro'
+        networks:
+            - atlas-net
+
+    # --- Observability Pipeline (Grafana Alloy) ---
+    alloy:
+        image: grafana/alloy:latest
+        volumes:
+            - ./alloy-config.alloy:/etc/alloy/config.alloy
+        command:
+            - run
+            - --server.http.listen-addr=0.0.0.0:12345
+            - /etc/alloy/config.alloy
+        ports:
+            - '12345:12345' # UI
+            - '4317:4317' # OTel GRPC
+            - '4318:4318' # OTel HTTP
+        networks:
+            - atlas-net
+
+    # --- Metrics (Prometheus) ---
+    prometheus:
+        image: prom/prometheus:latest
+        command:
+            - '--config.file=/etc/prometheus/prometheus.yml'
+            - '--enable-feature=remote-write-receiver'
+        volumes:
+            - ./prometheus.yml:/etc/prometheus/prometheus.yml
+        networks:
+            - atlas-net
+
+    # --- Logs (Loki) ---
+    loki:
+        image: grafana/loki:2.9.0
+        command: -config.file=/etc/loki/local-config.yaml
+        networks:
+            - atlas-net
+
+    # --- Traces (Tempo) ---
+    tempo:
+        image: grafana/tempo:2.3.0
+        command: ['-config.file=/etc/tempo.yaml']
+        volumes:
+            - ./tempo.yaml:/etc/tempo.yaml
+        networks:
+            - atlas-net
+
+    # --- Visualization (Grafana) ---
+    grafana:
+        image: grafana/grafana:10.2.0
+        environment:
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+        volumes:
+            - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+        ports:
+            - '3000:3000'
+        labels:
+            - 'traefik.enable=true'
+            - 'traefik.http.routers.grafana.rule=Host(`grafana.localhost`)'
+        networks:
+            - atlas-net
+
+    # --- Product Analytics (PostHog - Dev Mode) ---
+    # Using a lightweight mock or dev instance if possible, but PostHog is heavy.
+    # We will stick to the observability stack for the core backbone first.
+
+  # --- Application Layer ---
+  rust-api:
+    build: 
+      context: ../apps/rust-api
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rust-api.rule=Host(`api.localhost`) || PathPrefix(`/manuscript`)"
+    networks:
+      - atlas-net
+
+  # --- Control Plane (Go) ---
+  go-controller:
+    build:
+      context: ../apps/go-controller
+    ports:
+      - "8081:8081"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.go-controller.rule=Host(`control.localhost`)"
+    networks:
+      - atlas-net
+
+  # --- Automation (N8N) ---
+  n8n:
+    image: n8n.io/n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=n8n.localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://n8n.localhost/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`n8n.localhost`)"
+    networks:
+      - atlas-net
+
+  # --- Diagnostics (Zig) ---
+  zig-probe:
+    build:
+      context: ../apps/zig-probe
+    networks:
+      - atlas-net
+
+networks:
+    atlas-net:
+        driver: bridge

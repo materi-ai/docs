@@ -1,7 +1,8 @@
 ---
-title: "AI Safety Gates"
-description: "Enterprise-grade content moderation, safety filtering, and responsible AI governance for all Aria operations"
-icon: "shield-check"
+title: AI Safety Gates
+description: Enterprise-grade content moderation, safety filtering, and responsible AI governance for all Aria operations
+icon: shield-check
+relatedPages: []
 ---
 
 # AI Safety Gates

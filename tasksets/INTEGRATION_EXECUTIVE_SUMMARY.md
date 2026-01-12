@@ -1,3 +1,16 @@
+---
+title: "Web Client Integration Executive Summary"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # Web Client Integration Executive Summary
 
 **Assessment Date**: December 14, 2025  

@@ -1,0 +1,62 @@
+---
+title: 'Rust: Zero-Cost Observability'
+sidebarTitle: 'Rust API'
+description: 'High-performance services with embedded OpenTelemetry.'
+---
+
+# The Rust "Manuscript" Service
+
+This component demonstrates how to build a high-throughput API service in Rust that automatically emits:
+
+1.  **Distributed Traces** (to Tempo via Alloy)
+2.  **Structured Logs** (to Loki via Alloy)
+
+## The Code
+
+The service resides in `platform/atlas/apps/rust-api`.
+
+### Critical Dependencies
+
+We use `tracing` and `opentelemetry` crates to instrument the application without cluttering business logic.
+
+```toml
+[dependencies]
+axum = "0.7"
+tracing = "0.1"
+tracing-opentelemetry = "0.22"
+opentelemetry-otlp = "0.14"
+```
+
+### Initialization Pattern
+
+The key is initializing the OTLP pipeline _before_ the Axum server starts.
+
+```rust
+// From src/main.rs
+let tracer = opentelemetry_otlp::new_pipeline()
+    .tracing()
+    .with_exporter(
+        opentelemetry_otlp::new_exporter()
+            .tonic()
+            .with_endpoint("http://alloy:4317"),
+    )
+    .install_batch(opentelemetry_sdk::runtime::Tokio)...
+```
+
+## Running It
+
+It is part of the standard Atlas stack:
+
+```bash
+docker-compose up -d --build rust-api
+```
+
+Test the trace emission:
+
+```bash
+curl -X POST http://localhost/manuscript/sync \
+  -H "Content-Type: application/json" \
+  -d '{"project_id": "proj_123", "content": "draft"}'
+```
+
+Then check Grafana (http://grafana.localhost:3000) > Explore > Tempo to find the trace.

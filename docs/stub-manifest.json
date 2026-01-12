@@ -1,0 +1,3156 @@
+{
+  "source": "platform/atlas/docs/STUB_AUDIT.txt",
+  "total": 298,
+  "byAudience": [
+    [
+      "internal",
+      97
+    ],
+    [
+      "enterprise",
+      75
+    ],
+    [
+      "developer",
+      65
+    ],
+    [
+      "api",
+      61
+    ]
+  ],
+  "byArea": [
+    [
+      "api/rest",
+      42
+    ],
+    [
+      "internal/engineering",
+      21
+    ],
+    [
+      "internal/operations",
+      19
+    ],
+    [
+      "developer/products",
+      17
+    ],
+    [
+      "enterprise/deployment",
+      15
+    ],
+    [
+      "internal/security",
+      15
+    ],
+    [
+      "internal/architecture",
+      13
+    ],
+    [
+      "developer/domain",
+      12
+    ],
+    [
+      "internal/product",
+      12
+    ],
+    [
+      "developer/operations",
+      11
+    ],
+    [
+      "developer/platform",
+      11
+    ],
+    [
+      "enterprise/security",
+      11
+    ],
+    [
+      "api/events",
+      8
+    ],
+    [
+      "developer/events",
+      8
+    ],
+    [
+      "enterprise/integration",
+      8
+    ],
+    [
+      "enterprise/admin",
+      7
+    ],
+    [
+      "enterprise/monitoring",
+      7
+    ],
+    [
+      "api/sdks",
+      6
+    ],
+    [
+      "enterprise/ha",
+      6
+    ],
+    [
+      "enterprise/migration",
+      6
+    ],
+    [
+      "enterprise/scalability",
+      6
+    ],
+    [
+      "enterprise/support",
+      6
+    ],
+    [
+      "api/graphql",
+      5
+    ],
+    [
+      "internal/analytics",
+      5
+    ],
+    [
+      "internal/hr",
+      5
+    ],
+    [
+      "developer/testing",
+      4
+    ],
+    [
+      "internal/legal",
+      4
+    ],
+    [
+      "enterprise/overview",
+      3
+    ],
+    [
+      "developer/introduction",
+      2
+    ],
+    [
+      "internal/finance",
+      2
+    ],
+    [
+      "internal/overview",
+      1
+    ]
+  ],
+  "byDocType": [
+    [
+      "guide",
+      173
+    ],
+    [
+      "reference",
+      61
+    ],
+    [
+      "runbook",
+      30
+    ],
+    [
+      "overview",
+      22
+    ],
+    [
+      "adr",
+      8
+    ],
+    [
+      "concept",
+      4
+    ]
+  ],
+  "hits": [
+    {
+      "path": "platform/atlas/enterprise/migration/user-migration.md",
+      "line": 3,
+      "marker": "Stub file for user migration.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/user-migration.md",
+      "doc_type": "overview",
+      "suggested_title": "User Migration"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/update-document.md",
+      "line": 3,
+      "marker": "Stub file for REST API update document.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Update Document"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/create-document.md",
+      "line": 3,
+      "marker": "Stub file for REST API create document.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Create Document"
+    },
+    {
+      "path": "platform/atlas/enterprise/migration/from-competitors.md",
+      "line": 3,
+      "marker": "Stub file for migration from competitors.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/from-competitors.md",
+      "doc_type": "overview",
+      "suggested_title": "From Competitors"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/delete-document.md",
+      "line": 3,
+      "marker": "Stub file for REST API delete document.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Delete Document"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/document-versions.md",
+      "line": 3,
+      "marker": "Stub file for REST API document versions.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Document Versions"
+    },
+    {
+      "path": "platform/atlas/enterprise/migration/from-cloud.md",
+      "line": 3,
+      "marker": "Stub file for migration from cloud.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/from-cloud.md",
+      "doc_type": "overview",
+      "suggested_title": "From Cloud"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/list-workspaces.md",
+      "line": 3,
+      "marker": "Stub file for REST API list workspaces.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "List Workspaces"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/get-document.md",
+      "line": 3,
+      "marker": "Stub file for REST API get document.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Get Document"
+    },
+    {
+      "path": "platform/atlas/enterprise/migration/data-import.md",
+      "line": 3,
+      "marker": "Stub file for data import.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/data-import.md",
+      "doc_type": "overview",
+      "suggested_title": "Data Import"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/workspace-roles.md",
+      "line": 3,
+      "marker": "Stub file for REST API workspace roles.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Workspace Roles"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/document-permissions.md",
+      "line": 3,
+      "marker": "Stub file for REST API document permissions.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "Document Permissions"
+    },
+    {
+      "path": "platform/atlas/enterprise/migration/validation.md",
+      "line": 3,
+      "marker": "Stub file for migration validation.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/validation.md",
+      "doc_type": "overview",
+      "suggested_title": "Validation"
+    },
+    {
+      "path": "platform/atlas/api/rest/documents/list-documents.md",
+      "line": 3,
+      "marker": "Stub file for REST API list documents.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/documents",
+      "doc_type": "reference",
+      "suggested_title": "List Documents"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/workspace-members.md",
+      "line": 3,
+      "marker": "Stub file for REST API workspace members.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Workspace Members"
+    },
+    {
+      "path": "platform/atlas/enterprise/migration/overview.md",
+      "line": 3,
+      "marker": "Stub file for migration overview.",
+      "audience": "enterprise",
+      "area": "enterprise/migration",
+      "section": "enterprise/migration/overview.md",
+      "doc_type": "overview",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/api/rest/files/list-files.md",
+      "line": 3,
+      "marker": "Stub file for REST API list files.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/files",
+      "doc_type": "reference",
+      "suggested_title": "List Files"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/create-workspace.md",
+      "line": 3,
+      "marker": "Stub file for REST API create workspace.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Create Workspace"
+    },
+    {
+      "path": "platform/atlas/api/rest/files/get-file.md",
+      "line": 3,
+      "marker": "Stub file for REST API get file.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/files",
+      "doc_type": "reference",
+      "suggested_title": "Get File"
+    },
+    {
+      "path": "platform/atlas/enterprise/overview/feature-comparison.md",
+      "line": 3,
+      "marker": "Stub file for feature comparison.",
+      "audience": "enterprise",
+      "area": "enterprise/overview",
+      "section": "enterprise/overview/feature-comparison.md",
+      "doc_type": "overview",
+      "suggested_title": "Feature Comparison"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/escalation.md",
+      "line": 3,
+      "marker": "Stub file for support escalation.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/escalation.md",
+      "doc_type": "overview",
+      "suggested_title": "Escalation"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/update-workspace.md",
+      "line": 3,
+      "marker": "Stub file for REST API update workspace.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Update Workspace"
+    },
+    {
+      "path": "platform/atlas/api/rest/files/delete-file.md",
+      "line": 3,
+      "marker": "Stub file for REST API delete file.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/files",
+      "doc_type": "reference",
+      "suggested_title": "Delete File"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/support-tiers.md",
+      "line": 3,
+      "marker": "Stub file for support tiers.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/support-tiers.md",
+      "doc_type": "overview",
+      "suggested_title": "Support Tiers"
+    },
+    {
+      "path": "platform/atlas/enterprise/overview/sla.md",
+      "line": 3,
+      "marker": "Stub file for SLA.",
+      "audience": "enterprise",
+      "area": "enterprise/overview",
+      "section": "enterprise/overview/sla.md",
+      "doc_type": "overview",
+      "suggested_title": "Sla"
+    },
+    {
+      "path": "platform/atlas/api/rest/files/upload-file.md",
+      "line": 3,
+      "marker": "Stub file for REST API upload file.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/files",
+      "doc_type": "reference",
+      "suggested_title": "Upload File"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/get-workspace.md",
+      "line": 3,
+      "marker": "Stub file for REST API get workspace.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Get Workspace"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/overview.md",
+      "line": 3,
+      "marker": "Stub file for support overview.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/overview.md",
+      "doc_type": "overview",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/contact.md",
+      "line": 3,
+      "marker": "Stub file for support contact.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/contact.md",
+      "doc_type": "overview",
+      "suggested_title": "Contact"
+    },
+    {
+      "path": "platform/atlas/api/rest/users/list-users.md",
+      "line": 3,
+      "marker": "Stub file for REST API list users.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/users",
+      "doc_type": "reference",
+      "suggested_title": "List Users"
+    },
+    {
+      "path": "platform/atlas/api/rest/workspaces/delete-workspace.md",
+      "line": 3,
+      "marker": "Stub file for REST API delete workspace.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/workspaces",
+      "doc_type": "reference",
+      "suggested_title": "Delete Workspace"
+    },
+    {
+      "path": "platform/atlas/enterprise/overview/pricing.md",
+      "line": 3,
+      "marker": "Stub file for pricing.",
+      "audience": "enterprise",
+      "area": "enterprise/overview",
+      "section": "enterprise/overview/pricing.md",
+      "doc_type": "overview",
+      "suggested_title": "Pricing"
+    },
+    {
+      "path": "platform/atlas/api/rest/users/get-user.md",
+      "line": 3,
+      "marker": "Stub file for REST API get user.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/users",
+      "doc_type": "reference",
+      "suggested_title": "Get User"
+    },
+    {
+      "path": "platform/atlas/api/rest/users/delete-user.md",
+      "line": 3,
+      "marker": "Stub file for REST API delete user.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/users",
+      "doc_type": "reference",
+      "suggested_title": "Delete User"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/custom-sso.md",
+      "line": 3,
+      "marker": "Stub file for custom SSO integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/custom-sso.md",
+      "doc_type": "guide",
+      "suggested_title": "Custom Sso"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/sla.md",
+      "line": 3,
+      "marker": "Stub file for support SLA.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/sla.md",
+      "doc_type": "overview",
+      "suggested_title": "Sla"
+    },
+    {
+      "path": "platform/atlas/api/rest/users/user-preferences.md",
+      "line": 3,
+      "marker": "Stub file for REST API user preferences.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/users",
+      "doc_type": "reference",
+      "suggested_title": "User Preferences"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/health-checks.md",
+      "line": 3,
+      "marker": "Stub file for health checks.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/health-checks.md",
+      "doc_type": "guide",
+      "suggested_title": "Health Checks"
+    },
+    {
+      "path": "platform/atlas/enterprise/support/training.md",
+      "line": 3,
+      "marker": "Stub file for support training.",
+      "audience": "enterprise",
+      "area": "enterprise/support",
+      "section": "enterprise/support/training.md",
+      "doc_type": "overview",
+      "suggested_title": "Training"
+    },
+    {
+      "path": "platform/atlas/api/rest/auth/saml.md",
+      "line": 3,
+      "marker": "Stub file for REST API SAML.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/auth",
+      "doc_type": "reference",
+      "suggested_title": "Saml"
+    },
+    {
+      "path": "platform/atlas/api/rest/users/update-user.md",
+      "line": 3,
+      "marker": "Stub file for REST API update user.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/users",
+      "doc_type": "reference",
+      "suggested_title": "Update User"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/azure-ad.md",
+      "line": 3,
+      "marker": "Stub file for Azure AD integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/azure-ad.md",
+      "doc_type": "guide",
+      "suggested_title": "Azure Ad"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/overview.md",
+      "line": 3,
+      "marker": "Stub file for monitoring overview.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/workspace-management.md",
+      "line": 3,
+      "marker": "Stub file for workspace management.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/workspace-management.md",
+      "doc_type": "overview",
+      "suggested_title": "Workspace Management"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/metrics.md",
+      "line": 3,
+      "marker": "Stub file for metrics.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/metrics.md",
+      "doc_type": "guide",
+      "suggested_title": "Metrics"
+    },
+    {
+      "path": "platform/atlas/api/rest/auth/logout.md",
+      "line": 3,
+      "marker": "Stub file for REST API logout.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/auth",
+      "doc_type": "reference",
+      "suggested_title": "Logout"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/api-gateway.md",
+      "line": 3,
+      "marker": "Stub file for API Gateway integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/api-gateway.md",
+      "doc_type": "guide",
+      "suggested_title": "Api Gateway"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/analyze-code.md",
+      "line": 3,
+      "marker": "Stub file for REST API analyze code.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Analyze Code"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/usage-analytics.md",
+      "line": 3,
+      "marker": "Stub file for usage analytics.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/usage-analytics.md",
+      "doc_type": "overview",
+      "suggested_title": "Usage Analytics"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/summarize.md",
+      "line": 3,
+      "marker": "Stub file for REST API summarize.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Summarize"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/okta.md",
+      "line": 3,
+      "marker": "Stub file for Okta integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/okta.md",
+      "doc_type": "guide",
+      "suggested_title": "Okta"
+    },
+    {
+      "path": "platform/atlas/api/rest/auth/login.md",
+      "line": 3,
+      "marker": "Stub file for REST API login.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/auth",
+      "doc_type": "reference",
+      "suggested_title": "Login"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/capacity-planning.md",
+      "line": 3,
+      "marker": "Stub file for capacity planning.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/capacity-planning.md",
+      "doc_type": "guide",
+      "suggested_title": "Capacity Planning"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/load-balancing.md",
+      "line": 3,
+      "marker": "Stub file for load balancing.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/load-balancing.md",
+      "doc_type": "guide",
+      "suggested_title": "Load Balancing"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/analyze-diagram.md",
+      "line": 3,
+      "marker": "Stub file for REST API analyze diagram.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Analyze Diagram"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/google-workspace.md",
+      "line": 3,
+      "marker": "Stub file for Google Workspace integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/google-workspace.md",
+      "doc_type": "guide",
+      "suggested_title": "Google Workspace"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/logging.md",
+      "line": 3,
+      "marker": "Stub file for logging.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/logging.md",
+      "doc_type": "guide",
+      "suggested_title": "Logging"
+    },
+    {
+      "path": "platform/atlas/api/rest/auth/oauth.md",
+      "line": 3,
+      "marker": "Stub file for REST API OAuth.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/auth",
+      "doc_type": "reference",
+      "suggested_title": "Oauth"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/support.md",
+      "line": 3,
+      "marker": "Stub file for support.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/support.md",
+      "doc_type": "overview",
+      "suggested_title": "Support"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/disaster-recovery.md",
+      "line": 3,
+      "marker": "Stub file for disaster recovery.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/disaster-recovery.md",
+      "doc_type": "guide",
+      "suggested_title": "Disaster Recovery"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/enhance-content.md",
+      "line": 3,
+      "marker": "Stub file for REST API enhance content.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Enhance Content"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/network-security.md",
+      "line": 3,
+      "marker": "Stub file for network security.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/network-security.md",
+      "doc_type": "guide",
+      "suggested_title": "Network Security"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/generate-content.md",
+      "line": 3,
+      "marker": "Stub file for REST API generate content.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Generate Content"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/webhooks.md",
+      "line": 3,
+      "marker": "Stub file for webhooks integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/webhooks.md",
+      "doc_type": "guide",
+      "suggested_title": "Webhooks"
+    },
+    {
+      "path": "platform/atlas/api/rest/ai/analyze-text.md",
+      "line": 3,
+      "marker": "Stub file for REST API analyze text.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/ai",
+      "doc_type": "reference",
+      "suggested_title": "Analyze Text"
+    },
+    {
+      "path": "platform/atlas/api/rest/search/search-documents.md",
+      "line": 3,
+      "marker": "Stub file for REST API search documents.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/search",
+      "doc_type": "reference",
+      "suggested_title": "Search Documents"
+    },
+    {
+      "path": "platform/atlas/api/rest/search/search-users.md",
+      "line": 3,
+      "marker": "Stub file for REST API search users.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/search",
+      "doc_type": "reference",
+      "suggested_title": "Search Users"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/alerting.md",
+      "line": 3,
+      "marker": "Stub file for alerting.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/alerting.md",
+      "doc_type": "guide",
+      "suggested_title": "Alerting"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/failover.md",
+      "line": 3,
+      "marker": "Stub file for failover.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/failover.md",
+      "doc_type": "guide",
+      "suggested_title": "Failover"
+    },
+    {
+      "path": "platform/atlas/api/rest/search/search-workspaces.md",
+      "line": 3,
+      "marker": "Stub file for REST API search workspaces.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/search",
+      "doc_type": "reference",
+      "suggested_title": "Search Workspaces"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/ldap-ad.md",
+      "line": 3,
+      "marker": "Stub file for LDAP/AD integration.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/ldap-ad.md",
+      "doc_type": "guide",
+      "suggested_title": "Ldap Ad"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/billing.md",
+      "line": 3,
+      "marker": "Stub file for billing.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/billing.md",
+      "doc_type": "overview",
+      "suggested_title": "Billing"
+    },
+    {
+      "path": "platform/atlas/api/rest/auth/refresh-token.md",
+      "line": 3,
+      "marker": "Stub file for REST API refresh token.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/auth",
+      "doc_type": "reference",
+      "suggested_title": "Refresh Token"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/vulnerability-disclosure.md",
+      "line": 3,
+      "marker": "Stub file for vulnerability disclosure.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/vulnerability-disclosure.md",
+      "doc_type": "guide",
+      "suggested_title": "Vulnerability Disclosure"
+    },
+    {
+      "path": "platform/atlas/enterprise/monitoring/performance-tuning.md",
+      "line": 3,
+      "marker": "Stub file for performance tuning.",
+      "audience": "enterprise",
+      "area": "enterprise/monitoring",
+      "section": "enterprise/monitoring/performance-tuning.md",
+      "doc_type": "guide",
+      "suggested_title": "Performance Tuning"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/backup-strategy.md",
+      "line": 3,
+      "marker": "Stub file for backup strategy.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/backup-strategy.md",
+      "doc_type": "guide",
+      "suggested_title": "Backup Strategy"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/audit-logs.md",
+      "line": 3,
+      "marker": "Stub file for audit logs.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/audit-logs.md",
+      "doc_type": "guide",
+      "suggested_title": "Audit Logs"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/user-management.md",
+      "line": 3,
+      "marker": "Stub file for user management.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/user-management.md",
+      "doc_type": "overview",
+      "suggested_title": "User Management"
+    },
+    {
+      "path": "platform/atlas/enterprise/integration/overview.md",
+      "line": 3,
+      "marker": "Stub file for integration overview.",
+      "audience": "enterprise",
+      "area": "enterprise/integration",
+      "section": "enterprise/integration/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/penetration-testing.md",
+      "line": 3,
+      "marker": "Stub file for penetration testing.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/penetration-testing.md",
+      "doc_type": "guide",
+      "suggested_title": "Penetration Testing"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/overview.md",
+      "line": 3,
+      "marker": "Stub file for HA overview.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/overview.md",
+      "line": 3,
+      "marker": "Stub file for security overview.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/api/rest/collaboration/get-presence.md",
+      "line": 3,
+      "marker": "Stub file for REST API get presence.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/collaboration",
+      "doc_type": "reference",
+      "suggested_title": "Get Presence"
+    },
+    {
+      "path": "platform/atlas/enterprise/ha/architecture.md",
+      "line": 3,
+      "marker": "Stub file for HA architecture.",
+      "audience": "enterprise",
+      "area": "enterprise/ha",
+      "section": "enterprise/ha/architecture.md",
+      "doc_type": "guide",
+      "suggested_title": "Architecture"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/overview.md",
+      "line": 3,
+      "marker": "Stub file for admin overview.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/overview.md",
+      "doc_type": "overview",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/encryption.md",
+      "line": 3,
+      "marker": "Stub file for encryption.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/encryption.md",
+      "doc_type": "guide",
+      "suggested_title": "Encryption"
+    },
+    {
+      "path": "platform/atlas/enterprise/admin/license-management.md",
+      "line": 3,
+      "marker": "Stub file for license management.",
+      "audience": "enterprise",
+      "area": "enterprise/admin",
+      "section": "enterprise/admin/license-management.md",
+      "doc_type": "overview",
+      "suggested_title": "License Management"
+    },
+    {
+      "path": "platform/atlas/api/rest/collaboration/mentions.md",
+      "line": 3,
+      "marker": "Stub file for REST API mentions.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/collaboration",
+      "doc_type": "reference",
+      "suggested_title": "Mentions"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/overview.md",
+      "line": 3,
+      "marker": "Stub file for scalability overview.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/data-residency.md",
+      "line": 3,
+      "marker": "Stub file for data residency.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/data-residency.md",
+      "doc_type": "guide",
+      "suggested_title": "Data Residency"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/cdn-configuration.md",
+      "line": 3,
+      "marker": "Stub file for CDN configuration.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/cdn-configuration.md",
+      "doc_type": "guide",
+      "suggested_title": "Cdn Configuration"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/authentication.md",
+      "line": 3,
+      "marker": "Stub file for authentication.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/authentication.md",
+      "doc_type": "guide",
+      "suggested_title": "Authentication"
+    },
+    {
+      "path": "platform/atlas/api/rest/collaboration/get-session.md",
+      "line": 3,
+      "marker": "Stub file for REST API get session.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/collaboration",
+      "doc_type": "reference",
+      "suggested_title": "Get Session"
+    },
+    {
+      "path": "platform/atlas/api/rest/collaboration/comments.md",
+      "line": 3,
+      "marker": "Stub file for REST API comments.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/collaboration",
+      "doc_type": "reference",
+      "suggested_title": "Comments"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/compliance-certifications.md",
+      "line": 3,
+      "marker": "Stub file for compliance certifications.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/compliance-certifications.md",
+      "doc_type": "guide",
+      "suggested_title": "Compliance Certifications"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/hybrid/compliance.md",
+      "line": 3,
+      "marker": "Stub file for hybrid compliance.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/hybrid",
+      "doc_type": "guide",
+      "suggested_title": "Compliance"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/cache-strategy.md",
+      "line": 3,
+      "marker": "Stub file for cache strategy.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/cache-strategy.md",
+      "doc_type": "guide",
+      "suggested_title": "Cache Strategy"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/database-scaling.md",
+      "line": 3,
+      "marker": "Stub file for database scaling.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/database-scaling.md",
+      "doc_type": "guide",
+      "suggested_title": "Database Scaling"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/hybrid/data-residency.md",
+      "line": 3,
+      "marker": "Stub file for hybrid data residency.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/hybrid",
+      "doc_type": "guide",
+      "suggested_title": "Data Residency"
+    },
+    {
+      "path": "platform/atlas/api/rest/collaboration/list-sessions.md",
+      "line": 3,
+      "marker": "Stub file for REST API list sessions.",
+      "audience": "api",
+      "area": "api/rest",
+      "section": "api/rest/collaboration",
+      "doc_type": "reference",
+      "suggested_title": "List Sessions"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/sso-saml.md",
+      "line": 3,
+      "marker": "Stub file for SSO & SAML.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/sso-saml.md",
+      "doc_type": "guide",
+      "suggested_title": "Sso Saml"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/performance-benchmarks.md",
+      "line": 3,
+      "marker": "Stub file for performance benchmarks.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/performance-benchmarks.md",
+      "doc_type": "guide",
+      "suggested_title": "Performance Benchmarks"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/hybrid/overview.md",
+      "line": 3,
+      "marker": "Stub file for hybrid deployment overview.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/hybrid",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/api/events/collaboration-events.md",
+      "line": 3,
+      "marker": "Stub file for collaboration events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/collaboration-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Collaboration Events"
+    },
+    {
+      "path": "platform/atlas/enterprise/scalability/horizontal-scaling.md",
+      "line": 3,
+      "marker": "Stub file for horizontal scaling.",
+      "audience": "enterprise",
+      "area": "enterprise/scalability",
+      "section": "enterprise/scalability/horizontal-scaling.md",
+      "doc_type": "guide",
+      "suggested_title": "Horizontal Scaling"
+    },
+    {
+      "path": "platform/atlas/api/events/document-events.md",
+      "line": 3,
+      "marker": "Stub file for document events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/document-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Document Events"
+    },
+    {
+      "path": "platform/atlas/api/events/aria-events.md",
+      "line": 3,
+      "marker": "Stub file for ARIA events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/aria-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Aria Events"
+    },
+    {
+      "path": "platform/atlas/enterprise/security/scim-provisioning.md",
+      "line": 3,
+      "marker": "Stub file for SCIM provisioning.",
+      "audience": "enterprise",
+      "area": "enterprise/security",
+      "section": "enterprise/security/scim-provisioning.md",
+      "doc_type": "guide",
+      "suggested_title": "Scim Provisioning"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/hybrid/architecture.md",
+      "line": 3,
+      "marker": "Stub file for hybrid architecture.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/hybrid",
+      "doc_type": "guide",
+      "suggested_title": "Architecture"
+    },
+    {
+      "path": "platform/atlas/internal/analytics/system-analytics.md",
+      "line": 3,
+      "marker": "Stub file for system analytics.",
+      "audience": "internal",
+      "area": "internal/analytics",
+      "section": "internal/analytics/system-analytics.md",
+      "doc_type": "guide",
+      "suggested_title": "System Analytics"
+    },
+    {
+      "path": "platform/atlas/api/events/audit-events.md",
+      "line": 3,
+      "marker": "Stub file for audit events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/audit-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Audit Events"
+    },
+    {
+      "path": "platform/atlas/api/events/workspace-events.md",
+      "line": 3,
+      "marker": "Stub file for workspace events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/workspace-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Workspace Events"
+    },
+    {
+      "path": "platform/atlas/api/events/user-events.md",
+      "line": 3,
+      "marker": "Stub file for user events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/user-events.md",
+      "doc_type": "reference",
+      "suggested_title": "User Events"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/upgrading.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted upgrading.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Upgrading"
+    },
+    {
+      "path": "platform/atlas/api/events/notification-events.md",
+      "line": 3,
+      "marker": "Stub file for notification events.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/notification-events.md",
+      "doc_type": "reference",
+      "suggested_title": "Notification Events"
+    },
+    {
+      "path": "platform/atlas/api/graphql/subscriptions.md",
+      "line": 3,
+      "marker": "Stub file for GraphQL subscriptions.",
+      "audience": "api",
+      "area": "api/graphql",
+      "section": "api/graphql/subscriptions.md",
+      "doc_type": "reference",
+      "suggested_title": "Subscriptions"
+    },
+    {
+      "path": "platform/atlas/api/events/overview.md",
+      "line": 3,
+      "marker": "Stub file for events overview.",
+      "audience": "api",
+      "area": "api/events",
+      "section": "api/events/overview.md",
+      "doc_type": "reference",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/cloud-dedicated/monitoring.md",
+      "line": 3,
+      "marker": "Stub file for cloud dedicated monitoring.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/cloud-dedicated",
+      "doc_type": "guide",
+      "suggested_title": "Monitoring"
+    },
+    {
+      "path": "platform/atlas/internal/analytics/user-analytics.md",
+      "line": 3,
+      "marker": "Stub file for user analytics.",
+      "audience": "internal",
+      "area": "internal/analytics",
+      "section": "internal/analytics/user-analytics.md",
+      "doc_type": "guide",
+      "suggested_title": "User Analytics"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/cloud-dedicated/vpc-peering.md",
+      "line": 3,
+      "marker": "Stub file for VPC peering.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/cloud-dedicated",
+      "doc_type": "guide",
+      "suggested_title": "Vpc Peering"
+    },
+    {
+      "path": "platform/atlas/developer/events/event-envelope.md",
+      "line": 3,
+      "marker": "Stub file for event envelope.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/event-envelope.md",
+      "doc_type": "guide",
+      "suggested_title": "Event Envelope"
+    },
+    {
+      "path": "platform/atlas/api/graphql/mutations.md",
+      "line": 3,
+      "marker": "Stub file for GraphQL mutations.",
+      "audience": "api",
+      "area": "api/graphql",
+      "section": "api/graphql/mutations.md",
+      "doc_type": "reference",
+      "suggested_title": "Mutations"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/cloud-dedicated/provisioning.md",
+      "line": 3,
+      "marker": "Stub file for cloud dedicated provisioning.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/cloud-dedicated",
+      "doc_type": "guide",
+      "suggested_title": "Provisioning"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/docker-compose.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted Docker Compose.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Docker Compose"
+    },
+    {
+      "path": "platform/atlas/developer/events/idempotency.md",
+      "line": 3,
+      "marker": "Stub file for idempotency.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/idempotency.md",
+      "doc_type": "guide",
+      "suggested_title": "Idempotency"
+    },
+    {
+      "path": "platform/atlas/internal/analytics/business-intelligence.md",
+      "line": 3,
+      "marker": "Stub file for business intelligence.",
+      "audience": "internal",
+      "area": "internal/analytics",
+      "section": "internal/analytics/business-intelligence.md",
+      "doc_type": "guide",
+      "suggested_title": "Business Intelligence"
+    },
+    {
+      "path": "platform/atlas/api/graphql/schema.md",
+      "line": 3,
+      "marker": "Stub file for GraphQL schema.",
+      "audience": "api",
+      "area": "api/graphql",
+      "section": "api/graphql/schema.md",
+      "doc_type": "reference",
+      "suggested_title": "Schema"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/cloud-dedicated/overview.md",
+      "line": 3,
+      "marker": "Stub file for cloud dedicated overview.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/cloud-dedicated",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/configuration.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted configuration.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Configuration"
+    },
+    {
+      "path": "platform/atlas/internal/analytics/overview.md",
+      "line": 3,
+      "marker": "Stub file for analytics overview.",
+      "audience": "internal",
+      "area": "internal/analytics",
+      "section": "internal/analytics/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/api/graphql/overview.md",
+      "line": 3,
+      "marker": "Stub file for GraphQL API overview.",
+      "audience": "api",
+      "area": "api/graphql",
+      "section": "api/graphql/overview.md",
+      "doc_type": "reference",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/events/dead-letter-queue.md",
+      "line": 3,
+      "marker": "Stub file for dead letter queue.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/dead-letter-queue.md",
+      "doc_type": "guide",
+      "suggested_title": "Dead Letter Queue"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/cloud-dedicated/custom-domains.md",
+      "line": 3,
+      "marker": "Stub file for custom domains.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/cloud-dedicated",
+      "doc_type": "guide",
+      "suggested_title": "Custom Domains"
+    },
+    {
+      "path": "platform/atlas/developer/events/consuming.md",
+      "line": 3,
+      "marker": "Stub file for consuming.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/consuming.md",
+      "doc_type": "guide",
+      "suggested_title": "Consuming"
+    },
+    {
+      "path": "platform/atlas/developer/testing/contract-tests.md",
+      "line": 3,
+      "marker": "Stub file for contract tests.",
+      "audience": "developer",
+      "area": "developer/testing",
+      "section": "developer/testing/contract-tests.md",
+      "doc_type": "guide",
+      "suggested_title": "Contract Tests"
+    },
+    {
+      "path": "platform/atlas/internal/analytics/metrics-dashboard.md",
+      "line": 3,
+      "marker": "Stub file for metrics dashboard.",
+      "audience": "internal",
+      "area": "internal/analytics",
+      "section": "internal/analytics/metrics-dashboard.md",
+      "doc_type": "guide",
+      "suggested_title": "Metrics Dashboard"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/requirements.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted requirements.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Requirements"
+    },
+    {
+      "path": "platform/atlas/api/graphql/queries.md",
+      "line": 3,
+      "marker": "Stub file for GraphQL queries.",
+      "audience": "api",
+      "area": "api/graphql",
+      "section": "api/graphql/queries.md",
+      "doc_type": "reference",
+      "suggested_title": "Queries"
+    },
+    {
+      "path": "platform/atlas/developer/events/redis-streams.md",
+      "line": 3,
+      "marker": "Stub file for redis streams.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/redis-streams.md",
+      "doc_type": "guide",
+      "suggested_title": "Redis Streams"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/kubernetes.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted Kubernetes.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Kubernetes"
+    },
+    {
+      "path": "platform/atlas/internal/hr/engineering-levels.md",
+      "line": 3,
+      "marker": "Stub file for engineering levels.",
+      "audience": "internal",
+      "area": "internal/hr",
+      "section": "internal/hr/engineering-levels.md",
+      "doc_type": "guide",
+      "suggested_title": "Engineering Levels"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/typescript-standards.md",
+      "line": 3,
+      "marker": "Stub file for TypeScript standards.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Typescript Standards"
+    },
+    {
+      "path": "platform/atlas/enterprise/deployment/self-hosted/backup-restore.md",
+      "line": 3,
+      "marker": "Stub file for self-hosted backup and restore.",
+      "audience": "enterprise",
+      "area": "enterprise/deployment",
+      "section": "enterprise/deployment/self-hosted",
+      "doc_type": "guide",
+      "suggested_title": "Backup Restore"
+    },
+    {
+      "path": "platform/atlas/developer/events/retry-patterns.md",
+      "line": 3,
+      "marker": "Stub file for retry patterns.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/retry-patterns.md",
+      "doc_type": "guide",
+      "suggested_title": "Retry Patterns"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/go-standards.md",
+      "line": 3,
+      "marker": "Stub file for Go standards.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Go Standards"
+    },
+    {
+      "path": "platform/atlas/internal/hr/performance-reviews.md",
+      "line": 3,
+      "marker": "Stub file for performance reviews.",
+      "audience": "internal",
+      "area": "internal/hr",
+      "section": "internal/hr/performance-reviews.md",
+      "doc_type": "guide",
+      "suggested_title": "Performance Reviews"
+    },
+    {
+      "path": "platform/atlas/developer/testing/unit-tests.md",
+      "line": 3,
+      "marker": "Stub file for unit tests.",
+      "audience": "developer",
+      "area": "developer/testing",
+      "section": "developer/testing/unit-tests.md",
+      "doc_type": "guide",
+      "suggested_title": "Unit Tests"
+    },
+    {
+      "path": "platform/atlas/developer/events/publishing.md",
+      "line": 3,
+      "marker": "Stub file for publishing.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/publishing.md",
+      "doc_type": "guide",
+      "suggested_title": "Publishing"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/proto-standards.md",
+      "line": 3,
+      "marker": "Stub file for Proto standards.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Proto Standards"
+    },
+    {
+      "path": "platform/atlas/internal/hr/compensation.md",
+      "line": 3,
+      "marker": "Stub file for compensation.",
+      "audience": "internal",
+      "area": "internal/hr",
+      "section": "internal/hr/compensation.md",
+      "doc_type": "guide",
+      "suggested_title": "Compensation"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/system-design/domain-services.md",
+      "line": 3,
+      "marker": "Stub file for domain services documentation.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/system-design",
+      "doc_type": "concept",
+      "suggested_title": "Domain Services"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/rust-standards.md",
+      "line": 3,
+      "marker": "Stub file for Rust standards.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Rust Standards"
+    },
+    {
+      "path": "platform/atlas/developer/testing/load-tests.md",
+      "line": 3,
+      "marker": "Stub file for load tests.",
+      "audience": "developer",
+      "area": "developer/testing",
+      "section": "developer/testing/load-tests.md",
+      "doc_type": "guide",
+      "suggested_title": "Load Tests"
+    },
+    {
+      "path": "platform/atlas/developer/events/overview.md",
+      "line": 3,
+      "marker": "Stub file for developer events overview.",
+      "audience": "developer",
+      "area": "developer/events",
+      "section": "developer/events/overview.md",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/hr/remote-work.md",
+      "line": 3,
+      "marker": "Stub file for remote work.",
+      "audience": "internal",
+      "area": "internal/hr",
+      "section": "internal/hr/remote-work.md",
+      "doc_type": "guide",
+      "suggested_title": "Remote Work"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/python-standards.md",
+      "line": 3,
+      "marker": "Stub file for Python standards.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Python Standards"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/standards/overview.md",
+      "line": 3,
+      "marker": "Stub file for standards overview.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/standards",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/system-design/operations-architecture.md",
+      "line": 3,
+      "marker": "Stub file for operations architecture documentation.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/system-design",
+      "doc_type": "concept",
+      "suggested_title": "Operations Architecture"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/code-generation.md",
+      "line": 3,
+      "marker": "Stub file for code generation.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Code Generation"
+    },
+    {
+      "path": "platform/atlas/developer/testing/chaos-engineering.md",
+      "line": 3,
+      "marker": "Stub file for chaos engineering.",
+      "audience": "developer",
+      "area": "developer/testing",
+      "section": "developer/testing/chaos-engineering.md",
+      "doc_type": "guide",
+      "suggested_title": "Chaos Engineering"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/system-design/event-driven-architecture.md",
+      "line": 3,
+      "marker": "Stub file for event-driven architecture documentation.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/system-design",
+      "doc_type": "concept",
+      "suggested_title": "Event Driven Architecture"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/msx-inspector.md",
+      "line": 3,
+      "marker": "Stub file for MSX Inspector.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Msx Inspector"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-005-redis-streams.md",
+      "line": 3,
+      "marker": "Stub file for ADR-005.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 005 Redis Streams"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/custom-options.md",
+      "line": 3,
+      "marker": "Stub file for custom options.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Custom Options"
+    },
+    {
+      "path": "platform/atlas/internal/hr/benefits.md",
+      "line": 3,
+      "marker": "Stub file for benefits.",
+      "audience": "internal",
+      "area": "internal/hr",
+      "section": "internal/hr/benefits.md",
+      "doc_type": "guide",
+      "suggested_title": "Benefits"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/handler-registry.md",
+      "line": 3,
+      "marker": "Stub file for handler registry.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Handler Registry"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/system-design/product-architecture.md",
+      "line": 3,
+      "marker": "Stub file for product architecture documentation.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/system-design",
+      "doc_type": "concept",
+      "suggested_title": "Product Architecture"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-007-graceful-degradation.md",
+      "line": 3,
+      "marker": "Stub file for ADR-007.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 007 Graceful Degradation"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/deployment.md",
+      "line": 3,
+      "marker": "Stub file for printery deployment.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Deployment"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/performance/optimization-guide.md",
+      "line": 3,
+      "marker": "Stub file for optimization guide.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/performance",
+      "doc_type": "guide",
+      "suggested_title": "Optimization Guide"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/event-schemas.md",
+      "line": 3,
+      "marker": "Stub file for event schemas.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Event Schemas"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/performance/profiling.md",
+      "line": 3,
+      "marker": "Stub file for profiling.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/performance",
+      "doc_type": "guide",
+      "suggested_title": "Profiling"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/consumer-groups.md",
+      "line": 3,
+      "marker": "Stub file for consumer groups.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Consumer Groups"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/on-call-rotation.md",
+      "line": 3,
+      "marker": "Stub file for on-call rotation.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "On Call Rotation"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-001-microservices-architecture.mdx",
+      "line": 9,
+      "marker": "Stub file for ADR-001.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 001 Microservices Architecture"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/overview.md",
+      "line": 3,
+      "marker": "Stub file for manuscript domain overview.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/performance/benchmarking.md",
+      "line": 3,
+      "marker": "Stub file for benchmarking.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/performance",
+      "doc_type": "guide",
+      "suggested_title": "Benchmarking"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/domain-team.md",
+      "line": 3,
+      "marker": "Stub file for domain team.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "Domain Team"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/overview.md",
+      "line": 3,
+      "marker": "Stub file for printery domain overview.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/operations/folio/dashboards.md",
+      "line": 3,
+      "marker": "Stub file for folio dashboards.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/folio",
+      "doc_type": "runbook",
+      "suggested_title": "Dashboards"
+    },
+    {
+      "path": "platform/atlas/api/sdks/java.md",
+      "line": 3,
+      "marker": "Stub file for Java SDK.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/java.md",
+      "doc_type": "reference",
+      "suggested_title": "Java"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-002-event-driven-communication.md",
+      "line": 3,
+      "marker": "Stub file for ADR-002.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 002 Event Driven Communication"
+    },
+    {
+      "path": "platform/atlas/developer/domain/manuscript/versioning.md",
+      "line": 3,
+      "marker": "Stub file for versioning.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/manuscript",
+      "doc_type": "guide",
+      "suggested_title": "Versioning"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/platform-team.md",
+      "line": 3,
+      "marker": "Stub file for platform team.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "Platform Team"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/architecture.md",
+      "line": 3,
+      "marker": "Stub file for printery architecture.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Architecture"
+    },
+    {
+      "path": "platform/atlas/api/sdks/javascript-typescript.md",
+      "line": 3,
+      "marker": "Stub file for JavaScript/TypeScript SDK.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/javascript-typescript.md",
+      "doc_type": "reference",
+      "suggested_title": "Javascript Typescript"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-006-polyglot-services.md",
+      "line": 3,
+      "marker": "Stub file for ADR-006.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 006 Polyglot Services"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/issue-templates.md",
+      "line": 3,
+      "marker": "Stub file for issue templates.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Issue Templates"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/overview.md",
+      "line": 3,
+      "marker": "Stub file for ownership overview.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/domain/printery/resilience-patterns.md",
+      "line": 3,
+      "marker": "Stub file for resilience patterns.",
+      "audience": "developer",
+      "area": "developer/domain",
+      "section": "developer/domain/printery",
+      "doc_type": "guide",
+      "suggested_title": "Resilience Patterns"
+    },
+    {
+      "path": "platform/atlas/developer/operations/folio/metrics.md",
+      "line": 3,
+      "marker": "Stub file for folio metrics.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/folio",
+      "doc_type": "runbook",
+      "suggested_title": "Metrics"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/testing-strategy.md",
+      "line": 3,
+      "marker": "Stub file for testing strategy.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Testing Strategy"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-003-operational-transform.md",
+      "line": 3,
+      "marker": "Stub file for ADR-003.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 003 Operational Transform"
+    },
+    {
+      "path": "platform/atlas/api/sdks/rust.md",
+      "line": 3,
+      "marker": "Stub file for Rust SDK.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/rust.md",
+      "doc_type": "reference",
+      "suggested_title": "Rust"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/operations-team.md",
+      "line": 3,
+      "marker": "Stub file for operations team.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "Operations Team"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/pr-process.md",
+      "line": 3,
+      "marker": "Stub file for PR process.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Pr Process"
+    },
+    {
+      "path": "platform/atlas/developer/operations/folio/tracing.md",
+      "line": 3,
+      "marker": "Stub file for folio tracing.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/folio",
+      "doc_type": "runbook",
+      "suggested_title": "Tracing"
+    },
+    {
+      "path": "platform/atlas/api/sdks/overview.md",
+      "line": 3,
+      "marker": "Stub file for SDKs overview.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/overview.md",
+      "doc_type": "reference",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/severity-levels.md",
+      "line": 3,
+      "marker": "Stub file for severity levels.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Severity Levels"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/overview.md",
+      "line": 3,
+      "marker": "Stub file for ADRs overview.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/api/sdks/python.md",
+      "line": 3,
+      "marker": "Stub file for Python SDK.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/python.md",
+      "doc_type": "reference",
+      "suggested_title": "Python"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/ownership/product-team.md",
+      "line": 3,
+      "marker": "Stub file for product team.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/ownership",
+      "doc_type": "guide",
+      "suggested_title": "Product Team"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/blameless-culture.md",
+      "line": 3,
+      "marker": "Stub file for blameless culture.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Blameless Culture"
+    },
+    {
+      "path": "platform/atlas/api/sdks/go.md",
+      "line": 3,
+      "marker": "Stub file for Go SDK.",
+      "audience": "api",
+      "area": "api/sdks",
+      "section": "api/sdks/go.md",
+      "doc_type": "reference",
+      "suggested_title": "Go"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/code-review.md",
+      "line": 3,
+      "marker": "Stub file for code review.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Code Review"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/adrs/adr-004-protocol-buffers.md",
+      "line": 3,
+      "marker": "Stub file for ADR-004.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/adrs",
+      "doc_type": "adr",
+      "suggested_title": "Adr 004 Protocol Buffers"
+    },
+    {
+      "path": "platform/atlas/developer/operations/folio/logging.md",
+      "line": 3,
+      "marker": "Stub file for folio logging.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/folio",
+      "doc_type": "runbook",
+      "suggested_title": "Logging"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/overview.md",
+      "line": 3,
+      "marker": "Stub file for workflow overview.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/engineering/workflow/deployment-process.md",
+      "line": 3,
+      "marker": "Stub file for deployment process.",
+      "audience": "internal",
+      "area": "internal/engineering",
+      "section": "internal/engineering/workflow",
+      "doc_type": "guide",
+      "suggested_title": "Deployment Process"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/response-process.md",
+      "line": 3,
+      "marker": "Stub file for response process.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Response Process"
+    },
+    {
+      "path": "platform/atlas/internal/overview/communication.md",
+      "line": 3,
+      "marker": "Stub file for communication.",
+      "audience": "internal",
+      "area": "internal/overview",
+      "section": "internal/overview/communication.md",
+      "doc_type": "guide",
+      "suggested_title": "Communication"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/post-mortems.md",
+      "line": 3,
+      "marker": "Stub file for post mortems.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Post Mortems"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/overview.md",
+      "line": 3,
+      "marker": "Stub file for incidents overview.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/introduction/getting-started.md",
+      "line": 3,
+      "marker": "Stub file for getting started.",
+      "audience": "developer",
+      "area": "developer/introduction",
+      "section": "developer/introduction/getting-started.md",
+      "doc_type": "guide",
+      "suggested_title": "Getting Started"
+    },
+    {
+      "path": "platform/atlas/internal/operations/incidents/communication.md",
+      "line": 3,
+      "marker": "Stub file for communication.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/incidents",
+      "doc_type": "runbook",
+      "suggested_title": "Communication"
+    },
+    {
+      "path": "platform/atlas/internal/legal/terms-of-service.md",
+      "line": 3,
+      "marker": "Stub file for terms of service.",
+      "audience": "internal",
+      "area": "internal/legal",
+      "section": "internal/legal/terms-of-service.md",
+      "doc_type": "guide",
+      "suggested_title": "Terms Of Service"
+    },
+    {
+      "path": "platform/atlas/developer/operations/infrastructure/security.md",
+      "line": 3,
+      "marker": "Stub file for infrastructure security.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/infrastructure",
+      "doc_type": "runbook",
+      "suggested_title": "Security"
+    },
+    {
+      "path": "platform/atlas/developer/introduction/tech-stack.md",
+      "line": 3,
+      "marker": "Stub file for tech stack.",
+      "audience": "developer",
+      "area": "developer/introduction",
+      "section": "developer/introduction/tech-stack.md",
+      "doc_type": "guide",
+      "suggested_title": "Tech Stack"
+    },
+    {
+      "path": "platform/atlas/internal/operations/capacity/metrics.md",
+      "line": 3,
+      "marker": "Stub file for metrics.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/capacity",
+      "doc_type": "runbook",
+      "suggested_title": "Metrics"
+    },
+    {
+      "path": "platform/atlas/internal/legal/intellectual-property.md",
+      "line": 3,
+      "marker": "Stub file for intellectual property.",
+      "audience": "internal",
+      "area": "internal/legal",
+      "section": "internal/legal/intellectual-property.md",
+      "doc_type": "guide",
+      "suggested_title": "Intellectual Property"
+    },
+    {
+      "path": "platform/atlas/developer/operations/infrastructure/terraform.md",
+      "line": 3,
+      "marker": "Stub file for Terraform.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/infrastructure",
+      "doc_type": "runbook",
+      "suggested_title": "Terraform"
+    },
+    {
+      "path": "platform/atlas/internal/operations/cost/budgeting.md",
+      "line": 3,
+      "marker": "Stub file for budgeting.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/cost",
+      "doc_type": "runbook",
+      "suggested_title": "Budgeting"
+    },
+    {
+      "path": "platform/atlas/internal/legal/privacy-policy.md",
+      "line": 3,
+      "marker": "Stub file for privacy policy.",
+      "audience": "internal",
+      "area": "internal/legal",
+      "section": "internal/legal/privacy-policy.md",
+      "doc_type": "guide",
+      "suggested_title": "Privacy Policy"
+    },
+    {
+      "path": "platform/atlas/developer/products/atlas/contributing.md",
+      "line": 3,
+      "marker": "Stub file for Atlas contributing.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/atlas",
+      "doc_type": "guide",
+      "suggested_title": "Contributing"
+    },
+    {
+      "path": "platform/atlas/developer/operations/infrastructure/networking.md",
+      "line": 3,
+      "marker": "Stub file for networking.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/infrastructure",
+      "doc_type": "runbook",
+      "suggested_title": "Networking"
+    },
+    {
+      "path": "platform/atlas/internal/legal/contracts.md",
+      "line": 3,
+      "marker": "Stub file for contracts.",
+      "audience": "internal",
+      "area": "internal/legal",
+      "section": "internal/legal/contracts.md",
+      "doc_type": "guide",
+      "suggested_title": "Contracts"
+    },
+    {
+      "path": "platform/atlas/internal/operations/cost/optimization.md",
+      "line": 3,
+      "marker": "Stub file for cost optimization.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/cost",
+      "doc_type": "runbook",
+      "suggested_title": "Optimization"
+    },
+    {
+      "path": "platform/atlas/developer/products/atlas/mdx-components.md",
+      "line": 3,
+      "marker": "Stub file for MDX components.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/atlas",
+      "doc_type": "guide",
+      "suggested_title": "Mdx Components"
+    },
+    {
+      "path": "platform/atlas/developer/operations/infrastructure/overview.md",
+      "line": 3,
+      "marker": "Stub file for infrastructure overview.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/infrastructure",
+      "doc_type": "runbook",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/operations/capacity/scaling-strategy.md",
+      "line": 3,
+      "marker": "Stub file for scaling strategy.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/capacity",
+      "doc_type": "runbook",
+      "suggested_title": "Scaling Strategy"
+    },
+    {
+      "path": "platform/atlas/internal/operations/cost/tracking.md",
+      "line": 3,
+      "marker": "Stub file for cost tracking.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/cost",
+      "doc_type": "runbook",
+      "suggested_title": "Tracking"
+    },
+    {
+      "path": "platform/atlas/internal/finance/budget.md",
+      "line": 3,
+      "marker": "Stub file for budget.",
+      "audience": "internal",
+      "area": "internal/finance",
+      "section": "internal/finance/budget.md",
+      "doc_type": "guide",
+      "suggested_title": "Budget"
+    },
+    {
+      "path": "platform/atlas/developer/products/atlas/overview.md",
+      "line": 3,
+      "marker": "Stub file for Atlas overview.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/atlas",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/operations/capacity/forecasting.md",
+      "line": 3,
+      "marker": "Stub file for forecasting.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/capacity",
+      "doc_type": "runbook",
+      "suggested_title": "Forecasting"
+    },
+    {
+      "path": "platform/atlas/developer/products/atlas/structure.md",
+      "line": 3,
+      "marker": "Stub file for Atlas structure.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/atlas",
+      "doc_type": "guide",
+      "suggested_title": "Structure"
+    },
+    {
+      "path": "platform/atlas/internal/operations/cost/overview.md",
+      "line": 3,
+      "marker": "Stub file for cost overview.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/cost",
+      "doc_type": "runbook",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/finance/expense-policy.md",
+      "line": 3,
+      "marker": "Stub file for expense policy.",
+      "audience": "internal",
+      "area": "internal/finance",
+      "section": "internal/finance/expense-policy.md",
+      "doc_type": "guide",
+      "suggested_title": "Expense Policy"
+    },
+    {
+      "path": "platform/atlas/developer/operations/runbooks/scaling.md",
+      "line": 3,
+      "marker": "Stub file for scaling.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/runbooks",
+      "doc_type": "runbook",
+      "suggested_title": "Scaling"
+    },
+    {
+      "path": "platform/atlas/developer/operations/infrastructure/kubernetes.md",
+      "line": 3,
+      "marker": "Stub file for Kubernetes.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/infrastructure",
+      "doc_type": "runbook",
+      "suggested_title": "Kubernetes"
+    },
+    {
+      "path": "platform/atlas/internal/operations/capacity/overview.md",
+      "line": 3,
+      "marker": "Stub file for capacity overview.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/capacity",
+      "doc_type": "runbook",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/architecture/specs/requirement-traceability.md",
+      "line": 3,
+      "marker": "Stub file for requirement traceability.",
+      "audience": "internal",
+      "area": "internal/architecture",
+      "section": "internal/architecture/specs",
+      "doc_type": "guide",
+      "suggested_title": "Requirement Traceability"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/storybook.md",
+      "line": 3,
+      "marker": "Stub file for Storybook.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Storybook"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/real-time-sync.md",
+      "line": 3,
+      "marker": "Stub file for real-time sync.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Real Time Sync"
+    },
+    {
+      "path": "platform/atlas/internal/operations/releases/change-management.md",
+      "line": 3,
+      "marker": "Stub file for change management.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/releases",
+      "doc_type": "runbook",
+      "suggested_title": "Change Management"
+    },
+    {
+      "path": "platform/atlas/internal/operations/releases/versioning.md",
+      "line": 3,
+      "marker": "Stub file for versioning.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/releases",
+      "doc_type": "runbook",
+      "suggested_title": "Versioning"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/overview.md",
+      "line": 3,
+      "marker": "Stub file for Canvas overview.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/operations/runbooks/backup-restore.md",
+      "line": 3,
+      "marker": "Stub file for backup and restore.",
+      "audience": "developer",
+      "area": "developer/operations",
+      "section": "developer/operations/runbooks",
+      "doc_type": "runbook",
+      "suggested_title": "Backup Restore"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/setup.md",
+      "line": 3,
+      "marker": "Stub file for Canvas setup.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Setup"
+    },
+    {
+      "path": "platform/atlas/internal/operations/releases/release-process.md",
+      "line": 3,
+      "marker": "Stub file for release process.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/releases",
+      "doc_type": "runbook",
+      "suggested_title": "Release Process"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/api-integration.md",
+      "line": 3,
+      "marker": "Stub file for API integration.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Api Integration"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/testing.md",
+      "line": 3,
+      "marker": "Stub file for Canvas testing.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Testing"
+    },
+    {
+      "path": "platform/atlas/internal/product/strategy/okrs.md",
+      "line": 3,
+      "marker": "Stub file for OKRs.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/strategy",
+      "doc_type": "guide",
+      "suggested_title": "Okrs"
+    },
+    {
+      "path": "platform/atlas/internal/operations/releases/rollback-procedures.md",
+      "line": 3,
+      "marker": "Stub file for rollback procedures.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/releases",
+      "doc_type": "runbook",
+      "suggested_title": "Rollback Procedures"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/component-library.md",
+      "line": 3,
+      "marker": "Stub file for component library.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Component Library"
+    },
+    {
+      "path": "platform/atlas/internal/product/development/discovery.md",
+      "line": 3,
+      "marker": "Stub file for product discovery.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/development",
+      "doc_type": "guide",
+      "suggested_title": "Discovery"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/deployment.md",
+      "line": 3,
+      "marker": "Stub file for Canvas deployment.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "Deployment"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/enhancement-suggestions.md",
+      "line": 3,
+      "marker": "Stub file for enhancement suggestions.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Enhancement Suggestions"
+    },
+    {
+      "path": "platform/atlas/internal/product/development/execution.md",
+      "line": 3,
+      "marker": "Stub file for product execution.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/development",
+      "doc_type": "guide",
+      "suggested_title": "Execution"
+    },
+    {
+      "path": "platform/atlas/developer/products/specifications/verification.md",
+      "line": 3,
+      "marker": "Stub file for verification.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/specifications",
+      "doc_type": "guide",
+      "suggested_title": "Verification"
+    },
+    {
+      "path": "platform/atlas/internal/operations/releases/overview.md",
+      "line": 3,
+      "marker": "Stub file for releases overview.",
+      "audience": "internal",
+      "area": "internal/operations",
+      "section": "internal/operations/releases",
+      "doc_type": "runbook",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/product/strategy/roadmap.md",
+      "line": 3,
+      "marker": "Stub file for product roadmap.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/strategy",
+      "doc_type": "guide",
+      "suggested_title": "Roadmap"
+    },
+    {
+      "path": "platform/atlas/developer/products/canvas/state-management.md",
+      "line": 3,
+      "marker": "Stub file for state management.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/canvas",
+      "doc_type": "guide",
+      "suggested_title": "State Management"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/overview.md",
+      "line": 3,
+      "marker": "Stub file for Aria platform overview.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/text-analysis.md",
+      "line": 3,
+      "marker": "Stub file for text analysis.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Text Analysis"
+    },
+    {
+      "path": "platform/atlas/developer/products/specifications/traceability.md",
+      "line": 3,
+      "marker": "Stub file for traceability.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/specifications",
+      "doc_type": "guide",
+      "suggested_title": "Traceability"
+    },
+    {
+      "path": "platform/atlas/internal/product/development/launch.md",
+      "line": 3,
+      "marker": "Stub file for product launch.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/development",
+      "doc_type": "guide",
+      "suggested_title": "Launch"
+    },
+    {
+      "path": "platform/atlas/developer/products/specifications/overview.md",
+      "line": 3,
+      "marker": "Stub file for specifications overview.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/specifications",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/product/development/planning.md",
+      "line": 3,
+      "marker": "Stub file for product planning.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/development",
+      "doc_type": "guide",
+      "suggested_title": "Planning"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/diagram-analysis.md",
+      "line": 3,
+      "marker": "Stub file for diagram analysis.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Diagram Analysis"
+    },
+    {
+      "path": "platform/atlas/developer/products/specifications/requirement-types.md",
+      "line": 3,
+      "marker": "Stub file for requirement types.",
+      "audience": "developer",
+      "area": "developer/products",
+      "section": "developer/products/specifications",
+      "doc_type": "guide",
+      "suggested_title": "Requirement Types"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/deployment.md",
+      "line": 3,
+      "marker": "Stub file for Aria deployment.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Deployment"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/testing.md",
+      "line": 3,
+      "marker": "Stub file for Aria testing.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Testing"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/code-safety.md",
+      "line": 3,
+      "marker": "Stub file for code safety.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Code Safety"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/architecture.md",
+      "line": 3,
+      "marker": "Stub file for Aria architecture.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Architecture"
+    },
+    {
+      "path": "platform/atlas/developer/platform/aria/graceful-degradation.md",
+      "line": 3,
+      "marker": "Stub file for graceful degradation.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/aria",
+      "doc_type": "guide",
+      "suggested_title": "Graceful Degradation"
+    },
+    {
+      "path": "platform/atlas/internal/product/research/surveys.md",
+      "line": 3,
+      "marker": "Stub file for surveys.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/research",
+      "doc_type": "guide",
+      "suggested_title": "Surveys"
+    },
+    {
+      "path": "platform/atlas/internal/product/strategy/competitive-analysis.md",
+      "line": 3,
+      "marker": "Stub file for competitive analysis.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/strategy",
+      "doc_type": "guide",
+      "suggested_title": "Competitive Analysis"
+    },
+    {
+      "path": "platform/atlas/internal/security/compliance/hipaa.md",
+      "line": 3,
+      "marker": "Stub file for HIPAA compliance.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/compliance",
+      "doc_type": "guide",
+      "suggested_title": "Hipaa"
+    },
+    {
+      "path": "platform/atlas/internal/product/research/user-personas.md",
+      "line": 3,
+      "marker": "Stub file for user personas.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/research",
+      "doc_type": "guide",
+      "suggested_title": "User Personas"
+    },
+    {
+      "path": "platform/atlas/internal/security/compliance/overview.md",
+      "line": 3,
+      "marker": "Stub file for compliance overview.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/compliance",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/security/compliance/gdpr.md",
+      "line": 3,
+      "marker": "Stub file for GDPR compliance.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/compliance",
+      "doc_type": "guide",
+      "suggested_title": "Gdpr"
+    },
+    {
+      "path": "platform/atlas/internal/security/practices/secrets-management.md",
+      "line": 3,
+      "marker": "Stub file for secrets management.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/practices",
+      "doc_type": "guide",
+      "suggested_title": "Secrets Management"
+    },
+    {
+      "path": "platform/atlas/internal/security/compliance/soc2.md",
+      "line": 3,
+      "marker": "Stub file for SOC2 compliance.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/compliance",
+      "doc_type": "guide",
+      "suggested_title": "Soc2"
+    },
+    {
+      "path": "platform/atlas/internal/security/practices/secure-coding.md",
+      "line": 3,
+      "marker": "Stub file for secure coding.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/practices",
+      "doc_type": "guide",
+      "suggested_title": "Secure Coding"
+    },
+    {
+      "path": "platform/atlas/internal/product/research/analytics.md",
+      "line": 3,
+      "marker": "Stub file for analytics.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/research",
+      "doc_type": "guide",
+      "suggested_title": "Analytics"
+    },
+    {
+      "path": "platform/atlas/internal/security/compliance/iso27001.md",
+      "line": 3,
+      "marker": "Stub file for ISO 27001 compliance.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/compliance",
+      "doc_type": "guide",
+      "suggested_title": "Iso27001"
+    },
+    {
+      "path": "platform/atlas/internal/security/practices/code-review-security.md",
+      "line": 3,
+      "marker": "Stub file for code review security.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/practices",
+      "doc_type": "guide",
+      "suggested_title": "Code Review Security"
+    },
+    {
+      "path": "platform/atlas/internal/product/research/interviews.md",
+      "line": 3,
+      "marker": "Stub file for interviews.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/research",
+      "doc_type": "guide",
+      "suggested_title": "Interviews"
+    },
+    {
+      "path": "platform/atlas/internal/security/practices/dependency-management.md",
+      "line": 3,
+      "marker": "Stub file for dependency management.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/practices",
+      "doc_type": "guide",
+      "suggested_title": "Dependency Management"
+    },
+    {
+      "path": "platform/atlas/developer/platform/intelligence/github-integrations.md",
+      "line": 3,
+      "marker": "Stub file for GitHub integrations.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/intelligence",
+      "doc_type": "guide",
+      "suggested_title": "Github Integrations"
+    },
+    {
+      "path": "platform/atlas/internal/security/vulnerabilities/disclosure.md",
+      "line": 3,
+      "marker": "Stub file for vulnerability disclosure.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/vulnerabilities",
+      "doc_type": "guide",
+      "suggested_title": "Disclosure"
+    },
+    {
+      "path": "platform/atlas/developer/platform/intelligence/analytics.md",
+      "line": 3,
+      "marker": "Stub file for intelligence analytics.",
+      "audience": "developer",
+      "area": "developer/platform",
+      "section": "developer/platform/intelligence",
+      "doc_type": "guide",
+      "suggested_title": "Analytics"
+    },
+    {
+      "path": "platform/atlas/internal/security/practices/threat-modeling.md",
+      "line": 3,
+      "marker": "Stub file for threat modeling.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/practices",
+      "doc_type": "guide",
+      "suggested_title": "Threat Modeling"
+    },
+    {
+      "path": "platform/atlas/internal/product/research/overview.md",
+      "line": 3,
+      "marker": "Stub file for research overview.",
+      "audience": "internal",
+      "area": "internal/product",
+      "section": "internal/product/research",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/security/vulnerabilities/overview.md",
+      "line": 3,
+      "marker": "Stub file for vulnerabilities overview.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/vulnerabilities",
+      "doc_type": "guide",
+      "suggested_title": "Overview"
+    },
+    {
+      "path": "platform/atlas/internal/security/vulnerabilities/reporting.md",
+      "line": 3,
+      "marker": "Stub file for vulnerability reporting.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/vulnerabilities",
+      "doc_type": "guide",
+      "suggested_title": "Reporting"
+    },
+    {
+      "path": "platform/atlas/internal/security/vulnerabilities/remediation.md",
+      "line": 3,
+      "marker": "Stub file for vulnerability remediation.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/vulnerabilities",
+      "doc_type": "guide",
+      "suggested_title": "Remediation"
+    },
+    {
+      "path": "platform/atlas/internal/security/vulnerabilities/scanning.md",
+      "line": 3,
+      "marker": "Stub file for vulnerability scanning.",
+      "audience": "internal",
+      "area": "internal/security",
+      "section": "internal/security/vulnerabilities",
+      "doc_type": "guide",
+      "suggested_title": "Scanning"
+    }
+  ]
+}

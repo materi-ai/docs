@@ -1,7 +1,8 @@
 ---
-title: "Webhooks"
-description: "Build custom integrations with Materi's comprehensive webhook system for real-time event notifications"
-icon: "webhook"
+title: Webhooks
+description: Build custom integrations with Materi's comprehensive webhook system for real-time event notifications
+icon: webhook
+relatedPages: []
 ---
 
 # Webhooks

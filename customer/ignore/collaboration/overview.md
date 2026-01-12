@@ -1,7 +1,13 @@
 ---
-title: "Real-Time Collaboration"
-description: "Work together seamlessly with your team using Materi's powerful real-time collaboration features"
-icon: "users"
+title: Real-Time Collaboration
+description: Work together seamlessly with your team using Materi's powerful real-time collaboration features
+icon: users
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 # Real-Time Collaboration Overview

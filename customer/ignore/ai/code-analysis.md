@@ -1,7 +1,8 @@
 ---
-title: "AI Code Analysis"
-description: "Review, explain, and improve code blocks with Aria's intelligent code analysis capabilities"
-icon: "code"
+title: AI Code Analysis
+description: Review, explain, and improve code blocks with Aria's intelligent code analysis capabilities
+icon: code
+relatedPages: []
 ---
 
 # AI Code Analysis

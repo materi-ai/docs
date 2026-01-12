@@ -1,3 +1,18 @@
+---
+title: "Release Process"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  - developer/products/canvas/deployment.md
+  - developer/operations/deployment/cicd-security.mdx
+  - developer/operations/folio/prometheus-advanced.mdx
+---
+
 # Release Process
 
 Stub file for release process.

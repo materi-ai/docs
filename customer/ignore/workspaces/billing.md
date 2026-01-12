@@ -1,7 +1,8 @@
 ---
-title: "Billing & Plans"
-description: "Understanding Materi's pricing plans, billing management, usage tracking, and cost optimization strategies"
-icon: "credit-card"
+title: Billing & Plans
+description: Understanding Materi's pricing plans, billing management, usage tracking, and cost optimization strategies
+icon: credit-card
+relatedPages: []
 ---
 
 # Billing & Plans

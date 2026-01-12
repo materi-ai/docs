@@ -1,0 +1,565 @@
+---
+title: Deployment Runbook
+description: Step-by-step guide for deploying Materi platform services
+icon: document
+source: /Users/alexarno/materi/docs/operations/deployment-runbook.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:55:33.008678Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+# Materi Platform - Deployment Runbook
+
+## Overview
+
+This runbook provides step-by-step procedures for deploying and operating the Materi platform in production.
+
+---
+
+## Table of Contents
+
+1. [Pre-Deployment Checklist](#1-pre-deployment-checklist)
+2. [Initial Deployment](#2-initial-deployment)
+3. [Routine Deployments](#3-routine-deployments)
+4. [Rollback Procedures](#4-rollback-procedures)
+5. [Incident Response](#5-incident-response)
+6. [Credential Rotation](#6-credential-rotation)
+7. [Scaling Operations](#7-scaling-operations)
+8. [Maintenance Windows](#8-maintenance-windows)
+
+---
+
+## 1. Pre-Deployment Checklist
+
+### 1.1 Infrastructure Verification
+
+```bash
+# Verify Kubernetes cluster health
+kubectl cluster-info
+kubectl get nodes -o wide
+kubectl top nodes
+
+# Verify namespace exists
+kubectl get namespace materi
+
+# Check existing deployments
+kubectl get deployments -n materi
+kubectl get pods -n materi -o wide
+```
+
+### 1.2 Secret Store Connectivity
+
+```bash
+# Verify External Secrets Operator
+kubectl get pods -n external-secrets
+kubectl get clustersecretstores
+kubectl get externalsecrets -n materi
+
+# Check secret sync status
+kubectl get externalsecrets -n materi -o jsonpath='{range .items[*]}{.metadata.name}: {.status.conditions[0].status}{"\n"}{end}'
+```
+
+### 1.3 Database Readiness
+
+```bash
+# Check PostgreSQL cluster
+kubectl get pods -l app=postgres -n materi
+kubectl exec -it postgres-0 -n materi -- pg_isready
+
+# Verify replication status
+kubectl exec -it postgres-0 -n materi -- psql -c "SELECT * FROM pg_stat_replication;"
+```
+
+### 1.4 Monitoring Stack
+
+```bash
+# Verify Prometheus
+kubectl get pods -l app=prometheus -n monitoring
+curl -s http://prometheus:9090/-/healthy
+
+# Verify Grafana
+kubectl get pods -l app=grafana -n monitoring
+
+# Verify alerting
+kubectl get prometheusrules -n materi
+```
+
+---
+
+## 2. Initial Deployment
+
+### 2.1 Deploy Infrastructure Components
+
+```bash
+# Apply namespace and RBAC
+kubectl apply -f operations/folio/kubernetes/namespace.yaml
+kubectl apply -f operations/folio/kubernetes/rbac.yaml
+
+# Deploy secrets (External Secrets Operator)
+kubectl apply -f operations/secrets/external-secrets-config.yaml
+
+# Wait for secrets to sync
+kubectl wait --for=condition=Ready externalsecret/postgres-credentials -n materi --timeout=120s
+kubectl wait --for=condition=Ready externalsecret/redis-credentials -n materi --timeout=120s
+```
+
+### 2.2 Deploy Database Layer
+
+```bash
+# Deploy PostgreSQL HA cluster
+kubectl apply -f operations/folio/kubernetes/ha-postgres-config.yaml
+
+# Wait for primary to be ready
+kubectl wait --for=condition=Ready pod/postgres-0 -n materi --timeout=300s
+
+# Run migrations
+kubectl exec -it postgres-0 -n materi -- psql -d materi -f /migrations/init.sql
+```
+
+### 2.3 Deploy Cache Layer
+
+```bash
+# Deploy Redis Sentinel cluster
+kubectl apply -f operations/folio/kubernetes/redis-sentinel-config.yaml
+
+# Verify Sentinel quorum
+kubectl exec -it redis-0 -n materi -- redis-cli -p 26379 SENTINEL masters
+```
+
+### 2.4 Deploy Application Services
+
+```bash
+# Deploy in order: Shield -> API -> Relay -> Folio
+kubectl apply -f operations/folio/kubernetes/shield-deployment.yaml
+kubectl wait --for=condition=Ready pod -l app=shield -n materi --timeout=120s
+
+kubectl apply -f operations/folio/kubernetes/api-deployment.yaml
+kubectl wait --for=condition=Ready pod -l app=api -n materi --timeout=120s
+
+kubectl apply -f operations/folio/kubernetes/relay-deployment.yaml
+kubectl wait --for=condition=Ready pod -l app=relay -n materi --timeout=120s
+
+kubectl apply -f operations/folio/kubernetes/folio-deployment.yaml
+kubectl wait --for=condition=Ready pod -l app=folio -n materi --timeout=120s
+```
+
+### 2.5 Apply Security Policies
+
+```bash
+# Apply mTLS configuration
+kubectl apply -f operations/folio/security/mtls-config.yaml
+
+# Apply network policies
+kubectl apply -f operations/folio/security/network-policies.yaml
+
+# Apply OIDC validation
+kubectl apply -f operations/folio/security/oidc-validation.yaml
+
+# Deploy Falco rules
+kubectl apply -f operations/folio/security/falco-rules.yaml
+```
+
+### 2.6 Configure Monitoring
+
+```bash
+# Apply SLO definitions
+kubectl apply -f operations/folio/slo/definitions.yaml
+
+# Apply burn rate alerts
+kubectl apply -f operations/folio/prometheus/burn-rate-alerts.yaml
+
+# Apply secret health monitoring
+kubectl apply -f operations/secrets/secret-health-monitoring.yaml
+
+# Apply trace-log correlation
+kubectl apply -f operations/folio/observability/trace-log-correlation.yaml
+
+# Import Grafana dashboards
+kubectl create configmap slo-dashboard --from-file=operations/folio/grafana/slo-dashboard.json -n monitoring
+```
+
+### 2.7 Verify Deployment
+
+```bash
+# Run production readiness test
+./testing/final/production-readiness-test.sh
+
+# Check all pods healthy
+kubectl get pods -n materi
+kubectl get pods -n materi -o jsonpath='{range .items[*]}{.metadata.name}: {.status.phase}{"\n"}{end}'
+
+# Verify endpoints
+curl -s https://api.materi.dev/health
+curl -s https://shield.materi.dev/health
+curl -s https://relay.materi.dev/health
+```
+
+---
+
+## 3. Routine Deployments
+
+### 3.1 GitOps Deployment (Preferred)
+
+Deployments are automated via ArgoCD. Changes merged to `main` trigger automatic deployment.
+
+```bash
+# Check ArgoCD application status
+argocd app get materi-platform
+
+# Sync manually if needed
+argocd app sync materi-platform
+
+# Monitor sync status
+argocd app wait materi-platform --health
+```
+
+### 3.2 Canary Deployment
+
+For high-risk changes, use canary deployment:
+
+```bash
+# Trigger canary deployment via GitHub Actions
+gh workflow run canary-deploy.yml -f version=v1.2.3 -f canary_percent=10
+
+# Monitor canary metrics
+# Check Grafana SLO dashboard for error rate comparison
+
+# Promote canary to full deployment
+gh workflow run canary-deploy.yml -f version=v1.2.3 -f action=promote
+
+# Or rollback if issues detected
+gh workflow run canary-deploy.yml -f version=v1.2.3 -f action=rollback
+```
+
+### 3.3 Database Migrations
+
+```bash
+# Check pending migrations
+kubectl exec -it deploy/api -n materi -- ./migrate status
+
+# Apply migrations (during maintenance window)
+kubectl exec -it deploy/api -n materi -- ./migrate up
+
+# Verify migration success
+kubectl exec -it deploy/api -n materi -- ./migrate status
+```
+
+---
+
+## 4. Rollback Procedures
+
+### 4.1 Application Rollback
+
+```bash
+# List deployment history
+kubectl rollout history deployment/api -n materi
+
+# Rollback to previous version
+kubectl rollout undo deployment/api -n materi
+
+# Rollback to specific revision
+kubectl rollout undo deployment/api -n materi --to-revision=3
+
+# Monitor rollback
+kubectl rollout status deployment/api -n materi
+```
+
+### 4.2 ArgoCD Rollback
+
+```bash
+# List ArgoCD history
+argocd app history materi-platform
+
+# Rollback to specific revision
+argocd app rollback materi-platform <revision>
+```
+
+### 4.3 Database Rollback
+
+```bash
+# Rollback last migration
+kubectl exec -it deploy/api -n materi -- ./migrate down 1
+
+# Verify rollback
+kubectl exec -it deploy/api -n materi -- ./migrate status
+
+# Note: Data migrations may require point-in-time recovery
+# Contact DBA for data restoration procedures
+```
+
+---
+
+## 5. Incident Response
+
+### 5.1 Service Degradation
+
+**Symptoms**: Elevated error rates, increased latency
+
+```bash
+# Check pod status
+kubectl get pods -n materi -o wide
+kubectl describe pod <pod-name> -n materi
+
+# Check recent events
+kubectl get events -n materi --sort-by='.lastTimestamp' | tail -20
+
+# Check logs
+kubectl logs -l app=api -n materi --tail=100
+
+# Check resource usage
+kubectl top pods -n materi
+```
+
+### 5.2 Service Outage
+
+**Symptoms**: Health checks failing, no response
+
+```bash
+# Immediate actions
+# 1. Check pod status
+kubectl get pods -n materi
+
+# 2. Restart failing pods
+kubectl delete pod <pod-name> -n materi
+
+# 3. If persistent, rollback
+kubectl rollout undo deployment/<service> -n materi
+
+# 4. Check infrastructure
+kubectl get nodes
+kubectl describe node <node-name>
+```
+
+### 5.3 Database Issues
+
+**Symptoms**: Connection failures, query timeouts
+
+```bash
+# Check PostgreSQL cluster
+kubectl get pods -l app=postgres -n materi
+kubectl exec -it postgres-0 -n materi -- pg_isready
+
+# Check connections
+kubectl exec -it postgres-0 -n materi -- psql -c "SELECT count(*) FROM pg_stat_activity;"
+
+# Check replication lag
+kubectl exec -it postgres-0 -n materi -- psql -c "SELECT * FROM pg_stat_replication;"
+
+# Force failover (if primary is unhealthy)
+kubectl exec -it postgres-0 -n materi -- patronictl failover
+```
+
+### 5.4 Secret Sync Failures
+
+**Symptoms**: ExternalSecret not ready, authentication failures
+
+```bash
+# Check ExternalSecret status
+kubectl get externalsecrets -n materi
+kubectl describe externalsecret <name> -n materi
+
+# Check secret store connectivity
+kubectl get clustersecretstores
+kubectl describe clustersecretstore gcp-secret-manager
+
+# Force sync
+kubectl annotate externalsecret <name> -n materi force-sync=$(date +%s)
+
+# Check ESO logs
+kubectl logs -l app=external-secrets -n external-secrets
+```
+
+---
+
+## 6. Credential Rotation
+
+### 6.1 Scheduled Rotation
+
+Credential rotation runs automatically via CronJobs. Monitor via:
+
+```bash
+# Check CronJob status
+kubectl get cronjobs -n materi | grep rotate
+
+# View recent job runs
+kubectl get jobs -n materi | grep rotate
+
+# Check job logs
+kubectl logs job/rotate-db-credentials-<timestamp> -n materi
+```
+
+### 6.2 Emergency Rotation
+
+For compromised credentials:
+
+```bash
+# 1. Rotate in secret store (GCP/AWS console or CLI)
+gcloud secrets versions add materi-postgres-credentials --data-file=new-creds.json
+
+# 2. Force ExternalSecret refresh
+kubectl annotate externalsecret postgres-credentials -n materi \
+  force-sync=$(date +%s) --overwrite
+
+# 3. Restart dependent services
+kubectl rollout restart deployment/api -n materi
+kubectl rollout restart deployment/shield -n materi
+kubectl rollout restart deployment/relay -n materi
+
+# 4. Verify connectivity
+kubectl exec -it deploy/api -n materi -- ./healthcheck db
+```
+
+### 6.3 Manual Rotation Trigger
+
+```bash
+# Trigger rotation job manually
+kubectl create job --from=cronjob/rotate-db-credentials rotate-db-manual-$(date +%s) -n materi
+
+# Monitor job progress
+kubectl logs -f job/rotate-db-manual-<timestamp> -n materi
+```
+
+---
+
+## 7. Scaling Operations
+
+### 7.1 Manual Scaling
+
+```bash
+# Scale deployment
+kubectl scale deployment/api --replicas=5 -n materi
+
+# Verify scaling
+kubectl get pods -l app=api -n materi
+kubectl rollout status deployment/api -n materi
+```
+
+### 7.2 HPA Configuration
+
+```bash
+# Check HPA status
+kubectl get hpa -n materi
+
+# Describe HPA for details
+kubectl describe hpa api-hpa -n materi
+
+# Modify HPA limits
+kubectl patch hpa api-hpa -n materi -p '{"spec":{"maxReplicas":10}}'
+```
+
+### 7.3 Database Scaling
+
+```bash
+# Add read replica
+kubectl scale statefulset/postgres --replicas=3 -n materi
+
+# Verify replication
+kubectl exec -it postgres-0 -n materi -- psql -c "SELECT * FROM pg_stat_replication;"
+```
+
+---
+
+## 8. Maintenance Windows
+
+### 8.1 Pre-Maintenance
+
+```bash
+# 1. Notify stakeholders (automated via PagerDuty)
+
+# 2. Silence non-critical alerts
+amtool silence add alertname=~".*Warning.*" --duration=2h --comment="Scheduled maintenance"
+
+# 3. Take database backup
+kubectl exec -it postgres-0 -n materi -- pg_dump materi > backup-$(date +%Y%m%d).sql
+
+# 4. Scale down non-essential services
+kubectl scale deployment/folio --replicas=1 -n materi
+```
+
+### 8.2 During Maintenance
+
+```bash
+# Monitor cluster health
+watch kubectl get pods -n materi
+
+# Check logs for errors
+kubectl logs -l app=api -n materi -f
+
+# Verify database health
+kubectl exec -it postgres-0 -n materi -- pg_isready
+```
+
+### 8.3 Post-Maintenance
+
+```bash
+# 1. Scale services back up
+kubectl scale deployment/folio --replicas=3 -n materi
+
+# 2. Verify all pods healthy
+kubectl wait --for=condition=Ready pod -l app=folio -n materi --timeout=120s
+
+# 3. Run health checks
+curl -s https://api.materi.dev/health
+curl -s https://folio.materi.dev/health
+
+# 4. Clear alert silences
+amtool silence expire <silence-id>
+
+# 5. Verify SLOs
+# Check Grafana SLO dashboard
+
+# 6. Send maintenance completion notification
+```
+
+---
+
+## Appendix A: Useful Commands
+
+```bash
+# Get all resources in namespace
+kubectl get all -n materi
+
+# Watch pod status
+watch kubectl get pods -n materi
+
+# Get pod logs with timestamps
+kubectl logs -l app=api -n materi --timestamps
+
+# Execute command in pod
+kubectl exec -it deploy/api -n materi -- /bin/sh
+
+# Port forward for debugging
+kubectl port-forward svc/api 8080:8080 -n materi
+
+# Get events sorted by time
+kubectl get events -n materi --sort-by='.lastTimestamp'
+
+# Check resource quotas
+kubectl describe resourcequota -n materi
+
+# Get node resource usage
+kubectl top nodes
+
+# Get pod resource usage
+kubectl top pods -n materi
+```
+
+## Appendix B: Contact Information
+
+| Role | Contact | Escalation |
+|------|---------|------------|
+| On-Call Engineer | PagerDuty | Immediate |
+| Platform Team | #platform-team Slack | 15 min |
+| DBA | #database Slack | 30 min |
+| Security | #security Slack | Immediate for incidents |
+
+## Appendix C: Related Documentation
+
+- [Production Readiness Checklist](./production-readiness-checklist.md)
+- [Architecture Overview](./architecture-overview.md)
+- [SLO Definitions](../../operations/folio/slo/definitions.yaml)
+- [Incident Response Playbook](./incident-response.md)

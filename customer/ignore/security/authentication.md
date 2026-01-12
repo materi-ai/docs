@@ -1,7 +1,11 @@
 ---
-title: "Authentication"
-description: "Configure secure authentication methods including passwords, OAuth, SAML SSO, and multi-factor authentication"
-icon: "key"
+title: Authentication
+description: Configure secure authentication methods including passwords, OAuth, SAML SSO, and multi-factor authentication
+icon: key
+relatedPages:
+  - architecture-overview.mdx
+  - developer/domain/shield/authentication.md
+  - developer/operations/service-doc-10.mdx
 ---
 
 # Authentication

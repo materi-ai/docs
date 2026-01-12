@@ -1,3 +1,16 @@
+---
+title: "Materi Mintlify Documentation Structure"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # Materi Mintlify Documentation Structure
 
 **Version:** 1.0.0

@@ -1,3 +1,16 @@
+---
+title: "SDD Migration Manifest"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # SDD Migration Manifest
 
 > **Purpose**: Authoritative mapping between legacy v1 blueprints (`.atlas/.spec/__blueprints__/`) and Atlas docs targets.

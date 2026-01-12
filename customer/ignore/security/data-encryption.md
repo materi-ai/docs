@@ -1,7 +1,11 @@
 ---
-title: "Data Encryption"
-description: "Understanding Materi's encryption architecture for data at rest and in transit, including key management and BYOK options"
-icon: "lock"
+title: Data Encryption
+description: Understanding Materi's encryption architecture for data at rest and in transit, including key management and BYOK options
+icon: lock
+relatedPages:
+  - architecture-overview.mdx
+  - developer/domain/shield/authentication.md
+  - developer/operations/service-doc-10.mdx
 ---
 
 # Data Encryption

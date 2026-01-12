@@ -1,0 +1,529 @@
+---
+title: API Service Overview
+description: Primary HTTP API service for document management and file operations
+icon: server
+source: /Users/alexarno/materi/domain/api/README.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.272329Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+---
+
+# Materi Go API Service
+
+The core API service for Materi's collaborative document platform, built with Go and Fiber for high-performance document management, AI integration, and hybrid real-time collaboration support.
+
+## 🏗️ Hybrid Collaboration Architecture
+
+⚠️ **Current Implementation Status**: The API service provides collaboration endpoints with **placeholder implementations**. Full hybrid collaboration integration requires additional service layer development.
+
+### Implemented Features
+
+hello
+
+-   **Collaboration Controller**: 6 REST endpoints for collaboration operations (placeholders)
+-   **Document Management**: Full CRUD operations with version control
+-   **AI Integration**: Content generation, summarization, and intelligent suggestions
+-   **Event System Foundation**: Redis-based event publishing framework (simplified)
+-   **Models & Types**: Complete collaboration data models and operation types
+-   **Standardized Logging**: Consistent structured logging across all services
+
+### 🚧 Architectural Work Remaining
+
+-   **Service Layer Integration**: Connect controllers to actual collaboration business logic
+-   **Real-time WebSocket Sync**: Implement operational transformation algorithms
+-   **Permission Caching**: High-performance authorization with Redis caching
+-   **Cross-service Events**: Full event-driven sync between API and Collaboration services
+-   **Performance Optimization**: Sub-50ms response times with intelligent caching
+
+### Current Service Responsibilities
+
+✅ **Implemented**:
+
+-   Document CRUD operations (basic implementation)
+-   AI-powered content generation and processing
+-   File upload and storage management (MinIO integration)
+-   Basic event publishing framework
+-   Collaboration REST endpoints (placeholder responses)
+
+🚧 **Requires Implementation**:
+
+-   Real-time sync to collaboration service
+-   Collaboration service integration for permission validation
+-   Bidirectional synchronization between HTTP and WebSocket operations
+-   Document permission caching and real-time cache invalidation
+-   Operational transformation algorithms
+
+## 🔄 Collaboration Service Integration Status
+
+### Current Implementation (Type-Safe Placeholders)
+
+The collaboration service integration has been implemented with **working placeholder endpoints** that provide the correct API surface for front-end development while maintaining type safety:
+
+**CollaborationController** (`/api/v1/collaboration/...`):
+
+```go
+// ✅ Implemented endpoints (with placeholder business logic)
+POST   /documents/{id}/operations     // Apply collaborative operations
+GET    /documents/{id}/presence      // Get active users in document
+PUT    /documents/{id}/presence      // Update user presence/cursor
+GET    /documents/{id}/sync-status   // Get document synchronization status
+POST   /documents/{id}/broadcast     // Broadcast document updates
+GET    /stats                        // Get collaboration statistics
+POST   /webhook                      // Process collaboration webhooks
+```
+
+**EventPublisherService** & **EventHandlerService**:
+
+-   ✅ Type-safe event structures and routing
+-   ✅ Redis integration framework
+-   🚧 Business logic requires implementation
+
+**CollaborationModels**:
+
+-   ✅ Complete operation transformation types
+-   ✅ Document presence and sync models
+-   ✅ Vector clock and conflict resolution structures
+
+### 🎯 Next Implementation Phase
+
+1. **Service Layer Development**:
+
+    - Implement actual collaboration business logic
+    - Connect to operational transformation algorithms
+    - Add Redis-based state management
+
+2. **Real-time Integration**:
+
+    - WebSocket connection management
+    - Bidirectional sync with Rust collaboration service
+    - Event-driven state synchronization
+
+3. **Performance Optimization**:
+    - Permission caching layer
+    - Operational transform conflict resolution
+    - Sub-50ms response time optimization
+
+## 🔄 Event-Driven Architecture
+
+⚠️ **Current Status**: Event system foundation is implemented with simplified placeholder logic.
+
+The API service participates in the event-driven ecosystem to ensure data consistency across services:
+
+### Published Events
+
+```go
+// Document events
+DocumentCreatedEvent    // New document creation
+DocumentUpdatedEvent    // Content or metadata changes
+DocumentDeletedEvent    // Document deletion
+DocumentSharedEvent     // Permission changes
+
+// User events (when acting as proxy)
+UserUpdatedEvent        // Profile changes via API
+```
+
+### Consumed Events
+
+```go
+// From Shield service
+UserCreatedEvent        // New user registration
+UserUpdatedEvent        // Profile updates
+UserDeletedEvent        // Account deletion
+
+// From Collaboration service
+CollaborationSessionStartedEvent  // User joins document
+OperationAppliedEvent            // Real-time edits
+```
+
+### Event Flow Example
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API
+    participant Redis
+    participant Shield
+    participant Collab
+
+    Client->>API: Create Document
+    API->>Redis: Publish DocumentCreatedEvent
+    Redis->>Shield: Consume event (update stats)
+    Redis->>Collab: Consume event (init state)
+    API->>Client: Document created
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+-   Go 1.21+
+-   Redis 7.0+
+-   PostgreSQL 15+
+-   Docker & Docker Compose
+
+### Development Setup
+
+1. **Clone and Install Dependencies**
+
+    ```bash
+    cd api
+    go mod tidy
+    ```
+
+2. **Configure Environment**
+
+    ```bash
+    cp .env.example .env
+    # Edit .env with your configuration
+    ```
+
+3. **Start Infrastructure**
+
+    ```bash
+    # Start event-driven infrastructure
+    docker-compose -f ../docker-compose.event-driven.yml up -d
+    ```
+
+4. **Run Database Migrations**
+
+    ```bash
+    go run cmd/migrate/main.go up
+    ```
+
+5. **Start API Service**
+
+    ```bash
+    # Development mode
+    go run cmd/api/main.go
+
+    # With event publishing enabled (placeholder implementation)
+    go run cmd/api/main.go --enable-events
+    ```
+
+### 🔧 Collaboration Development Notes
+
+The collaboration endpoints are currently **functional placeholders**:
+
+-   All endpoints return valid responses for front-end integration
+-   Business logic returns mock data (documented in controller TODOs)
+-   Event publishing logs events but doesn't implement full Redis streams
+-   Ready for service layer implementation without breaking changes
+
+### Event System Integration
+
+The API service automatically publishes events when:
+
+-   Documents are created, updated, or deleted
+-   User profiles are modified via API
+-   Document permissions change
+-   File uploads complete
+
+Event consumption happens automatically for:
+
+-   User synchronization from Shield service
+-   Collaboration state updates from Rust service
+
+## 📊 Performance & Monitoring
+
+### Key Metrics
+
+-   **Response Time**: P95 < 100ms for document operations
+-   **Throughput**: 1000+ requests/second sustained
+-   **Event Processing**: Sub-50ms event publishing latency
+-   **Cache Hit Rate**: >90% for user context validation
+
+### Monitoring Endpoints
+
+-   **Health Check**: `GET /health`
+-   **Metrics**: `GET /metrics` (Prometheus format)
+-   **Event Status**: `GET /admin/events/status`
+
+### Performance Optimizations
+
+-   **Database Connection Pooling**: Optimized for concurrent requests
+-   **Redis Caching**: User context and document metadata caching
+-   **Event Batching**: Batch processing for high-volume operations
+-   **Background Processing**: Async AI processing and file operations
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+# Core API Configuration
+PORT=8080
+ENV=development
+LOG_LEVEL=info
+
+# Database Configuration
+DATABASE_URL=postgresql://user:pass@localhost:5432/materi_api
+DATABASE_MAX_CONNECTIONS=25
+DATABASE_MAX_IDLE=10
+
+# Redis Configuration (Events & Caching)
+REDIS_URL=redis://localhost:6379
+REDIS_PASSWORD=materi_redis_2024
+REDIS_DB=0
+
+# Event System Configuration
+EVENT_CONSUMER_GROUP=api-service
+EVENT_CONSUMER_NAME=api-service-1
+ENABLE_EVENT_PUBLISHING=true
+ENABLE_EVENT_CONSUMPTION=true
+
+# External Services
+SHIELD_BASE_URL=http://localhost:8001
+COLLABORATION_BASE_URL=http://localhost:8002
+MINIO_ENDPOINT=localhost:9000
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+
+# AI Integration
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+AI_RATE_LIMIT=100
+
+# Authentication
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRY=24h
+API_GATEWAY_SHARED_SECRET=shared_secret
+```
+
+### Event Configuration
+
+```yaml
+# Event streams the API service subscribes to
+event_streams:
+    - 'topic:user.created'
+    - 'topic:user.updated'
+    - 'topic:user.deleted'
+    - 'topic:collaboration.session.started'
+    - 'topic:operation.applied'
+
+# Event publishing configuration
+event_publishing:
+    batch_size: 10
+    flush_interval: 100ms
+    retry_attempts: 3
+    dead_letter_queue: true
+```
+
+## 🧪 Testing
+
+### Unit Tests
+
+```bash
+go test ./...
+```
+
+### Integration Tests
+
+```bash
+go test ./test/integration/...
+```
+
+### Event System Tests
+
+```bash
+# Test event publishing
+go test ./test/events/publisher_test.go
+
+# Test event consumption
+go test ./test/events/consumer_test.go
+```
+
+### Load Testing
+
+```bash
+# Install k6
+brew install k6
+
+# Run load tests
+k6 run test/load/api_load_test.js
+```
+
+## 🐳 Deployment
+
+### Docker Build
+
+```bash
+# Standard build
+docker build -t materi/api:latest .
+
+# Event-enabled build
+docker build -f Dockerfile.events -t materi/api:events .
+```
+
+### Docker Compose Deployment
+
+```bash
+# Deploy with event infrastructure
+docker-compose -f docker-compose.event-driven.yml up -d
+
+# Scale API service
+docker-compose -f docker-compose.event-driven.yml up -d --scale api-service=3
+```
+
+### Kubernetes Deployment
+
+```bash
+# Apply Kubernetes manifests
+kubectl apply -f k8s/
+
+# Check deployment status
+kubectl get pods -l app=materi-api
+```
+
+## 📈 Scaling & Operations
+
+### Horizontal Scaling
+
+The API service supports horizontal scaling with:
+
+-   **Stateless Design**: No local state, all data in databases/Redis
+-   **Event Consumer Groups**: Multiple instances process events in parallel
+-   **Database Connection Pooling**: Shared connection management
+-   **Load Balancer Ready**: Health checks and graceful shutdown
+
+### Event Processing at Scale
+
+```go
+// Consumer group configuration for scaling
+consumerConfig := EventConsumerConfig{
+    Group:     "api-service",
+    Consumers: []string{
+        "api-service-1",
+        "api-service-2",
+        "api-service-3",
+    },
+    BatchSize: 10,
+    Concurrency: 4,
+}
+```
+
+### Operational Considerations
+
+-   **Graceful Shutdown**: 30-second grace period for event processing
+-   **Circuit Breakers**: Protection against downstream service failures
+-   **Rate Limiting**: Per-user and global rate limits
+-   **Database Migrations**: Zero-downtime schema changes
+-   **Event Replay**: Ability to replay events for data recovery
+
+## 🔒 Security
+
+### API Security
+
+-   JWT token validation with Redis caching
+-   Request rate limiting and DDoS protection
+-   Input validation and sanitization
+-   SQL injection prevention with parameterized queries
+
+### Event Security
+
+-   Redis AUTH for event stream access
+-   Event payload encryption for sensitive data
+-   Consumer group isolation
+-   Audit trail for all published events
+
+## 📚 API Documentation
+
+### Core Endpoints
+
+-   **Documents**: `GET|POST|PUT|DELETE /api/v1/documents`
+-   **AI Generation**: `POST /api/v1/ai/generate`
+-   **File Uploads**: `POST /api/v1/files`
+-   **User Context**: `GET /api/v1/users/me`
+
+### Event Management
+
+-   **Event Status**: `GET /api/v1/admin/events/status`
+-   **Consumer Health**: `GET /api/v1/admin/events/consumers`
+-   **Event Replay**: `POST /api/v1/admin/events/replay`
+
+For complete API documentation, see the [REST API Reference](../web/apps/docs/docs/api:rest-api-reference.mdx).
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/event-driven-sync`
+3. Make changes and add tests
+4. Ensure all tests pass: `go test ./...`
+5. Test event integration: `docker-compose -f docker-compose.event-driven.yml up`
+6. Submit a pull request
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Event Publishing Failures**
+
+```bash
+# Check Redis connectivity
+redis-cli -u redis://localhost:6379 ping
+
+# Monitor event streams
+redis-cli XINFO STREAM materi:events:all
+```
+
+**High Memory Usage**
+
+```bash
+# Check Go memory stats
+curl http://localhost:8080/debug/pprof/heap
+
+# Monitor Redis memory
+redis-cli INFO memory
+```
+
+**Database Connection Issues**
+
+```bash
+# Check connection pool status
+curl http://localhost:8080/admin/db/status
+
+# Test database connectivity
+go run cmd/migrate/main.go status
+```
+
+### Performance Debugging
+
+```bash
+# Enable Go profiling
+go tool pprof http://localhost:8080/debug/pprof/profile
+
+# Monitor event processing lag
+curl http://localhost:8080/admin/events/lag
+
+# Check API response times
+curl -w "@curl-format.txt" http://localhost:8080/api/v1/documents
+```
+
+### Collaboration Service Development
+
+**Testing Placeholder Endpoints**:
+
+```bash
+# Test collaboration endpoints (returns placeholder data)
+curl http://localhost:8080/api/v1/collaboration/documents/{id}/presence
+curl -X POST http://localhost:8080/api/v1/collaboration/documents/{id}/operations \
+     -H "Content-Type: application/json" \
+     -d '{"operations": [{"type": "insert", "position": 0, "content": "test"}]}'
+```
+
+**Implementation Roadmap**:
+
+1. **Phase 1**: Service layer business logic (operational transformation)
+2. **Phase 2**: Redis state management and event streaming
+3. **Phase 3**: WebSocket integration with Rust collaboration service
+4. **Phase 4**: Performance optimization and caching
+
+---
+
+For more information about the overall Materi architecture and event-driven patterns, see the [System Architecture Documentation](../web/apps/docs/docs/sdd:sys:pad.mdx).

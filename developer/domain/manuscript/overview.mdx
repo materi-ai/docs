@@ -1,0 +1,590 @@
+---
+title: Manuscript Service Overview
+description: Document manuscript processing and management service
+icon: book
+source: /Users/alexarno/materi/domain/manuscript/README.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.273681Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+---
+
+# ManuScript
+
+**The unified event schema for distributed collaboration at scale.**
+
+ManuScript is the **Protocol Buffer** schema system that serves as the single source of truth for all events flowing through the Materi collaboration platform. It enables type-safe, auditable, and replayable event processing across 7+ microservices handling 95B+ events per year.
+
+## Features
+
+✨ **Production Ready**
+
+-   Compiled Protocol Buffers with **Go, TypeScript, and Python** bindings
+-   Type-safe event definitions with `protoc`
+-   50+ domain-specific event types across 8 domains
+-   Beautiful TUI explorer for schema introspection
+-   Published packages: `github.com/materi/domain/proto` (Go), `@materi/proto` (npm), `materi-proto` (PyPI)
+
+🎯 **Competitive Advantages**
+
+-   **Unified Schema**: Single source of truth vs fragmented implicit schemas
+-   **Introspectable Metadata**: Custom proto options enable runtime inspection
+-   **Deterministic Replay**: Complete event history replay for debugging
+-   **Forensic Auditing**: Immutable audit trails with strong consistency guarantees
+-   **Distributed Tracing**: Built-in trace correlation across services
+-   **Causal Ordering**: Hybrid Logical Clock (HLC) for deterministic ordering
+
+🔒 **Designed for Scale**
+
+-   Supports 95B+ events/year across 7+ services
+-   Redis stream integration for high-throughput publishing
+-   Consumer group management with offset tracking
+-   30-90 day retention policies with compliance metadata
+
+## Architecture
+
+```text
+/domain/manuscript/
+├── .msx/                     # Proto source definitions (SOURCE OF TRUTH)
+│   ├── Makefile              # Multi-language compilation pipeline
+│   ├── shared/v1.proto       # Shared metadata & custom options
+│   └── domains/
+│       ├── envelope/v1.proto    # Universal event envelope
+│       ├── user/v1.proto        # User domain events (12 types)
+│       ├── document/v1.proto    # Document lifecycle
+│       ├── collaboration/v1.proto # Real-time editing
+│       ├── workspace/v1.proto   # Team management
+│       ├── aria/v1.proto        # AI safety gates
+│       ├── notification/v1.proto # Notifications & webhooks
+│       └── audit/v1.proto       # Compliance & audit trails
+│
+├── proto/                    # Go module (github.com/materi/domain/proto)
+│   ├── go.mod
+│   ├── wrapper.go            # Re-exports for clean imports
+│   └── materi/v1/            # Generated .pb.go files
+│
+├── ts/                       # TypeScript package (@materi/proto)
+│   ├── package.json
+│   ├── src/index.ts          # Re-exports for clean imports
+│   └── generated/            # Generated .ts files
+│
+├── py/                       # Python package (materi-proto)
+│   ├── pyproject.toml
+│   ├── src/materi_proto/     # Generated *_pb2.py files
+│   └── tests/
+│
+├── cmd/
+│   └── msx-inspector/        # Interactive schema explorer (Bubble Tea TUI)
+│
+├── scripts/
+│   └── sync-version.sh       # Version synchronization across packages
+│
+└── .github/workflows/        # CI/CD for all languages
+    ├── proto.yml             # Validation & drift detection
+    ├── publish-npm.yml       # npm publishing
+    └── publish-pypi.yml      # PyPI publishing
+```
+
+## Installation
+
+### Go
+
+```bash
+go get github.com/materi/domain/proto
+```
+
+```go
+import (
+    "github.com/materi/domain/proto"
+    envelope "github.com/materi/domain/proto/materi/v1/envelope"
+    user "github.com/materi/domain/proto/materi/v1/user"
+)
+
+// Create an event
+event := &user.UserCreatedEvent{
+    UserId: "user-123",
+    Email:  "alice@example.com",
+    Name:   "Alice",
+}
+```
+
+### TypeScript / JavaScript
+
+```bash
+npm install @materi/proto
+# or
+yarn add @materi/proto
+```
+
+```typescript
+import { UserCreatedEvent, DomainEvent, Status } from '@materi/proto';
+
+const event: UserCreatedEvent = {
+    userId: 'user-123',
+    email: 'alice@example.com',
+    name: 'Alice',
+    createdAt: new Date(),
+};
+
+// Serialize to bytes
+const bytes = UserCreatedEvent.encode(event).finish();
+```
+
+### Python
+
+```bash
+pip install materi-proto
+```
+
+```python
+from materi_proto import UserCreatedEvent, DomainEvent, Status
+
+event = UserCreatedEvent(
+    user_id="user-123",
+    email="alice@example.com",
+    name="Alice",
+)
+
+# Serialize to bytes
+data = event.SerializeToString()
+```
+
+### Development Setup
+
+Prerequisites:
+-   Go 1.22+
+-   Node.js 18+
+-   Python 3.11+
+-   `protoc` v3.0+ (install via `brew install protobuf` on macOS)
+
+```bash
+cd /domain/manuscript
+
+# Install Go dependencies
+go mod download
+
+# Install TypeScript dependencies
+cd ts && npm install && cd ..
+
+# Install Python dependencies
+cd py && python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]" && cd ..
+
+# Compile all languages
+make compile-all
+
+# Build MSX Inspector TUI
+go build -o msx-inspector ./cmd/msx-inspector
+```
+
+## Usage
+
+### MSX Inspector - Interactive Schema Explorer
+
+```bash
+./msx-inspector
+```
+
+**Controls:**
+
+-   `↑/↓` or `j/k` - Navigate between domains
+-   `Enter` - View event details
+-   `h` - Return home
+-   `q` - Quit
+
+**Features:**
+
+-   📋 Browse all domains (user, document, collaboration, etc.)
+-   🔍 View event metadata (consumers, stream names, retention)
+-   🏷️ See which services consume each event
+-   ✅ Check audit & replay flags for compliance
+-   📊 View schema statistics
+
+### Programmatic Usage
+
+```go
+package main
+
+import (
+    "github.com/materi/msx/internal/schema"
+)
+
+func main() {
+    // Create a schema registry
+    registry := schema.NewSchemaRegistry()
+
+    // Get all events
+    events := registry.GetAllEvents()
+
+    // Find events by domain
+    userEvents := registry.GetEventsByDomain("user")
+
+    // Find events consumed by a specific service
+    apiEvents := registry.GetEventsByConsumer("API")
+
+    // Get schema statistics
+    stats := registry.GetStats()
+    println("Total events:", stats.TotalEvents)
+    println("Auditable rate:", stats.AuditableRate * 100, "%")
+    println("Replayable rate:", stats.ReplayableRate * 100, "%")
+}
+```
+
+## Event Domains
+
+### User (12 events)
+
+-   Account creation, authentication, profile updates
+-   Consumers: Shield, API, Aria, Folio
+
+### Document (6 events)
+
+-   Document lifecycle (create, update, delete, archive)
+-   Consumers: API, Relay, Aria, Folio
+
+### Collaboration (5 events)
+
+-   Real-time collaborative editing synchronization
+-   Consumers: Relay, API, Folio
+
+### Workspace (5 events)
+
+-   Team management, workspace creation, settings
+-   Consumers: API, Shield, Folio
+
+### Aria (AI Safety) (5 events)
+
+-   AI analysis, safety gate decisions, content moderation
+-   Consumers: Aria, API, Folio
+
+### Notification (4 events)
+
+-   Email, webhooks, in-app notifications, SMS
+-   Consumers: Shield, API, Folio
+
+### Audit (3 events)
+
+-   Security events, compliance logs, forensic trails
+-   Consumers: Arena, Shield, Folio
+
+## Metadata & Custom Options
+
+Every event includes enriched metadata for introspection:
+
+```protobuf
+message UserCreatedEvent {
+  string event_id = 1;
+  string user_id = 2;
+  string email = 3;
+
+  // Custom metadata option
+  option (materi.EventMetadata).consumers = "API,Shield,Aria";
+  option (materi.EventMetadata).stream = "materi:events:user";
+  option (materi.EventMetadata).retention_days = 90;
+  option (materi.EventMetadata).is_auditable = true;
+  option (materi.EventMetadata).ordering = "causally_ordered";
+}
+```
+
+## Compilation
+
+### All Languages
+
+```bash
+# Compile Go, TypeScript, and Python
+make compile-all
+
+# Or from .msx directory
+cd .msx && make compile-all
+```
+
+### Individual Languages
+
+```bash
+# Go only
+make compile-protos
+
+# TypeScript only
+make compile-ts
+
+# Python only
+make compile-py
+```
+
+### Build Packages
+
+```bash
+# Build TypeScript package (ESM + CJS + types)
+make build-ts
+
+# Build Python package (wheel + sdist)
+make build-py
+```
+
+### Version Management
+
+```bash
+# Sync version across all packages
+./scripts/sync-version.sh 0.2.0
+```
+
+### Watch Mode
+
+```bash
+# Watch for proto changes and recompile
+make watch
+```
+
+**Generated Output:**
+- Go: `proto/materi/v1/*.pb.go` (10 files)
+- TypeScript: `ts/generated/domains/*.ts` (12 files)
+- Python: `py/src/materi_proto/domains/*_pb2.py` (9 files + stubs)
+
+## Testing
+
+### Go
+
+```bash
+# Run all tests
+go test ./...
+
+# Run with coverage
+go test -cover ./...
+
+# Run proto module tests
+cd proto && go test ./...
+```
+
+### TypeScript
+
+```bash
+cd ts
+
+# Type check
+npm run typecheck
+
+# Build and verify
+npm run build
+```
+
+### Python
+
+```bash
+cd py
+
+# Activate venv
+source .venv/bin/activate
+
+# Run tests
+PYTHONPATH=src pytest tests/ -v
+
+# Type check (optional)
+mypy src/materi_proto
+```
+
+**Test Coverage:**
+
+-   Schema registry initialization & retrieval
+-   Event metadata validation
+-   Consumer mapping
+-   Stream routing
+-   Serialization/deserialization round-trips
+-   Type safety verification
+
+## Distributed Tracing Support
+
+Every DomainEvent includes trace correlation fields for observability:
+
+```go
+type DomainEvent struct {
+    EventId        string
+    AggregateId    string
+    AggregateType  string
+    EventType      string
+    Data           []byte
+    Timestamp      int64
+
+    // Tracing fields
+    TraceId        string  // W3C trace context
+    SpanId         string  // Current span
+    ParentSpanId   string  // Parent span
+    CorrelationId  string  // Causality tracking
+}
+```
+
+Integrates with:
+
+-   **Folio** (centralized observability hub)
+-   **Prometheus** (metric collection)
+-   **Jaeger** (distributed tracing)
+
+## Deployment
+
+### Docker
+
+```dockerfile
+FROM golang:1.22-alpine
+
+WORKDIR /app
+COPY . .
+RUN go mod download
+RUN go build -o msx-inspector ./cmd/msx-inspector
+
+ENTRYPOINT ["./msx-inspector"]
+```
+
+### Kubernetes
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: msx-inspector
+spec:
+    replicas: 1
+    template:
+        spec:
+            containers:
+                - name: inspector
+                  image: materi/msx-inspector:latest
+                  ports:
+                      - containerPort: 8080
+```
+
+## CI/CD
+
+GitHub Actions automatically:
+
+-   ✅ Compile proto definitions for **Go, TypeScript, and Python** on every PR
+-   ✅ **Drift detection** - fails if generated code is out of sync
+-   ✅ Run test suite for all languages
+-   ✅ Build and type-check packages
+-   ✅ Publish to npm and PyPI on release
+
+### Workflows
+
+| Workflow | Trigger | Description |
+|----------|---------|-------------|
+| `proto.yml` | PR, push to main | Validate & drift detection for all languages |
+| `publish-npm.yml` | Release, manual | Publish `@materi/proto` to npm |
+| `publish-pypi.yml` | Release, manual | Publish `materi-proto` to PyPI |
+
+### Manual Publishing
+
+```bash
+# Publish to npm (requires NPM_TOKEN secret)
+gh workflow run publish-npm.yml -f version=0.2.0 -f tag=latest
+
+# Publish to PyPI (uses trusted publishing)
+gh workflow run publish-pypi.yml -f version=0.2.0 -f repository=pypi
+```
+
+See `.github/workflows/` for configuration
+
+## Performance
+
+**Benchmarks** (Go on M2 MacBook Pro):
+
+-   Schema registry initialization: ~100µs
+-   Event lookup by type: ~50ns
+-   Domain retrieval: ~1µs
+-   Consumer mapping: ~500ns
+
+**Memory Usage:**
+
+-   Registry with 50 events: ~2MB
+-   Full descriptor set: ~500KB
+
+## Competitive Analysis
+
+| Feature               | MSX    | Others |
+| --------------------- | ------ | ------ |
+| Unified schema        | ✅     | ❌     |
+| Runtime introspection | ✅     | ⚠️     |
+| Deterministic replay  | ✅     | ❌     |
+| Forensic auditing     | ✅     | ⚠️     |
+| Type safety           | ✅     | ❌     |
+| Tracing integration   | ✅     | ⚠️     |
+| Multi-domain support  | ✅ (8) | ⚠️     |
+
+## Contributing
+
+### Add a New Event Type
+
+1. Define in `.msx/domains/{domain}/v1.proto`
+2. Add metadata options (consumers, stream, retention)
+3. Regenerate all languages:
+   ```bash
+   make compile-all
+   ```
+4. Update re-exports:
+   - Go: `proto/wrapper.go`
+   - TypeScript: `ts/src/index.ts`
+   - Python: `py/src/materi_proto/__init__.py`
+5. Add tests and commit generated files
+
+### Add a New Domain
+
+1. Create `.msx/domains/{new-domain}/v1.proto`
+2. Reference envelope and shared types
+3. Update Makefile to include the new proto file
+4. Regenerate with `make compile-all`
+5. Update all re-export wrappers
+
+### Update Package Version
+
+```bash
+# Sync version across Go, TypeScript, and Python
+./scripts/sync-version.sh 0.2.0
+
+# Commit and tag
+git commit -am "chore: bump version to 0.2.0"
+git tag v0.2.0
+git push && git push --tags
+```
+
+### Proto File Guidelines
+
+- Always include `go_package` option pointing to `github.com/materi/domain/proto/materi/v1/{domain}`
+- Use semantic versioning in directory names (v1, v2, etc.)
+- Add comprehensive field comments for documentation
+- Include metadata options for introspection
+
+## Roadmap
+
+-   ✅ Phase 1: Proto schema + barrel file architecture (COMPLETE)
+-   ✅ Phase 2: Custom metadata options (COMPLETE)
+-   ✅ Phase 3: Go bindings compilation (COMPLETE)
+-   ✅ Phase 4: TypeScript bindings + npm package (COMPLETE)
+-   ✅ Phase 5: Python bindings + PyPI package (COMPLETE)
+-   ✅ Phase 6: Multi-language CI/CD (COMPLETE)
+-   🔄 Phase 7: Bubble Tea TUI inspector (IN PROGRESS)
+-   ⏳ Phase 8: gRPC reflection service
+-   ⏳ Phase 9: JSON schema generation
+-   ⏳ Phase 10: Event migration/versioning tools
+
+## Support
+
+**Documentation:**
+
+-   [PROTO_STRATEGY_AND_COMPILATION.md](../PROTO_STRATEGY_AND_COMPILATION.md) - CTO-level architecture
+-   [PROTO_COMPILATION_GUIDE.md](../PROTO_COMPILATION_GUIDE.md) - Technical reference
+-   [PROTO_QUICK_REFERENCE.md](../PROTO_QUICK_REFERENCE.md) - Developer quick start
+
+**Issues & Questions:**
+Open an issue on GitHub or contact @devops-devil
+
+## License
+
+Proprietary - Materi Platform Internal Use Only
+
+---
+
+**Made with ❤️ for distributed collaboration at scale**
+_MSX v0.1.0 | Protocol Buffers 3 | Go 1.22 | TypeScript 5.x | Python 3.11+_

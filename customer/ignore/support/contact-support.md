@@ -1,7 +1,8 @@
 ---
-title: "Contact Support"
-description: "Learn how to reach the Materi support team and understand our service level agreements"
-icon: "headset"
+title: Contact Support
+description: Learn how to reach the Materi support team and understand our service level agreements
+icon: headset
+relatedPages: []
 ---
 
 # Contact Materi Support

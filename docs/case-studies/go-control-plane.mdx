@@ -1,0 +1,62 @@
+---
+title: 'Go: Custom Metrics Exporter'
+sidebarTitle: 'Go Controller'
+description: 'Building custom Prometheus exporters for Shield monitoring.'
+---
+
+# The Go "Shield Agent"
+
+This component demonstrates how to use Go to expose **custom business metrics** that Prometheus/Alloy can scrape.
+
+In the "Network-Aware CTO Hero" model, you don't just monitor CPU/Memory; you monitor **Business Health**.
+
+## The Code
+
+Located in `platform/atlas/apps/go-controller`.
+
+### Key Pattern: The Prometheus Registry
+
+We use the official Prometheus Go client to define custom Gauges.
+
+```go
+var (
+	// Custom metric: Shield Health Score
+	shieldHealth = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "shield_system_health_score",
+		Help: "Current health score of the Shield security system (0-100)",
+	})
+)
+```
+
+And expose them via a standard HTTP handler:
+
+```go
+http.Handle("/metrics", promhttp.Handler())
+```
+
+## Integration with Pipeline
+
+1.  **Service**: Runs on port `8081`.
+2.  **Scrape Config**: Added to `prometheus.yml`:
+    ```yaml
+    - job_name: 'go-controller'
+      static_configs:
+          - targets: ['go-controller:8081']
+    ```
+3.  **Visualization**: You can now query `shield_system_health_score` in Grafana.
+
+## Verification
+
+To verify the exporter is running locally:
+
+```bash
+curl http://localhost:8081/metrics
+```
+
+You should see:
+
+```text
+# HELP shield_system_health_score Current health score of the Shield security system (0-100)
+# TYPE shield_system_health_score gauge
+shield_system_health_score 97.42
+```

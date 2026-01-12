@@ -1,3 +1,17 @@
+---
+title: "🚀 Materi Platform - Complete Deployment Guide"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
 # 🚀 Materi Platform - Complete Deployment Guide
 
 **Version**: 1.0.0

@@ -1,7 +1,8 @@
 ---
-title: "Comments & Discussions"
-description: "Add contextual feedback, start threaded discussions, and collaborate effectively with inline comments"
-icon: "comments"
+title: Comments & Discussions
+description: Add contextual feedback, start threaded discussions, and collaborate effectively with inline comments
+icon: comments
+relatedPages: []
 ---
 
 # Comments & Discussions

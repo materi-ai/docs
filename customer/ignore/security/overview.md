@@ -1,7 +1,13 @@
 ---
-title: "Security Overview"
-description: "Comprehensive security architecture, principles, and controls protecting your content in Materi"
-icon: "shield-halved"
+title: Security Overview
+description: Comprehensive security architecture, principles, and controls protecting your content in Materi
+icon: shield-halved
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 # Security Overview

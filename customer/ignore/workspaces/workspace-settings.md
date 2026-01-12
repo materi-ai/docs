@@ -1,7 +1,8 @@
 ---
-title: "Workspace Settings"
-description: "Complete reference for all workspace configuration options including general settings, security, integrations, and advanced features"
-icon: "gear"
+title: Workspace Settings
+description: Complete reference for all workspace configuration options including general settings, security, integrations, and advanced features
+icon: gear
+relatedPages: []
 ---
 
 # Workspace Settings

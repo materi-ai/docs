@@ -1,7 +1,8 @@
 ---
-title: "AI Diagram Analysis"
-description: "Understand and describe visual diagrams, flowcharts, and architectural drawings with Aria's vision capabilities"
-icon: "diagram-project"
+title: AI Diagram Analysis
+description: Understand and describe visual diagrams, flowcharts, and architectural drawings with Aria's vision capabilities
+icon: diagram-project
+relatedPages: []
 ---
 
 # AI Diagram Analysis

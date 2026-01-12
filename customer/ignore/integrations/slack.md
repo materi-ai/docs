@@ -1,7 +1,8 @@
 ---
-title: "Slack Integration"
-description: "Get real-time notifications, collaborate on content, and manage approvals directly in Slack"
-icon: "slack"
+title: Slack Integration
+description: Get real-time notifications, collaborate on content, and manage approvals directly in Slack
+icon: slack
+relatedPages: []
 ---
 
 # Slack Integration

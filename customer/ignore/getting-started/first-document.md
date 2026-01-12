@@ -1,7 +1,8 @@
 ---
-title: 'Create Your First Document'
-description: 'Learn how to create, edit, and share your first document with real-time collaboration'
-icon: 'file-plus'
+title: Create Your First Document
+description: Learn how to create, edit, and share your first document with real-time collaboration
+icon: file-plus
+relatedPages: []
 ---
 
 Now that you're signed up, let's create your first document and experience Materi's real-time collaboration features.

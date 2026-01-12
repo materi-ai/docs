@@ -1,0 +1,1109 @@
+---
+title: Relay Service Overview
+description: Real-time collaborative document editing service with WebSocket support
+icon: zap
+source: /Users/alexarno/materi/domain/relay/README.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.271077Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+---
+
+# Materi Collaboration Service
+
+**Real-time collaborative document editing service with operational transform, conflict resolution, and event-driven synchronization**
+
+[![Build Status](https://github.com/materi/collaboration-service/workflows/CI/badge.svg)](https://github.com/materi/collaboration-service/actions)
+[![Coverage](https://codecov.io/gh/materi/collaboration-service/branch/main/graph/badge.svg)](https://codecov.io/gh/materi/collaboration-service)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Rust Version](https://img.shields.io/badge/rust-1.75+-blue.svg)](https://www.rust-lang.org/)
+
+## 📋 Table of Contents
+
+-   [Overview](#overview)
+-   [Features](#features)
+-   [Event-Driven Architecture](#event-driven-architecture)
+-   [Architecture](#architecture)
+-   [Quick Start](#quick-start)
+-   [Development Setup](#development-setup)
+-   [API Documentation](#api-documentation)
+-   [Configuration](#configuration)
+-   [Event System](#event-system)
+-   [Deployment](#deployment)
+-   [Performance](#performance)
+-   [Security](#security)
+-   [Monitoring](#monitoring)
+-   [Troubleshooting](#troubleshooting)
+-   [Contributing](#contributing)
+
+## 🎯 Overview
+
+The Materi Collaboration Service enables real-time collaborative editing of documents with sophisticated conflict resolution using operational transformation. Built with Rust and Axum, it provides high-performance WebSocket connections for real-time synchronization, user presence management, comprehensive audit trails, and cross-service event synchronization.
+
+### Key Capabilities
+
+-   **Real-time Collaboration**: Multiple users can edit documents simultaneously with sub-second latency
+-   **Operational Transform**: Advanced conflict resolution using vector clocks and operational transformation algorithms
+-   **User Presence**: Real-time cursor positions, selections, and user status indicators
+-   **Event-Driven Architecture**: Redis Streams-based event publishing and consumption for cross-service synchronization
+-   **Scalable Architecture**: Horizontally scalable with Redis clustering and database sharding support
+-   **Comprehensive Monitoring**: Built-in metrics, tracing, and health checks
+-   **Security First**: JWT authentication, role-based permissions, and audit logging
+
+## ✨ Features
+
+### Core Collaboration
+
+-   ✅ Real-time document synchronization
+-   ✅ Operational transformation with conflict resolution
+-   ✅ Vector clock-based operation ordering
+-   ✅ Undo/redo support with operation history
+-   ✅ Rich text formatting operations
+-   ✅ Document versioning and snapshots
+
+### User Experience
+
+-   ✅ Real-time user presence indicators
+-   ✅ Live cursor positions and selections
+-   ✅ User status management (active/idle/away)
+-   ✅ Multi-device session handling
+-   ✅ Offline mode with conflict resolution
+-   ✅ Performance optimization with caching
+
+### Enterprise Features
+
+-   ✅ Role-based access control (RBAC)
+-   ✅ Comprehensive audit trails
+-   ✅ Document locking mechanisms
+-   ✅ Background job processing
+-   ✅ Horizontal scaling support
+-   ✅ High availability configuration
+-   ✅ Event-driven architecture with Redis Streams
+-   ✅ Cross-service data synchronization
+-   ✅ Protocol Buffer-based event contracts
+
+### Observability
+
+-   ✅ Prometheus metrics integration
+-   ✅ Distributed tracing with Jaeger
+-   ✅ Structured JSON logging
+-   ✅ Health check endpoints
+-   ✅ Performance monitoring
+-   ✅ Custom alerting support
+
+## 🔄 Event-Driven Architecture
+
+The Collaboration Service integrates with the Materi platform's event-driven architecture using Redis Streams and Protocol Buffer contracts for cross-service communication.
+
+### Published Events
+
+The service publishes the following events to maintain data consistency across the platform:
+
+#### Collaboration Events (`materi:events:collaboration`)
+
+```rust
+// Operation performed (insert, delete, format)
+CollaborationEvent::OperationPerformed {
+    document_id: Uuid,
+    user_id: Uuid,
+    operation: Operation,
+    vector_clock: VectorClock,
+    timestamp: DateTime<Utc>,
+}
+
+// User presence updated (cursor, selection, status)
+CollaborationEvent::PresenceUpdated {
+    document_id: Uuid,
+    user_id: Uuid,
+    cursor_position: Position,
+    selection: Option<Range>,
+    status: PresenceStatus,
+    timestamp: DateTime<Utc>,
+}
+
+// Document locked/unlocked
+CollaborationEvent::DocumentLocked {
+    document_id: Uuid,
+    user_id: Uuid,
+    lock_type: LockType,
+    expires_at: Option<DateTime<Utc>>,
+}
+```
+
+### Consumed Events
+
+The service consumes events from other platform services to maintain synchronization:
+
+#### User Events (`materi:events:users`)
+
+```rust
+// User profile updated - sync user info for presence
+UserEvent::UserUpdated {
+    user_id: Uuid,
+    name: String,
+    email: String,
+    avatar_url: Option<String>,
+    updated_at: DateTime<Utc>,
+}
+
+// User deleted - cleanup presence and sessions
+UserEvent::UserDeleted {
+    user_id: Uuid,
+    deleted_at: DateTime<Utc>,
+}
+```
+
+#### Document Events (`materi:events:documents`)
+
+```rust
+// Document updated - sync metadata and permissions
+DocumentEvent::DocumentUpdated {
+    document_id: Uuid,
+    title: String,
+    permissions: Vec<Permission>,
+    updated_at: DateTime<Utc>,
+}
+
+// Document deleted - cleanup collaboration sessions
+DocumentEvent::DocumentDeleted {
+    document_id: Uuid,
+    deleted_at: DateTime<Utc>,
+}
+```
+
+### Event Processing Guarantees
+
+-   **At-least-once delivery**: Events are guaranteed to be processed at least once
+-   **Idempotency**: All event handlers are idempotent to handle duplicate processing
+-   **Ordering**: Events within the same stream maintain order
+-   **Error handling**: Failed events are retried with exponential backoff
+-   **Dead letter queue**: Permanently failed events are moved to dead letter streams
+
+## 🏗️ Architecture
+
+### High-Level Architecture
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Web Client    │    │   Mobile App    │    │   Desktop App   │
+└─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
+          │                      │                      │
+          └──────────────────────┼──────────────────────┘
+                                 │ WebSocket
+                    ┌─────────────▼──────────────┐
+                    │  Collaboration Service     │
+                    │  (Axum + WebSockets)      │
+                    └─────────────┬──────────────┘
+                                  │
+              ┌───────────────────┼───────────────────┐
+              │                   │                   │
+    ┌─────────▼──────────┐ ┌──────▼──────┐ ┌─────────▼──────────┐
+    │    PostgreSQL      │ │    Redis    │ │    Main API        │
+    │  (Operations &     │ │ (Presence & │ │   (Auth & Docs)    │
+    │   Persistence)     │ │ Event Store)│ │                    │
+    └────────────────────┘ └──┬────────┬─┘ └─────────▲──────────┘
+                              │        │             │
+                   Event      │        │             │ Events
+                   Streams    │        │             │
+                              │        │             │
+                    ┌─────────▼────────▼─────────────┴──────────────┐
+                    │           Event-Driven System            │
+                    │     (Redis Streams + Protocol Buffers)  │
+                    │   - Collaboration Events                 │
+                    │   - User Presence Events                 │
+                    │   - Document Sync Events                 │
+                    └──────────────────────────────────────────┘
+```
+
+### Component Architecture
+
+-   **WebSocket Handler**: Manages real-time connections and message routing
+-   **Collaboration Engine**: Processes operations with conflict resolution
+-   **Presence Manager**: Tracks user cursors, selections, and status
+-   **Operation Transform**: Implements OT algorithms with vector clocks
+-   **Database Layer**: Handles persistence, migrations, and queries
+-   **Redis Cache**: Manages real-time state and pub/sub messaging
+-   **Authentication**: JWT validation and user context management
+-   **Event System**: Redis Streams-based event publishing and consumption
+-   **Event Publisher**: Publishes collaboration events (operations, presence)
+-   **Event Consumer**: Processes events from other services (user updates, document changes)
+-   **Protocol Buffer Contracts**: Shared data structures for cross-service communication
+
+### Data Flow
+
+1. **Client Operation**: User performs edit operation (insert/delete/format)
+2. **WebSocket Receive**: Service receives operation via WebSocket
+3. **Authentication**: Validate JWT token and permissions
+4. **Transform**: Apply operational transformation for conflict resolution
+5. **Persist**: Store operation in PostgreSQL with vector clock
+6. **Publish Event**: Publish collaboration event to Redis Streams
+7. **Broadcast**: Send transformed operation to all connected clients
+8. **Update Presence**: Sync user cursor/selection state via Redis
+9. **Cross-Service Sync**: Other services consume collaboration events
+10. **Event Processing**: Handle incoming events from API/Shield services
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+-   **Rust** 1.75+ ([Install](https://rustup.rs/))
+-   **Docker** & Docker Compose ([Install](https://docs.docker.com/get-docker/))
+-   **PostgreSQL** 15+ (via Docker)
+-   **Redis** 7+ (via Docker)
+
+### 1. Clone and Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/materi/collaboration-service.git
+cd collaboration-service
+
+# Initial setup (installs tools, starts services, runs migrations)
+make setup
+```
+
+### 2. Configuration
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# Edit configuration (update JWT_SECRET, database URLs, etc.)
+vim .env
+```
+
+### 3. Start Development
+
+```bash
+# Start with auto-reload
+make dev
+
+# Or build and run manually
+make build
+make run
+```
+
+### 4. Verify Installation
+
+```bash
+# Check health
+curl http://localhost:8081/health
+
+# View metrics
+curl http://localhost:8081/metrics
+
+# Check event system
+curl http://localhost:8081/events/health
+
+# Check WebSocket connection
+# Open browser to ws://localhost:8081/ws/{document-id}
+```
+
+## 🔧 Development Setup
+
+### Environment Setup
+
+```bash
+# Install development tools
+make install-tools
+
+# Start all services (PostgreSQL, Redis, monitoring)
+make services-up-all
+
+# Create databases and run migrations
+make db-setup
+
+# Create environment files
+make env-setup
+```
+
+### Development Workflow
+
+```bash
+# Development with auto-reload
+make dev
+
+# Run tests with coverage
+make test-coverage
+
+# Code quality checks
+make lint
+make clippy
+make fmt
+
+# Full CI pipeline
+make ci
+```
+
+### Database Operations
+
+```bash
+# Run migrations
+make db-migrate
+
+# Reset database
+make db-reset
+
+# Connect to database
+make db-shell
+
+# Create backup
+make db-dump
+
+# Restore from backup
+make db-restore BACKUP=filename.sql
+```
+
+### Testing
+
+> **Note**: Automated test suite is currently deferred. See [TESTING_STATUS.md](TESTING_STATUS.md) for details.
+
+**Production Binary**: ✅ Clean build with zero warnings
+**Runtime Testing**: Manual integration and WebSocket testing
+**Deployment**: Docker and platform integration validated
+
+```bash
+# Build and verify production binary
+make build              # Debug build (4s, zero warnings)
+make prod-build        # Optimized release build
+
+# Start test infrastructure
+make test-db-up        # Postgres (5433) + Redis (6380)
+
+# Runtime integration testing
+make runtime-test      # Interactive testing with debug logs
+make health-check      # Verify health endpoint
+make metrics-check     # Check Prometheus metrics
+
+# WebSocket testing (requires wscat)
+make ws-test-install   # Install WebSocket testing tools
+wscat -c ws://localhost:8081/ws
+
+# Production deployment testing
+make prod-test         # Test production binary
+make prod-docker       # Build production Docker image
+make prod-deploy-unified  # Deploy to unified platform
+```
+
+See [RUNTIME_TESTING.md](RUNTIME_TESTING.md) for detailed testing workflows.
+
+# Unit tests only
+
+make test-unit
+
+# Integration tests
+
+make test-integration
+
+# Event system tests
+
+make test-events
+
+# Watch mode
+
+make test-watch
+
+# Benchmarks
+
+make bench
+
+````
+
+## 📖 API Documentation
+
+### WebSocket API
+
+#### Connection
+
+```javascript
+const ws = new WebSocket("ws://localhost:8081/ws/{document_id}");
+````
+
+#### Authentication
+
+```json
+{
+    "type": "authenticate",
+    "payload": {
+        "token": "jwt_token_here"
+    }
+}
+```
+
+#### Send Operation
+
+```json
+{
+    "type": "operation",
+    "payload": {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "operation_type": "insert",
+        "position": 42,
+        "content": "Hello, World!",
+        "vector_clock": {
+            "user_123": 15,
+            "user_456": 23
+        }
+    }
+}
+```
+
+#### Update Presence
+
+```json
+{
+    "type": "presence_update",
+    "payload": {
+        "cursor_position": {
+            "line": 5,
+            "column": 12,
+            "absolute_position": 142
+        },
+        "selection": {
+            "start": { "line": 5, "column": 12 },
+            "end": { "line": 5, "column": 25 }
+        },
+        "status": "active"
+    }
+}
+```
+
+### HTTP Endpoints
+
+#### Health Check
+
+```bash
+GET /health
+# Returns: {"status": "ok", "timestamp": 1634567890}
+```
+
+#### Readiness Check
+
+```bash
+GET /ready
+# Returns detailed dependency status
+```
+
+#### Document Presence
+
+```bash
+GET /documents/{document_id}/presence
+# Returns: List of active users with cursors and selections
+```
+
+#### Apply Operations
+
+```bash
+POST /documents/{document_id}/operations
+Content-Type: application/json
+
+[
+  {
+    "operation_type": "insert",
+    "position": 42,
+    "content": "New text"
+  }
+]
+```
+
+#### Event System Health
+
+```bash
+GET /events/health
+# Returns: Event system status and stream info
+
+GET /events/streams
+# Returns: Active stream information
+
+GET /events/consumers
+# Returns: Consumer group status
+```
+
+#### Metrics (Prometheus)
+
+```bash
+GET /metrics
+# Returns: Prometheus-formatted metrics
+```
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+#### Server Configuration
+
+```bash
+COLLAB_HOST=0.0.0.0              # Bind address
+COLLAB_PORT=8081                 # Server port
+RUST_ENV=development             # Environment mode
+RUST_LOG=info                    # Log level
+```
+
+#### Database Configuration
+
+```bash
+DATABASE_URL=postgresql://...     # PostgreSQL connection
+DATABASE_MAX_CONNECTIONS=20      # Connection pool size
+DATABASE_ACQUIRE_TIMEOUT=30      # Connection timeout (seconds)
+```
+
+#### Redis Configuration
+
+```bash
+REDIS_URL=redis://localhost:6380/0  # Redis connection
+REDIS_MAX_CONNECTIONS=20            # Connection pool size
+REDIS_CONNECTION_TIMEOUT=5          # Timeout (seconds)
+```
+
+#### Security Configuration
+
+```bash
+JWT_SECRET=your-secret-key        # JWT signing key (32+ chars)
+JWT_ALGORITHM=HS256               # JWT algorithm
+API_BASE_URL=http://localhost:8080  # Main API URL
+```
+
+#### Performance Tuning
+
+```bash
+MAX_OPERATIONS_PER_SECOND=100     # Rate limiting
+MAX_DOCUMENT_SIZE_BYTES=10485760  # 10MB limit
+OPERATION_TIMEOUT_MS=5000         # Operation timeout
+PRESENCE_TIMEOUT_SECONDS=300      # Presence timeout
+```
+
+#### Event System Configuration
+
+```bash
+# Redis Streams for event processing
+EVENT_STREAM_COLLABORATION=materi:events:collaboration
+EVENT_STREAM_USERS=materi:events:users
+EVENT_STREAM_DOCUMENTS=materi:events:documents
+
+# Event consumer configuration
+EVENT_CONSUMER_GROUP=collaboration-service
+EVENT_CONSUMER_ID=collab-{instance-id}
+EVENT_BATCH_SIZE=10
+EVENT_BLOCK_TIME_MS=1000
+
+# Event publishing
+EVENT_MAX_LEN=10000               # Max stream length
+EVENT_RETRY_ATTEMPTS=3            # Retry failed publishes
+EVENT_RETRY_DELAY_MS=100          # Retry delay
+
+# Event processing
+EVENT_PROCESSING_TIMEOUT=30       # Processing timeout (seconds)
+EVENT_DEAD_LETTER_TTL=86400       # Dead letter TTL (seconds)
+EVENT_ENABLE_IDEMPOTENCY=true     # Enable idempotency checks
+```
+
+#### Observability
+
+```bash
+ENABLE_METRICS=true               # Prometheus metrics
+ENABLE_TRACING=true               # Jaeger tracing
+TRACING_ENDPOINT=http://...       # Jaeger collector
+METRICS_PORT=9090                 # Metrics server port
+```
+
+## 🔄 Event System
+
+### Event Publishing
+
+The collaboration service publishes events for key operations:
+
+```rust
+// Example: Publishing an operation event
+let event = CollaborationEvent::OperationPerformed {
+    document_id,
+    user_id,
+    operation: operation.clone(),
+    vector_clock: vector_clock.clone(),
+    timestamp: Utc::now(),
+};
+
+event_publisher.publish("collaboration", &event).await?;
+```
+
+### Event Consumption
+
+The service consumes events from other platform services:
+
+```rust
+// Example: Handling user update events
+async fn handle_user_updated(event: UserEvent) -> Result<(), EventError> {
+    match event {
+        UserEvent::UserUpdated { user_id, name, avatar_url, .. } => {
+            // Update user info in presence manager
+            presence_manager.update_user_info(user_id, name, avatar_url).await?;
+        }
+        UserEvent::UserDeleted { user_id, .. } => {
+            // Cleanup user presence and sessions
+            presence_manager.cleanup_user(user_id).await?;
+            session_manager.disconnect_user(user_id).await?;
+        }
+    }
+    Ok(())
+}
+```
+
+### Event Consumer Management
+
+```bash
+# Start event consumer
+cargo run --bin event_consumer
+
+# Monitor consumer status
+curl http://localhost:8081/events/consumers
+
+# Reset consumer group (development only)
+redis-cli XGROUP DESTROY materi:events:users collaboration-service
+redis-cli XGROUP CREATE materi:events:users collaboration-service 0
+```
+
+## 🚢 Deployment
+
+### Production Deployment
+
+#### 1. Docker Build
+
+```bash
+# Build optimized image
+make docker-build
+
+# Push to registry
+make docker-push
+```
+
+#### 2. Environment Setup
+
+```bash
+# Production environment file
+cp .env.example .env.production
+
+# Update for production
+vim .env.production
+```
+
+#### 3. Database Migration
+
+```bash
+# Run migrations in production
+DATABASE_URL=postgresql://prod... sqlx migrate run
+```
+
+#### 4. Deploy
+
+```bash
+# Deploy to staging
+make deploy-staging
+
+# Deploy to production (with confirmation)
+make deploy-production
+```
+
+### Kubernetes Deployment
+
+```yaml
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: collaboration-service
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: collaboration-service
+    template:
+        metadata:
+            labels:
+                app: collaboration-service
+        spec:
+            containers:
+                - name: collaboration-service
+                  image: ghcr.io/materi/collaboration-service:latest
+                  ports:
+                      - containerPort: 8081
+                  env:
+                      - name: DATABASE_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: collaboration-secrets
+                                key: database-url
+                      - name: REDIS_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: collaboration-secrets
+                                key: redis-url
+                      - name: JWT_SECRET
+                        valueFrom:
+                            secretKeyRef:
+                                name: collaboration-secrets
+                                key: jwt-secret
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "250m"
+                      limits:
+                          memory: "512Mi"
+                          cpu: "500m"
+                  livenessProbe:
+                      httpGet:
+                          path: /health
+                          port: 8081
+                      initialDelaySeconds: 10
+                      periodSeconds: 30
+                  readinessProbe:
+                      httpGet:
+                          path: /ready
+                          port: 8081
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
+```
+
+## 📊 Performance
+
+### Benchmarks
+
+-   **Throughput**: 10,000+ operations/second per instance
+-   **Latency**: <50ms operation processing (P95)
+-   **Connections**: 1,000+ concurrent WebSocket connections
+-   **Memory**: ~100MB base + ~1KB per active user
+-   **CPU**: ~10% utilization at 1,000 ops/sec
+-   **Event Processing**: 5,000+ events/second per consumer
+
+### Performance Tuning
+
+#### Database Optimization
+
+```sql
+-- PostgreSQL tuning
+shared_buffers = 256MB
+effective_cache_size = 1GB
+max_connections = 200
+checkpoint_completion_target = 0.9
+```
+
+#### Redis Optimization
+
+```bash
+# Redis tuning
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+tcp-keepalive 300
+```
+
+#### Application Tuning
+
+```bash
+# Environment variables
+MAX_CONNECTIONS_TOTAL=1000
+DATABASE_MAX_CONNECTIONS=20
+REDIS_MAX_CONNECTIONS=20
+OPERATION_TIMEOUT_MS=5000
+EVENT_BATCH_SIZE=10
+```
+
+## 🔒 Security
+
+### Authentication
+
+-   **JWT Tokens**: Signed with HS256/RS256 algorithms
+-   **Token Validation**: Automatic expiration and signature verification
+-   **User Context**: Extracted from JWT claims for authorization
+
+### Authorization
+
+-   **Role-Based Access**: Owner, Editor, Viewer, Commenter roles
+-   **Document Permissions**: Fine-grained access control per document
+-   **Operation Filtering**: Users can only perform permitted operations
+
+### Event Security
+
+-   **Event Authentication**: All events include authenticated user context
+-   **Event Validation**: Schema validation for all incoming events
+-   **Event Authorization**: Events are validated against user permissions
+-   **Event Encryption**: Sensitive event data can be encrypted at rest
+
+## 📈 Monitoring
+
+### Metrics (Prometheus)
+
+#### System Metrics
+
+```
+http_requests_total{method="GET", endpoint="/health"}
+http_request_duration_seconds{method="POST", endpoint="/operations"}
+websocket_connections_active
+websocket_messages_total{type="operation"}
+```
+
+#### Application Metrics
+
+```
+collaboration_operations_total{type="insert", status="success"}
+collaboration_operation_duration_seconds{type="transform"}
+collaboration_documents_active
+collaboration_users_active
+collaboration_conflicts_total{strategy="vector_clock"}
+```
+
+#### Event System Metrics
+
+```
+event_messages_published_total{stream="collaboration", type="operation"}
+event_messages_consumed_total{stream="users", consumer_group="collaboration-service"}
+event_processing_duration_seconds{event_type="user_updated"}
+event_consumer_lag{stream="documents", consumer_group="collaboration-service"}
+event_publish_errors_total{stream="collaboration", error_type="redis_timeout"}
+event_dead_letter_messages_total{stream="collaboration"}
+```
+
+#### Business Metrics
+
+```
+documents_edited_total
+users_active_daily
+operations_per_document_avg
+session_duration_seconds
+events_processed_total
+```
+
+### Health Checks
+
+```bash
+# Application health
+GET /health
+# Returns: {"status": "ok", "timestamp": 1634567890}
+
+# Dependency health
+GET /ready
+# Returns: {
+#   "status": "ready",
+#   "checks": {
+#     "database": "ok",
+#     "redis": "ok",
+#     "event_streams": "ok",
+#     "migrations": {"version": 4, "dirty": false}
+#   }
+# }
+
+# Event system health
+GET /events/health
+# Returns: {
+#   "status": "ok",
+#   "streams": {
+#     "collaboration": {"length": 1024, "consumers": 1},
+#     "users": {"length": 256, "consumers": 1},
+#     "documents": {"length": 128, "consumers": 1}
+#   }
+# }
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### WebSocket Connection Failed
+
+```bash
+# Check service status
+curl http://localhost:8081/health
+
+# Verify JWT token
+echo "your-jwt-token" | base64 -d
+
+# Check logs
+make logs
+```
+
+#### Database Connection Issues
+
+```bash
+# Test database connectivity
+make db-shell
+
+# Check migration status
+sqlx migrate info --source migrations
+
+# Reset if needed
+make db-reset
+```
+
+#### Event System Issues
+
+```bash
+# Check event stream status
+curl http://localhost:8081/events/health
+
+# Monitor consumer lag
+curl http://localhost:8081/metrics | grep event_consumer_lag
+
+# Check for dead letter messages
+redis-cli XLEN materi:events:collaboration:dead_letter
+
+# Review event processing errors
+grep "event_processing_error" logs/collaboration.log
+
+# Reset consumer group (if needed)
+redis-cli XGROUP DESTROY materi:events:users collaboration-service
+redis-cli XGROUP CREATE materi:events:users collaboration-service 0
+
+# Monitor event publish rate
+curl http://localhost:8081/metrics | grep event_messages_published_total
+```
+
+#### High Memory Usage
+
+```bash
+# Check active connections
+curl http://localhost:8081/metrics | grep websocket_connections
+
+# Monitor presence cleanup
+curl http://localhost:8081/metrics | grep presence_cleanup
+
+# Check event consumer memory
+curl http://localhost:8081/metrics | grep event_consumer_memory
+
+# Tune cleanup intervals
+export PRESENCE_CLEANUP_INTERVAL=30
+```
+
+#### Operation Conflicts
+
+```bash
+# Check conflict resolution metrics
+curl http://localhost:8081/metrics | grep conflicts
+
+# Review conflict logs
+grep "conflict_resolution" logs/collaboration.log
+
+# Adjust vector clock settings
+export CONFLICT_RESOLUTION_STRATEGY=vector_clock
+```
+
+### Performance Issues
+
+#### High Latency
+
+```bash
+# Check operation processing time
+curl http://localhost:8081/metrics | grep operation_duration
+
+# Check event processing latency
+curl http://localhost:8081/metrics | grep event_processing_duration
+
+# Monitor database performance
+make postgres-cli
+SELECT * FROM pg_stat_activity;
+
+# Check Redis latency
+make redis-cli
+INFO latencystats
+```
+
+#### Memory Leaks
+
+```bash
+# Monitor memory usage
+curl http://localhost:8081/metrics | grep process_resident_memory
+
+# Check for stale connections
+SELECT * FROM websocket_sessions WHERE last_heartbeat < NOW() - INTERVAL '5 minutes';
+
+# Check event consumer memory
+curl http://localhost:8081/metrics | grep event_consumer_memory
+
+# Force cleanup
+SELECT cleanup_stale_presence();
+```
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+export RUST_LOG=debug,materi_collaboration=trace
+
+# Enable debug endpoints
+export ENABLE_DEBUG_ENDPOINTS=true
+
+# Enable event debugging
+export EVENT_DEBUG_MODE=true
+
+# Start with debugging
+make dev
+```
+
+## 🤝 Contributing
+
+### Development Process
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Code Standards
+
+```bash
+# Format code
+make fmt
+
+# Run linter
+make clippy
+
+# Check all quality gates
+make ci
+```
+
+### Testing Requirements
+
+-   Unit tests for all new functionality
+-   Integration tests for API endpoints
+-   Event system tests for event handling
+-   Load tests for performance-critical paths
+-   Documentation updates for public APIs
+
+### Commit Convention
+
+```
+feat: add new operational transform algorithm
+fix: resolve WebSocket connection leak
+docs: update API documentation
+test: add integration tests for presence
+refactor: improve error handling
+perf: optimize vector clock comparison
+event: add new collaboration event type
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+-   **Documentation**: [https://docs.materi.com/collaboration](https://docs.materi.com/collaboration)
+-   **Issues**: [GitHub Issues](https://github.com/materi/collaboration-service/issues)
+-   **Discussions**: [GitHub Discussions](https://github.com/materi/collaboration-service/discussions)
+-   **Email**: engineering@materi.com
+
+## 🙏 Acknowledgments
+
+-   [Operational Transform](http://www.codecommit.com/blog/java/understanding-and-applying-operational-transformation) algorithms
+-   [Axum Framework](https://github.com/tokio-rs/axum) for high-performance web services
+-   [SQLx](https://github.com/launchbadge/sqlx) for compile-time checked SQL
+-   [Redis](https://redis.io/) for real-time state management and event streams
+-   [Protocol Buffers](https://protobuf.dev/) for efficient cross-service communication
+-   The Rust community for excellent tooling and libraries
+
+---
+
+**Built with ❤️ by the Materi Engineering Team**

@@ -1,6 +1,9 @@
 ---
-title: 'Test the Shield GitHub Actions webhook locally'
-description: 'Send a signed workflow_run payload to Shield and confirm it queues processing'
+title: Test the Shield GitHub Actions webhook locally
+description: Send a signed workflow_run payload to Shield and confirm it queues processing
+relatedPages:
+  - architecture-overview.mdx
+  - developer/products/specifications/overview.md
 ---
 
 This recipe helps you validate the Shield CI/CD webhook receiver end-to-end.

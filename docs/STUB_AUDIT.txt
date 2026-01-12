@@ -1,0 +1,298 @@
+platform/atlas/enterprise/migration/user-migration.md:3:Stub file for user migration.
+platform/atlas/api/rest/documents/update-document.md:3:Stub file for REST API update document.
+platform/atlas/api/rest/documents/create-document.md:3:Stub file for REST API create document.
+platform/atlas/enterprise/migration/from-competitors.md:3:Stub file for migration from competitors.
+platform/atlas/api/rest/documents/delete-document.md:3:Stub file for REST API delete document.
+platform/atlas/api/rest/documents/document-versions.md:3:Stub file for REST API document versions.
+platform/atlas/enterprise/migration/from-cloud.md:3:Stub file for migration from cloud.
+platform/atlas/api/rest/workspaces/list-workspaces.md:3:Stub file for REST API list workspaces.
+platform/atlas/api/rest/documents/get-document.md:3:Stub file for REST API get document.
+platform/atlas/enterprise/migration/data-import.md:3:Stub file for data import.
+platform/atlas/api/rest/workspaces/workspace-roles.md:3:Stub file for REST API workspace roles.
+platform/atlas/api/rest/documents/document-permissions.md:3:Stub file for REST API document permissions.
+platform/atlas/enterprise/migration/validation.md:3:Stub file for migration validation.
+platform/atlas/api/rest/documents/list-documents.md:3:Stub file for REST API list documents.
+platform/atlas/api/rest/workspaces/workspace-members.md:3:Stub file for REST API workspace members.
+platform/atlas/enterprise/migration/overview.md:3:Stub file for migration overview.
+platform/atlas/api/rest/files/list-files.md:3:Stub file for REST API list files.
+platform/atlas/api/rest/workspaces/create-workspace.md:3:Stub file for REST API create workspace.
+platform/atlas/api/rest/files/get-file.md:3:Stub file for REST API get file.
+platform/atlas/enterprise/overview/feature-comparison.md:3:Stub file for feature comparison.
+platform/atlas/enterprise/support/escalation.md:3:Stub file for support escalation.
+platform/atlas/api/rest/workspaces/update-workspace.md:3:Stub file for REST API update workspace.
+platform/atlas/api/rest/files/delete-file.md:3:Stub file for REST API delete file.
+platform/atlas/enterprise/support/support-tiers.md:3:Stub file for support tiers.
+platform/atlas/enterprise/overview/sla.md:3:Stub file for SLA.
+platform/atlas/api/rest/files/upload-file.md:3:Stub file for REST API upload file.
+platform/atlas/api/rest/workspaces/get-workspace.md:3:Stub file for REST API get workspace.
+platform/atlas/enterprise/support/overview.md:3:Stub file for support overview.
+platform/atlas/enterprise/support/contact.md:3:Stub file for support contact.
+platform/atlas/api/rest/users/list-users.md:3:Stub file for REST API list users.
+platform/atlas/api/rest/workspaces/delete-workspace.md:3:Stub file for REST API delete workspace.
+platform/atlas/enterprise/overview/pricing.md:3:Stub file for pricing.
+platform/atlas/api/rest/users/get-user.md:3:Stub file for REST API get user.
+platform/atlas/api/rest/users/delete-user.md:3:Stub file for REST API delete user.
+platform/atlas/enterprise/integration/custom-sso.md:3:Stub file for custom SSO integration.
+platform/atlas/enterprise/support/sla.md:3:Stub file for support SLA.
+platform/atlas/api/rest/users/user-preferences.md:3:Stub file for REST API user preferences.
+platform/atlas/enterprise/monitoring/health-checks.md:3:Stub file for health checks.
+platform/atlas/enterprise/support/training.md:3:Stub file for support training.
+platform/atlas/api/rest/auth/saml.md:3:Stub file for REST API SAML.
+platform/atlas/api/rest/users/update-user.md:3:Stub file for REST API update user.
+platform/atlas/enterprise/integration/azure-ad.md:3:Stub file for Azure AD integration.
+platform/atlas/enterprise/monitoring/overview.md:3:Stub file for monitoring overview.
+platform/atlas/enterprise/admin/workspace-management.md:3:Stub file for workspace management.
+platform/atlas/enterprise/monitoring/metrics.md:3:Stub file for metrics.
+platform/atlas/api/rest/auth/logout.md:3:Stub file for REST API logout.
+platform/atlas/enterprise/integration/api-gateway.md:3:Stub file for API Gateway integration.
+platform/atlas/api/rest/ai/analyze-code.md:3:Stub file for REST API analyze code.
+platform/atlas/enterprise/admin/usage-analytics.md:3:Stub file for usage analytics.
+platform/atlas/api/rest/ai/summarize.md:3:Stub file for REST API summarize.
+platform/atlas/enterprise/integration/okta.md:3:Stub file for Okta integration.
+platform/atlas/api/rest/auth/login.md:3:Stub file for REST API login.
+platform/atlas/enterprise/monitoring/capacity-planning.md:3:Stub file for capacity planning.
+platform/atlas/enterprise/ha/load-balancing.md:3:Stub file for load balancing.
+platform/atlas/api/rest/ai/analyze-diagram.md:3:Stub file for REST API analyze diagram.
+platform/atlas/enterprise/integration/google-workspace.md:3:Stub file for Google Workspace integration.
+platform/atlas/enterprise/monitoring/logging.md:3:Stub file for logging.
+platform/atlas/api/rest/auth/oauth.md:3:Stub file for REST API OAuth.
+platform/atlas/enterprise/admin/support.md:3:Stub file for support.
+platform/atlas/enterprise/ha/disaster-recovery.md:3:Stub file for disaster recovery.
+platform/atlas/api/rest/ai/enhance-content.md:3:Stub file for REST API enhance content.
+platform/atlas/enterprise/security/network-security.md:3:Stub file for network security.
+platform/atlas/api/rest/ai/generate-content.md:3:Stub file for REST API generate content.
+platform/atlas/enterprise/integration/webhooks.md:3:Stub file for webhooks integration.
+platform/atlas/api/rest/ai/analyze-text.md:3:Stub file for REST API analyze text.
+platform/atlas/api/rest/search/search-documents.md:3:Stub file for REST API search documents.
+platform/atlas/api/rest/search/search-users.md:3:Stub file for REST API search users.
+platform/atlas/enterprise/monitoring/alerting.md:3:Stub file for alerting.
+platform/atlas/enterprise/ha/failover.md:3:Stub file for failover.
+platform/atlas/api/rest/search/search-workspaces.md:3:Stub file for REST API search workspaces.
+platform/atlas/enterprise/integration/ldap-ad.md:3:Stub file for LDAP/AD integration.
+platform/atlas/enterprise/admin/billing.md:3:Stub file for billing.
+platform/atlas/api/rest/auth/refresh-token.md:3:Stub file for REST API refresh token.
+platform/atlas/enterprise/security/vulnerability-disclosure.md:3:Stub file for vulnerability disclosure.
+platform/atlas/enterprise/monitoring/performance-tuning.md:3:Stub file for performance tuning.
+platform/atlas/enterprise/ha/backup-strategy.md:3:Stub file for backup strategy.
+platform/atlas/enterprise/security/audit-logs.md:3:Stub file for audit logs.
+platform/atlas/enterprise/admin/user-management.md:3:Stub file for user management.
+platform/atlas/enterprise/integration/overview.md:3:Stub file for integration overview.
+platform/atlas/enterprise/security/penetration-testing.md:3:Stub file for penetration testing.
+platform/atlas/enterprise/ha/overview.md:3:Stub file for HA overview.
+platform/atlas/enterprise/security/overview.md:3:Stub file for security overview.
+platform/atlas/api/rest/collaboration/get-presence.md:3:Stub file for REST API get presence.
+platform/atlas/enterprise/ha/architecture.md:3:Stub file for HA architecture.
+platform/atlas/enterprise/admin/overview.md:3:Stub file for admin overview.
+platform/atlas/enterprise/security/encryption.md:3:Stub file for encryption.
+platform/atlas/enterprise/admin/license-management.md:3:Stub file for license management.
+platform/atlas/api/rest/collaboration/mentions.md:3:Stub file for REST API mentions.
+platform/atlas/enterprise/scalability/overview.md:3:Stub file for scalability overview.
+platform/atlas/enterprise/security/data-residency.md:3:Stub file for data residency.
+platform/atlas/enterprise/scalability/cdn-configuration.md:3:Stub file for CDN configuration.
+platform/atlas/enterprise/security/authentication.md:3:Stub file for authentication.
+platform/atlas/api/rest/collaboration/get-session.md:3:Stub file for REST API get session.
+platform/atlas/api/rest/collaboration/comments.md:3:Stub file for REST API comments.
+platform/atlas/enterprise/security/compliance-certifications.md:3:Stub file for compliance certifications.
+platform/atlas/enterprise/deployment/hybrid/compliance.md:3:Stub file for hybrid compliance.
+platform/atlas/enterprise/scalability/cache-strategy.md:3:Stub file for cache strategy.
+platform/atlas/enterprise/scalability/database-scaling.md:3:Stub file for database scaling.
+platform/atlas/enterprise/deployment/hybrid/data-residency.md:3:Stub file for hybrid data residency.
+platform/atlas/api/rest/collaboration/list-sessions.md:3:Stub file for REST API list sessions.
+platform/atlas/enterprise/security/sso-saml.md:3:Stub file for SSO & SAML.
+platform/atlas/enterprise/scalability/performance-benchmarks.md:3:Stub file for performance benchmarks.
+platform/atlas/enterprise/deployment/hybrid/overview.md:3:Stub file for hybrid deployment overview.
+platform/atlas/api/events/collaboration-events.md:3:Stub file for collaboration events.
+platform/atlas/enterprise/scalability/horizontal-scaling.md:3:Stub file for horizontal scaling.
+platform/atlas/api/events/document-events.md:3:Stub file for document events.
+platform/atlas/api/events/aria-events.md:3:Stub file for ARIA events.
+platform/atlas/enterprise/security/scim-provisioning.md:3:Stub file for SCIM provisioning.
+platform/atlas/enterprise/deployment/hybrid/architecture.md:3:Stub file for hybrid architecture.
+platform/atlas/internal/analytics/system-analytics.md:3:Stub file for system analytics.
+platform/atlas/api/events/audit-events.md:3:Stub file for audit events.
+platform/atlas/api/events/workspace-events.md:3:Stub file for workspace events.
+platform/atlas/api/events/user-events.md:3:Stub file for user events.
+platform/atlas/enterprise/deployment/self-hosted/upgrading.md:3:Stub file for self-hosted upgrading.
+platform/atlas/api/events/notification-events.md:3:Stub file for notification events.
+platform/atlas/api/graphql/subscriptions.md:3:Stub file for GraphQL subscriptions.
+platform/atlas/api/events/overview.md:3:Stub file for events overview.
+platform/atlas/enterprise/deployment/cloud-dedicated/monitoring.md:3:Stub file for cloud dedicated monitoring.
+platform/atlas/internal/analytics/user-analytics.md:3:Stub file for user analytics.
+platform/atlas/enterprise/deployment/cloud-dedicated/vpc-peering.md:3:Stub file for VPC peering.
+platform/atlas/developer/events/event-envelope.md:3:Stub file for event envelope.
+platform/atlas/api/graphql/mutations.md:3:Stub file for GraphQL mutations.
+platform/atlas/enterprise/deployment/cloud-dedicated/provisioning.md:3:Stub file for cloud dedicated provisioning.
+platform/atlas/enterprise/deployment/self-hosted/docker-compose.md:3:Stub file for self-hosted Docker Compose.
+platform/atlas/developer/events/idempotency.md:3:Stub file for idempotency.
+platform/atlas/internal/analytics/business-intelligence.md:3:Stub file for business intelligence.
+platform/atlas/api/graphql/schema.md:3:Stub file for GraphQL schema.
+platform/atlas/enterprise/deployment/cloud-dedicated/overview.md:3:Stub file for cloud dedicated overview.
+platform/atlas/enterprise/deployment/self-hosted/configuration.md:3:Stub file for self-hosted configuration.
+platform/atlas/internal/analytics/overview.md:3:Stub file for analytics overview.
+platform/atlas/api/graphql/overview.md:3:Stub file for GraphQL API overview.
+platform/atlas/developer/events/dead-letter-queue.md:3:Stub file for dead letter queue.
+platform/atlas/enterprise/deployment/cloud-dedicated/custom-domains.md:3:Stub file for custom domains.
+platform/atlas/developer/events/consuming.md:3:Stub file for consuming.
+platform/atlas/developer/testing/contract-tests.md:3:Stub file for contract tests.
+platform/atlas/internal/analytics/metrics-dashboard.md:3:Stub file for metrics dashboard.
+platform/atlas/enterprise/deployment/self-hosted/requirements.md:3:Stub file for self-hosted requirements.
+platform/atlas/api/graphql/queries.md:3:Stub file for GraphQL queries.
+platform/atlas/developer/events/redis-streams.md:3:Stub file for redis streams.
+platform/atlas/enterprise/deployment/self-hosted/kubernetes.md:3:Stub file for self-hosted Kubernetes.
+platform/atlas/internal/hr/engineering-levels.md:3:Stub file for engineering levels.
+platform/atlas/internal/engineering/standards/typescript-standards.md:3:Stub file for TypeScript standards.
+platform/atlas/enterprise/deployment/self-hosted/backup-restore.md:3:Stub file for self-hosted backup and restore.
+platform/atlas/developer/events/retry-patterns.md:3:Stub file for retry patterns.
+platform/atlas/internal/engineering/standards/go-standards.md:3:Stub file for Go standards.
+platform/atlas/internal/hr/performance-reviews.md:3:Stub file for performance reviews.
+platform/atlas/developer/testing/unit-tests.md:3:Stub file for unit tests.
+platform/atlas/developer/events/publishing.md:3:Stub file for publishing.
+platform/atlas/internal/engineering/standards/proto-standards.md:3:Stub file for Proto standards.
+platform/atlas/internal/hr/compensation.md:3:Stub file for compensation.
+platform/atlas/internal/architecture/system-design/domain-services.md:3:Stub file for domain services documentation.
+platform/atlas/internal/engineering/standards/rust-standards.md:3:Stub file for Rust standards.
+platform/atlas/developer/testing/load-tests.md:3:Stub file for load tests.
+platform/atlas/developer/events/overview.md:3:Stub file for developer events overview.
+platform/atlas/internal/hr/remote-work.md:3:Stub file for remote work.
+platform/atlas/internal/engineering/standards/python-standards.md:3:Stub file for Python standards.
+platform/atlas/internal/engineering/standards/overview.md:3:Stub file for standards overview.
+platform/atlas/internal/architecture/system-design/operations-architecture.md:3:Stub file for operations architecture documentation.
+platform/atlas/developer/domain/manuscript/code-generation.md:3:Stub file for code generation.
+platform/atlas/developer/testing/chaos-engineering.md:3:Stub file for chaos engineering.
+platform/atlas/internal/architecture/system-design/event-driven-architecture.md:3:Stub file for event-driven architecture documentation.
+platform/atlas/developer/domain/manuscript/msx-inspector.md:3:Stub file for MSX Inspector.
+platform/atlas/internal/architecture/adrs/adr-005-redis-streams.md:3:Stub file for ADR-005.
+platform/atlas/developer/domain/manuscript/custom-options.md:3:Stub file for custom options.
+platform/atlas/internal/hr/benefits.md:3:Stub file for benefits.
+platform/atlas/developer/domain/printery/handler-registry.md:3:Stub file for handler registry.
+platform/atlas/internal/architecture/system-design/product-architecture.md:3:Stub file for product architecture documentation.
+platform/atlas/internal/architecture/adrs/adr-007-graceful-degradation.md:3:Stub file for ADR-007.
+platform/atlas/developer/domain/printery/deployment.md:3:Stub file for printery deployment.
+platform/atlas/internal/engineering/performance/optimization-guide.md:3:Stub file for optimization guide.
+platform/atlas/developer/domain/manuscript/event-schemas.md:3:Stub file for event schemas.
+platform/atlas/internal/engineering/performance/profiling.md:3:Stub file for profiling.
+platform/atlas/developer/domain/printery/consumer-groups.md:3:Stub file for consumer groups.
+platform/atlas/internal/engineering/ownership/on-call-rotation.md:3:Stub file for on-call rotation.
+platform/atlas/internal/architecture/adrs/adr-001-microservices-architecture.mdx:9:Stub file for ADR-001.
+platform/atlas/developer/domain/manuscript/overview.md:3:Stub file for manuscript domain overview.
+platform/atlas/internal/engineering/performance/benchmarking.md:3:Stub file for benchmarking.
+platform/atlas/internal/engineering/ownership/domain-team.md:3:Stub file for domain team.
+platform/atlas/developer/domain/printery/overview.md:3:Stub file for printery domain overview.
+platform/atlas/developer/operations/folio/dashboards.md:3:Stub file for folio dashboards.
+platform/atlas/api/sdks/java.md:3:Stub file for Java SDK.
+platform/atlas/internal/architecture/adrs/adr-002-event-driven-communication.md:3:Stub file for ADR-002.
+platform/atlas/developer/domain/manuscript/versioning.md:3:Stub file for versioning.
+platform/atlas/internal/engineering/ownership/platform-team.md:3:Stub file for platform team.
+platform/atlas/developer/domain/printery/architecture.md:3:Stub file for printery architecture.
+platform/atlas/api/sdks/javascript-typescript.md:3:Stub file for JavaScript/TypeScript SDK.
+platform/atlas/internal/architecture/adrs/adr-006-polyglot-services.md:3:Stub file for ADR-006.
+platform/atlas/internal/engineering/workflow/issue-templates.md:3:Stub file for issue templates.
+platform/atlas/internal/engineering/ownership/overview.md:3:Stub file for ownership overview.
+platform/atlas/developer/domain/printery/resilience-patterns.md:3:Stub file for resilience patterns.
+platform/atlas/developer/operations/folio/metrics.md:3:Stub file for folio metrics.
+platform/atlas/internal/engineering/workflow/testing-strategy.md:3:Stub file for testing strategy.
+platform/atlas/internal/architecture/adrs/adr-003-operational-transform.md:3:Stub file for ADR-003.
+platform/atlas/api/sdks/rust.md:3:Stub file for Rust SDK.
+platform/atlas/internal/engineering/ownership/operations-team.md:3:Stub file for operations team.
+platform/atlas/internal/engineering/workflow/pr-process.md:3:Stub file for PR process.
+platform/atlas/developer/operations/folio/tracing.md:3:Stub file for folio tracing.
+platform/atlas/api/sdks/overview.md:3:Stub file for SDKs overview.
+platform/atlas/internal/operations/incidents/severity-levels.md:3:Stub file for severity levels.
+platform/atlas/internal/architecture/adrs/overview.md:3:Stub file for ADRs overview.
+platform/atlas/api/sdks/python.md:3:Stub file for Python SDK.
+platform/atlas/internal/engineering/ownership/product-team.md:3:Stub file for product team.
+platform/atlas/internal/operations/incidents/blameless-culture.md:3:Stub file for blameless culture.
+platform/atlas/api/sdks/go.md:3:Stub file for Go SDK.
+platform/atlas/internal/engineering/workflow/code-review.md:3:Stub file for code review.
+platform/atlas/internal/architecture/adrs/adr-004-protocol-buffers.md:3:Stub file for ADR-004.
+platform/atlas/developer/operations/folio/logging.md:3:Stub file for folio logging.
+platform/atlas/internal/engineering/workflow/overview.md:3:Stub file for workflow overview.
+platform/atlas/internal/engineering/workflow/deployment-process.md:3:Stub file for deployment process.
+platform/atlas/internal/operations/incidents/response-process.md:3:Stub file for response process.
+platform/atlas/internal/overview/communication.md:3:Stub file for communication.
+platform/atlas/internal/operations/incidents/post-mortems.md:3:Stub file for post mortems.
+platform/atlas/internal/operations/incidents/overview.md:3:Stub file for incidents overview.
+platform/atlas/developer/introduction/getting-started.md:3:Stub file for getting started.
+platform/atlas/internal/operations/incidents/communication.md:3:Stub file for communication.
+platform/atlas/internal/legal/terms-of-service.md:3:Stub file for terms of service.
+platform/atlas/developer/operations/infrastructure/security.md:3:Stub file for infrastructure security.
+platform/atlas/developer/introduction/tech-stack.md:3:Stub file for tech stack.
+platform/atlas/internal/operations/capacity/metrics.md:3:Stub file for metrics.
+platform/atlas/internal/legal/intellectual-property.md:3:Stub file for intellectual property.
+platform/atlas/developer/operations/infrastructure/terraform.md:3:Stub file for Terraform.
+platform/atlas/internal/operations/cost/budgeting.md:3:Stub file for budgeting.
+platform/atlas/internal/legal/privacy-policy.md:3:Stub file for privacy policy.
+platform/atlas/developer/products/atlas/contributing.md:3:Stub file for Atlas contributing.
+platform/atlas/developer/operations/infrastructure/networking.md:3:Stub file for networking.
+platform/atlas/internal/legal/contracts.md:3:Stub file for contracts.
+platform/atlas/internal/operations/cost/optimization.md:3:Stub file for cost optimization.
+platform/atlas/developer/products/atlas/mdx-components.md:3:Stub file for MDX components.
+platform/atlas/developer/operations/infrastructure/overview.md:3:Stub file for infrastructure overview.
+platform/atlas/internal/operations/capacity/scaling-strategy.md:3:Stub file for scaling strategy.
+platform/atlas/internal/operations/cost/tracking.md:3:Stub file for cost tracking.
+platform/atlas/internal/finance/budget.md:3:Stub file for budget.
+platform/atlas/developer/products/atlas/overview.md:3:Stub file for Atlas overview.
+platform/atlas/internal/operations/capacity/forecasting.md:3:Stub file for forecasting.
+platform/atlas/developer/products/atlas/structure.md:3:Stub file for Atlas structure.
+platform/atlas/internal/operations/cost/overview.md:3:Stub file for cost overview.
+platform/atlas/internal/finance/expense-policy.md:3:Stub file for expense policy.
+platform/atlas/developer/operations/runbooks/scaling.md:3:Stub file for scaling.
+platform/atlas/developer/operations/infrastructure/kubernetes.md:3:Stub file for Kubernetes.
+platform/atlas/internal/operations/capacity/overview.md:3:Stub file for capacity overview.
+platform/atlas/internal/architecture/specs/requirement-traceability.md:3:Stub file for requirement traceability.
+platform/atlas/developer/products/canvas/storybook.md:3:Stub file for Storybook.
+platform/atlas/developer/products/canvas/real-time-sync.md:3:Stub file for real-time sync.
+platform/atlas/internal/operations/releases/change-management.md:3:Stub file for change management.
+platform/atlas/internal/operations/releases/versioning.md:3:Stub file for versioning.
+platform/atlas/developer/products/canvas/overview.md:3:Stub file for Canvas overview.
+platform/atlas/developer/operations/runbooks/backup-restore.md:3:Stub file for backup and restore.
+platform/atlas/developer/products/canvas/setup.md:3:Stub file for Canvas setup.
+platform/atlas/internal/operations/releases/release-process.md:3:Stub file for release process.
+platform/atlas/developer/products/canvas/api-integration.md:3:Stub file for API integration.
+platform/atlas/developer/products/canvas/testing.md:3:Stub file for Canvas testing.
+platform/atlas/internal/product/strategy/okrs.md:3:Stub file for OKRs.
+platform/atlas/internal/operations/releases/rollback-procedures.md:3:Stub file for rollback procedures.
+platform/atlas/developer/products/canvas/component-library.md:3:Stub file for component library.
+platform/atlas/internal/product/development/discovery.md:3:Stub file for product discovery.
+platform/atlas/developer/products/canvas/deployment.md:3:Stub file for Canvas deployment.
+platform/atlas/developer/platform/aria/enhancement-suggestions.md:3:Stub file for enhancement suggestions.
+platform/atlas/internal/product/development/execution.md:3:Stub file for product execution.
+platform/atlas/developer/products/specifications/verification.md:3:Stub file for verification.
+platform/atlas/internal/operations/releases/overview.md:3:Stub file for releases overview.
+platform/atlas/internal/product/strategy/roadmap.md:3:Stub file for product roadmap.
+platform/atlas/developer/products/canvas/state-management.md:3:Stub file for state management.
+platform/atlas/developer/platform/aria/overview.md:3:Stub file for Aria platform overview.
+platform/atlas/developer/platform/aria/text-analysis.md:3:Stub file for text analysis.
+platform/atlas/developer/products/specifications/traceability.md:3:Stub file for traceability.
+platform/atlas/internal/product/development/launch.md:3:Stub file for product launch.
+platform/atlas/developer/products/specifications/overview.md:3:Stub file for specifications overview.
+platform/atlas/internal/product/development/planning.md:3:Stub file for product planning.
+platform/atlas/developer/platform/aria/diagram-analysis.md:3:Stub file for diagram analysis.
+platform/atlas/developer/products/specifications/requirement-types.md:3:Stub file for requirement types.
+platform/atlas/developer/platform/aria/deployment.md:3:Stub file for Aria deployment.
+platform/atlas/developer/platform/aria/testing.md:3:Stub file for Aria testing.
+platform/atlas/developer/platform/aria/code-safety.md:3:Stub file for code safety.
+platform/atlas/developer/platform/aria/architecture.md:3:Stub file for Aria architecture.
+platform/atlas/developer/platform/aria/graceful-degradation.md:3:Stub file for graceful degradation.
+platform/atlas/internal/product/research/surveys.md:3:Stub file for surveys.
+platform/atlas/internal/product/strategy/competitive-analysis.md:3:Stub file for competitive analysis.
+platform/atlas/internal/security/compliance/hipaa.md:3:Stub file for HIPAA compliance.
+platform/atlas/internal/product/research/user-personas.md:3:Stub file for user personas.
+platform/atlas/internal/security/compliance/overview.md:3:Stub file for compliance overview.
+platform/atlas/internal/security/compliance/gdpr.md:3:Stub file for GDPR compliance.
+platform/atlas/internal/security/practices/secrets-management.md:3:Stub file for secrets management.
+platform/atlas/internal/security/compliance/soc2.md:3:Stub file for SOC2 compliance.
+platform/atlas/internal/security/practices/secure-coding.md:3:Stub file for secure coding.
+platform/atlas/internal/product/research/analytics.md:3:Stub file for analytics.
+platform/atlas/internal/security/compliance/iso27001.md:3:Stub file for ISO 27001 compliance.
+platform/atlas/internal/security/practices/code-review-security.md:3:Stub file for code review security.
+platform/atlas/internal/product/research/interviews.md:3:Stub file for interviews.
+platform/atlas/internal/security/practices/dependency-management.md:3:Stub file for dependency management.
+platform/atlas/developer/platform/intelligence/github-integrations.md:3:Stub file for GitHub integrations.
+platform/atlas/internal/security/vulnerabilities/disclosure.md:3:Stub file for vulnerability disclosure.
+platform/atlas/developer/platform/intelligence/analytics.md:3:Stub file for intelligence analytics.
+platform/atlas/internal/security/practices/threat-modeling.md:3:Stub file for threat modeling.
+platform/atlas/internal/product/research/overview.md:3:Stub file for research overview.
+platform/atlas/internal/security/vulnerabilities/overview.md:3:Stub file for vulnerabilities overview.
+platform/atlas/internal/security/vulnerabilities/reporting.md:3:Stub file for vulnerability reporting.
+platform/atlas/internal/security/vulnerabilities/remediation.md:3:Stub file for vulnerability remediation.
+platform/atlas/internal/security/vulnerabilities/scanning.md:3:Stub file for vulnerability scanning.

@@ -1,7 +1,8 @@
 ---
-title: "GitHub Integration"
-description: "Connect Materi with GitHub to sync documentation, automate workflows, and enable version-controlled content management"
-icon: "github"
+title: GitHub Integration
+description: Connect Materi with GitHub to sync documentation, automate workflows, and enable version-controlled content management
+icon: github
+relatedPages: []
 ---
 
 # GitHub Integration

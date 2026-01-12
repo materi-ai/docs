@@ -1,0 +1,298 @@
+{
+    "name": "Atlas Platform Health Monitor",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutesInterval": 5
+                        }
+                    ]
+                }
+            },
+            "id": "schedule-trigger",
+            "name": "Every 5 Minutes",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.1,
+            "position": [240, 300]
+        },
+        {
+            "parameters": {
+                "url": "http://go-controller:8081/health",
+                "options": {
+                    "timeout": 5000
+                }
+            },
+            "id": "check-go-controller",
+            "name": "Check Go Controller",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [480, 200],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {
+                "url": "http://rust-api:3000/health",
+                "options": {
+                    "timeout": 5000
+                }
+            },
+            "id": "check-rust-api",
+            "name": "Check Rust API",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [480, 300],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {
+                "url": "http://alloy:12345/-/ready",
+                "options": {
+                    "timeout": 5000
+                }
+            },
+            "id": "check-alloy",
+            "name": "Check Alloy",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [480, 400],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {
+                "url": "http://prometheus:9090/-/ready",
+                "options": {
+                    "timeout": 5000
+                }
+            },
+            "id": "check-prometheus",
+            "name": "Check Prometheus",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [480, 500],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {
+                "jsCode": "// Aggregate health check results\nconst results = {\n  timestamp: new Date().toISOString(),\n  services: {},\n  overall_status: 'healthy',\n  failing_services: []\n};\n\nconst serviceChecks = [\n  { name: 'go-controller', data: $('Check Go Controller').first().json },\n  { name: 'rust-api', data: $('Check Rust API').first().json },\n  { name: 'alloy', data: $('Check Alloy').first().json },\n  { name: 'prometheus', data: $('Check Prometheus').first().json }\n];\n\nfor (const svc of serviceChecks) {\n  const isHealthy = svc.data && !svc.data.error;\n  results.services[svc.name] = {\n    status: isHealthy ? 'healthy' : 'unhealthy',\n    response: svc.data\n  };\n  \n  if (!isHealthy) {\n    results.failing_services.push(svc.name);\n    results.overall_status = 'degraded';\n  }\n}\n\nif (results.failing_services.length > 2) {\n  results.overall_status = 'critical';\n}\n\nreturn { json: results };"
+            },
+            "id": "aggregate-results",
+            "name": "Aggregate Health Results",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [720, 300]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "options": {
+                        "caseSensitive": true,
+                        "leftValue": "",
+                        "typeValidation": "strict"
+                    },
+                    "conditions": [
+                        {
+                            "id": "condition-degraded",
+                            "leftValue": "={{ $json.overall_status }}",
+                            "rightValue": "healthy",
+                            "operator": {
+                                "type": "string",
+                                "operation": "notEquals"
+                            }
+                        }
+                    ],
+                    "combinator": "and"
+                }
+            },
+            "id": "check-status",
+            "name": "Is Degraded?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 2,
+            "position": [960, 300]
+        },
+        {
+            "parameters": {
+                "url": "http://shield:8000/ops/api/atlas/status/",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "options": {
+                    "timeout": 10000
+                }
+            },
+            "id": "notify-shield",
+            "name": "Notify Shield Admin",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [1200, 200],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {
+                "url": "http://loki:3100/loki/api/v1/push",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "streams",
+                            "value": "=[{\"stream\":{\"job\":\"n8n-health-monitor\",\"level\":\"warn\"},\"values\":[[\"{{ Date.now() }}000000\",\"Platform health check: {{ $json.overall_status }}. Failing: {{ $json.failing_services.join(', ') }}\"]]}]"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "log-to-loki",
+            "name": "Log Alert to Loki",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.1,
+            "position": [1200, 300],
+            "continueOnFail": true
+        },
+        {
+            "parameters": {},
+            "id": "healthy-noop",
+            "name": "All Healthy",
+            "type": "n8n-nodes-base.noOp",
+            "typeVersion": 1,
+            "position": [1200, 400]
+        }
+    ],
+    "connections": {
+        "Every 5 Minutes": {
+            "main": [
+                [
+                    {
+                        "node": "Check Go Controller",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Check Rust API",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Check Alloy",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Check Prometheus",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Go Controller": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate Health Results",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Rust API": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate Health Results",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Alloy": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate Health Results",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Prometheus": {
+            "main": [
+                [
+                    {
+                        "node": "Aggregate Health Results",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Aggregate Health Results": {
+            "main": [
+                [
+                    {
+                        "node": "Is Degraded?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Is Degraded?": {
+            "main": [
+                [
+                    {
+                        "node": "Notify Shield Admin",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Log Alert to Loki",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "All Healthy",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "staticData": null,
+    "meta": {
+        "templateId": "atlas-health-monitor"
+    },
+    "pinData": {},
+    "versionId": "1",
+    "triggerCount": 0,
+    "tags": [
+        {
+            "name": "atlas",
+            "id": "1"
+        },
+        {
+            "name": "monitoring",
+            "id": "2"
+        },
+        {
+            "name": "health-check",
+            "id": "3"
+        }
+    ]
+}

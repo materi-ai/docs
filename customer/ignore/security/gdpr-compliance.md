@@ -1,7 +1,11 @@
 ---
-title: "GDPR Compliance"
-description: "How Materi helps you meet GDPR requirements with privacy controls, data subject rights, and compliance tools"
-icon: "eu"
+title: GDPR Compliance
+description: How Materi helps you meet GDPR requirements with privacy controls, data subject rights, and compliance tools
+icon: eu
+relatedPages:
+  - architecture-overview.mdx
+  - developer/domain/shield/authentication.md
+  - developer/operations/service-doc-10.mdx
 ---
 
 # GDPR Compliance

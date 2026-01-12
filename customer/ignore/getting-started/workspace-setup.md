@@ -1,7 +1,8 @@
 ---
-title: 'Workspace Setup'
-description: 'Configure your workspace settings, branding, and defaults for your team'
-icon: 'gear'
+title: Workspace Setup
+description: Configure your workspace settings, branding, and defaults for your team
+icon: gear
+relatedPages: []
 ---
 
 Your workspace is the central hub for your team's content. This guide walks you through configuring it for optimal productivity.

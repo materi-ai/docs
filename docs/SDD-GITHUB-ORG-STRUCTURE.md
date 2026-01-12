@@ -1,3 +1,16 @@
+---
+title: "System Design Document: GitHub Organization Structure for Materi"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # System Design Document: GitHub Organization Structure for Materi
 
 **Document Version:** 1.0

@@ -1,0 +1,210 @@
+---
+title: Multi-Repo Orchestration Integration
+description: Orchestration integration
+icon: cog
+source: operations/.workflows/orchestration-integration.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.047699Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+# Multi-Repo Orchestration Integration
+# Integrates orchestration with existing CI/CD pipeline
+name: 🎯 Orchestration Integration
+
+on:
+    workflow_call:
+        inputs:
+            trigger_assembly:
+                description: "Whether to trigger assembly"
+                required: false
+                default: false
+                type: boolean
+            environment:
+                description: "Target environment"
+                required: true
+                type: string
+            force_sync:
+                description: "Force synchronization"
+                required: false
+                default: false
+                type: boolean
+        outputs:
+            workspace_id:
+                description: "Assembled workspace ID"
+                value: ${{ jobs.orchestrate.outputs.workspace_id }}
+            sync_status:
+                description: "Synchronization status"
+                value: ${{ jobs.orchestrate.outputs.sync_status }}
+
+env:
+    GO_VERSION: "1.21"
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+    # ==============================================
+    # ORCHESTRATION DECISION
+    # ==============================================
+    orchestrate:
+        name: 🎯 Orchestration Decision
+        runs-on: ubuntu-latest
+        outputs:
+            should_assemble: ${{ steps.decision.outputs.should_assemble }}
+            should_sync: ${{ steps.decision.outputs.should_sync }}
+            workspace_id: ${{ steps.decision.outputs.workspace_id }}
+            sync_status: "pending"
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Detect changes requiring orchestration
+              id: changes
+              uses: dorny/paths-filter@v2
+              with:
+                  filters: |
+                      shared_configs:
+                        - 'shared/**'
+                        - 'assembly.yml'
+                      multi_service:
+                        - 'api/**'
+                        - 'shield/**'
+                        - 'collaboration/**'
+                      infrastructure:
+                        - 'terraform/**'
+                        - 'gitops/**'
+                        - 'monitoring/**'
+
+            - name: Make orchestration decision
+              id: decision
+              run: |
+                  echo "🤔 Making orchestration decisions..."
+
+                  # Determine if assembly is needed
+                  SHOULD_ASSEMBLE="false"
+                  if [[ "${{ inputs.trigger_assembly }}" == "true" ]] || \
+                     [[ "${{ steps.changes.outputs.multi_service }}" == "true" ]] || \
+                     [[ "${{ inputs.environment }}" == "production" ]]; then
+                    SHOULD_ASSEMBLE="true"
+                  fi
+
+                  # Determine if sync is needed
+                  SHOULD_SYNC="false"
+                  if [[ "${{ inputs.force_sync }}" == "true" ]] || \
+                     [[ "${{ steps.changes.outputs.shared_configs }}" == "true" ]]; then
+                    SHOULD_SYNC="true"
+                  fi
+
+                  # Generate workspace ID if assembly is needed
+                  WORKSPACE_ID=""
+                  if [[ "${SHOULD_ASSEMBLE}" == "true" ]]; then
+                    WORKSPACE_ID="integration-$(date +%Y%m%d-%H%M%S)-${{ github.run_number }}"
+                  fi
+
+                  echo "should_assemble=${SHOULD_ASSEMBLE}" >> $GITHUB_OUTPUT
+                  echo "should_sync=${SHOULD_SYNC}" >> $GITHUB_OUTPUT
+                  echo "workspace_id=${WORKSPACE_ID}" >> $GITHUB_OUTPUT
+
+                  echo "🔧 Assembly needed: ${SHOULD_ASSEMBLE}"
+                  echo "🔄 Sync needed: ${SHOULD_SYNC}"
+                  echo "🆔 Workspace ID: ${WORKSPACE_ID}"
+
+    # ==============================================
+    # CONDITIONAL ASSEMBLY
+    # ==============================================
+    conditional-assembly:
+        name: 🔧 Conditional Assembly
+        needs: orchestrate
+        if: needs.orchestrate.outputs.should_assemble == 'true'
+        uses: ./.github/workflows/multi-repo-assembly.yml
+        with:
+            environment: ${{ inputs.environment }}
+            repositories: "api,shield,collaboration"
+            parallel: true
+            force: false
+        secrets: inherit
+
+    # ==============================================
+    # CONDITIONAL SYNC
+    # ==============================================
+    conditional-sync:
+        name: 🔄 Conditional Sync
+        needs: orchestrate
+        if: needs.orchestrate.outputs.should_sync == 'true'
+        uses: ./.github/workflows/multi-repo-sync.yml
+        with:
+            targets: "all"
+            auto_commit: false
+            auto_pr: true
+        secrets: inherit
+
+    # ==============================================
+    # COORDINATION VALIDATION
+    # ==============================================
+    validate-coordination:
+        name: 🔬 Validate Coordination
+        runs-on: ubuntu-latest
+        needs: [orchestrate, conditional-assembly, conditional-sync]
+        if: always() && (needs.conditional-assembly.result != 'skipped' || needs.conditional-sync.result != 'skipped')
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Validate assembly result
+              if: needs.conditional-assembly.result != 'skipped'
+              run: |
+                  echo "✅ Assembly completed: ${{ needs.conditional-assembly.result }}"
+                  if [[ "${{ needs.conditional-assembly.result }}" != "success" ]]; then
+                    echo "❌ Assembly failed"
+                    exit 1
+                  fi
+
+            - name: Validate sync result
+              if: needs.conditional-sync.result != 'skipped'
+              run: |
+                  echo "✅ Sync completed: ${{ needs.conditional-sync.result }}"
+                  if [[ "${{ needs.conditional-sync.result }}" != "success" ]]; then
+                    echo "❌ Sync failed"
+                    exit 1
+                  fi
+
+            - name: Generate coordination report
+              run: |
+                  cat > coordination-report.md << 'EOF'
+                  # 🎯 Multi-Repo Orchestration Report
+
+                  ## 📊 Execution Summary
+                  - **Trigger**: ${{ github.event_name }}
+                  - **Environment**: ${{ inputs.environment }}
+                  - **Workspace ID**: ${{ needs.orchestrate.outputs.workspace_id }}
+
+                  ## 🔧 Assembly
+                  - **Executed**: ${{ needs.orchestrate.outputs.should_assemble }}
+                  - **Status**: ${{ needs.conditional-assembly.result || 'skipped' }}
+
+                  ## 🔄 Synchronization  
+                  - **Executed**: ${{ needs.orchestrate.outputs.should_sync }}
+                  - **Status**: ${{ needs.conditional-sync.result || 'skipped' }}
+
+                  ## 📈 Metrics
+                  - **Workflow Duration**: ${{ github.event.head_commit.timestamp }}
+                  - **Run Number**: ${{ github.run_number }}
+
+                  ---
+                  *Generated by Multi-Repo Orchestration System*
+                  EOF
+
+                  echo "📋 Coordination report generated"
+                  cat coordination-report.md
+
+            - name: Upload coordination report
+              uses: actions/upload-artifact@v4
+              with:
+                  name: coordination-report-${{ github.run_number }}
+                  path: coordination-report.md
+                  retention-days: 7

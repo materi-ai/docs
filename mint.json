@@ -79,13 +79,18 @@
                             "introduction",
                             "quickstart",
                             "concepts",
-                            "architecture-overview"
+                            "architecture-overview",
+                            "platform-overview",
+                            "claude-development-guide"
                         ]
                     },
                     {
                         "group": "Platform Essentials",
                         "icon": "book",
-                        "pages": ["development", "documentation-contract"]
+                        "pages": [
+                            "development",
+                            "documentation-contract"
+                        ]
                     },
                     {
                         "group": "MFlow Guides",
@@ -100,10 +105,21 @@
                     }
                 ]
             },
-
             {
                 "tab": "Developer Guide",
                 "groups": [
+                    {
+                        "group": "Architecture & Design",
+                        "icon": "sitemap",
+                        "pages": [
+                            "developer/architecture/overview",
+                            "developer/architecture/system-design",
+                            "developer/architecture/design-patterns",
+                            "developer/architecture/decisions",
+                            "developer/architecture/tech-stack",
+                            "developer/architecture/adrs"
+                        ]
+                    },
                     {
                         "group": "Getting Started",
                         "icon": "code",
@@ -111,7 +127,9 @@
                             "developer/introduction/overview",
                             "developer/introduction/architecture",
                             "developer/introduction/tech-stack",
-                            "developer/introduction/getting-started"
+                            "developer/introduction/getting-started",
+                            "developer/introduction/quick-reference",
+                            "developer/introduction/common-workflows"
                         ]
                     },
                     {
@@ -123,7 +141,9 @@
                             "developer/contributing/git-workflow",
                             "developer/contributing/pr-process",
                             "developer/contributing/issue-templates",
-                            "developer/contributing/documentation"
+                            "developer/contributing/documentation",
+                            "developer/contributing/debugging-guide",
+                            "developer/contributing/development-setup"
                         ]
                     },
                     {
@@ -132,7 +152,10 @@
                         "pages": [
                             "developer/recipes/verify-webhook-signature",
                             "developer/recipes/test-shield-github-actions-webhook",
-                            "developer/recipes/send-pipeline-metrics-webhook"
+                            "developer/recipes/send-pipeline-metrics-webhook",
+                            "developer/recipes/service-integration-patterns",
+                            "developer/recipes/event-patterns",
+                            "developer/recipes/deployment-patterns"
                         ]
                     },
                     {
@@ -146,7 +169,9 @@
                             "developer/domain/api/authentication",
                             "developer/domain/api/rate-limiting",
                             "developer/domain/api/testing",
-                            "developer/domain/api/deployment"
+                            "developer/domain/api/deployment",
+                            "developer/domain/api/troubleshooting",
+                            "developer/domain/api/performance-tuning"
                         ]
                     },
                     {
@@ -159,7 +184,9 @@
                             "developer/domain/relay/websocket-protocol",
                             "developer/domain/relay/presence-tracking",
                             "developer/domain/relay/testing",
-                            "developer/domain/relay/deployment"
+                            "developer/domain/relay/deployment",
+                            "developer/domain/relay/debugging",
+                            "developer/domain/relay/performance-optimization"
                         ]
                     },
                     {
@@ -173,7 +200,9 @@
                             "developer/domain/shield/user-management",
                             "developer/domain/shield/oauth-saml",
                             "developer/domain/shield/testing",
-                            "developer/domain/shield/deployment"
+                            "developer/domain/shield/deployment",
+                            "developer/domain/shield/security-hardening",
+                            "developer/domain/shield/troubleshooting"
                         ]
                     },
                     {
@@ -185,7 +214,9 @@
                             "developer/domain/manuscript/custom-options",
                             "developer/domain/manuscript/code-generation",
                             "developer/domain/manuscript/versioning",
-                            "developer/domain/manuscript/msx-inspector"
+                            "developer/domain/manuscript/msx-inspector",
+                            "developer/domain/manuscript/examples",
+                            "developer/domain/manuscript/troubleshooting"
                         ]
                     },
                     {
@@ -197,7 +228,9 @@
                             "developer/domain/printery/consumer-groups",
                             "developer/domain/printery/handler-registry",
                             "developer/domain/printery/resilience-patterns",
-                            "developer/domain/printery/deployment"
+                            "developer/domain/printery/deployment",
+                            "developer/domain/printery/examples",
+                            "developer/domain/printery/troubleshooting"
                         ]
                     },
                     {
@@ -213,7 +246,9 @@
                             "developer/platform/aria/model-integration",
                             "developer/platform/aria/graceful-degradation",
                             "developer/platform/aria/testing",
-                            "developer/platform/aria/deployment"
+                            "developer/platform/aria/deployment",
+                            "developer/platform/aria/custom-models",
+                            "developer/platform/aria/performance-metrics"
                         ]
                     },
                     {
@@ -221,8 +256,15 @@
                         "icon": "lightbulb",
                         "pages": [
                             "developer/platform/intelligence/scribe",
+                            "developer/platform/intelligence/scribe/overview",
+                            "developer/platform/intelligence/scribe/operator-guide",
+                            "developer/platform/intelligence/scribe/troubleshooting",
+                            "developer/platform/intelligence/scribe/alert-response",
+                            "developer/platform/intelligence/scribe/team-training",
                             "developer/platform/intelligence/github-integrations",
-                            "developer/platform/intelligence/analytics"
+                            "developer/platform/intelligence/analytics",
+                            "developer/platform/intelligence/MATERI_POSTHOG_CONVEX_UNFAIR_ADVANTAGES",
+                            "developer/platform/intelligence/operational-runbooks"
                         ]
                     },
                     {
@@ -238,7 +280,9 @@
                             "developer/products/canvas/real-time-sync",
                             "developer/products/canvas/testing",
                             "developer/products/canvas/storybook",
-                            "developer/products/canvas/deployment"
+                            "developer/products/canvas/deployment",
+                            "developer/products/canvas/examples",
+                            "developer/products/canvas/troubleshooting"
                         ]
                     },
                     {
@@ -258,7 +302,9 @@
                             "developer/products/specifications/overview",
                             "developer/products/specifications/traceability",
                             "developer/products/specifications/requirement-types",
-                            "developer/products/specifications/verification"
+                            "developer/products/specifications/verification",
+                            "developer/products/specifications/requirement-index",
+                            "developer/products/specifications/examples"
                         ]
                     },
                     {
@@ -272,7 +318,9 @@
                             "developer/events/consuming",
                             "developer/events/idempotency",
                             "developer/events/retry-patterns",
-                            "developer/events/dead-letter-queue"
+                            "developer/events/dead-letter-queue",
+                            "developer/events/examples",
+                            "developer/events/troubleshooting"
                         ]
                     },
                     {
@@ -285,7 +333,9 @@
                             "developer/testing/e2e-tests",
                             "developer/testing/load-tests",
                             "developer/testing/contract-tests",
-                            "developer/testing/chaos-engineering"
+                            "developer/testing/chaos-engineering",
+                            "developer/testing/service-specific-tests",
+                            "developer/testing/test-patterns"
                         ]
                     },
                     {
@@ -296,7 +346,10 @@
                             "developer/operations/infrastructure/terraform",
                             "developer/operations/infrastructure/kubernetes",
                             "developer/operations/infrastructure/networking",
-                            "developer/operations/infrastructure/security"
+                            "developer/operations/infrastructure/security",
+                            "developer/operations/infrastructure/gitops",
+                            "developer/operations/infrastructure/capacity-planning",
+                            "developer/operations/infrastructure/cost-optimization"
                         ]
                     },
                     {
@@ -307,7 +360,10 @@
                             "developer/operations/deployment/gitops",
                             "developer/operations/deployment/ci-cd",
                             "developer/operations/deployment/blue-green",
-                            "developer/operations/deployment/rollback"
+                            "developer/operations/deployment/rollback",
+                            "developer/operations/deployment/service-specific-deployment",
+                            "developer/operations/deployment/performance-tuning",
+                            "developer/operations/deployment/troubleshooting"
                         ]
                     },
                     {
@@ -319,7 +375,12 @@
                             "developer/operations/folio/logging",
                             "developer/operations/folio/tracing",
                             "developer/operations/folio/alerting",
-                            "developer/operations/folio/dashboards"
+                            "developer/operations/folio/dashboards",
+                            "developer/operations/folio/grafana-runbook",
+                            "developer/operations/folio/prometheus-setup",
+                            "developer/operations/folio/alert-response-procedures",
+                            "developer/operations/folio/slo-sli-sla",
+                            "developer/operations/folio/performance-baseline"
                         ]
                     },
                     {
@@ -329,7 +390,9 @@
                             "developer/operations/runbooks/incident-response",
                             "developer/operations/runbooks/scaling",
                             "developer/operations/runbooks/backup-restore",
-                            "developer/operations/runbooks/disaster-recovery"
+                            "developer/operations/runbooks/disaster-recovery",
+                            "developer/operations/runbooks/common-issues",
+                            "developer/operations/runbooks/service-specific-runbooks"
                         ]
                     }
                 ]
@@ -347,7 +410,18 @@
                             "api/introduction/errors",
                             "api/introduction/pagination",
                             "api/introduction/versioning",
-                            "api/introduction/webhooks"
+                            "api/introduction/webhooks",
+                            "api/introduction/sdks-guide",
+                            "api/introduction/best-practices"
+                        ]
+                    },
+                    {
+                        "group": "REST API - Additional Endpoints",
+                        "icon": "plug",
+                        "pages": [
+                            "api/rest/notifications/overview",
+                            "api/rest/audit/overview",
+                            "api/rest/analytics/overview"
                         ]
                     },
                     {
@@ -487,7 +561,10 @@
                             "api/events/workspace-events",
                             "api/events/aria-events",
                             "api/events/notification-events",
-                            "api/events/audit-events"
+                            "api/events/audit-events",
+                            "api/events/event-examples",
+                            "api/events/publishing-guide",
+                            "api/events/consuming-guide"
                         ]
                     }
                 ]
@@ -515,7 +592,9 @@
                             "enterprise/deployment/self-hosted/docker-compose",
                             "enterprise/deployment/self-hosted/configuration",
                             "enterprise/deployment/self-hosted/upgrading",
-                            "enterprise/deployment/self-hosted/backup-restore"
+                            "enterprise/deployment/self-hosted/backup-restore",
+                            "enterprise/deployment/self-hosted/troubleshooting",
+                            "enterprise/deployment/self-hosted/post-deployment"
                         ]
                     },
                     {
@@ -553,7 +632,10 @@
                             "enterprise/security/data-residency",
                             "enterprise/security/compliance-certifications",
                             "enterprise/security/penetration-testing",
-                            "enterprise/security/vulnerability-disclosure"
+                            "enterprise/security/vulnerability-disclosure",
+                            "enterprise/security/security-audit-checklist",
+                            "enterprise/security/threat-modeling",
+                            "enterprise/security/incident-response-security"
                         ]
                     },
                     {
@@ -593,7 +675,10 @@
                             "enterprise/monitoring/logging",
                             "enterprise/monitoring/alerting",
                             "enterprise/monitoring/performance-tuning",
-                            "enterprise/monitoring/capacity-planning"
+                            "enterprise/monitoring/capacity-planning",
+                            "enterprise/monitoring/alert-runbooks",
+                            "enterprise/monitoring/performance-baseline",
+                            "enterprise/monitoring/cost-optimization"
                         ]
                     },
                     {
@@ -605,7 +690,9 @@
                             "enterprise/ha/failover",
                             "enterprise/ha/load-balancing",
                             "enterprise/ha/disaster-recovery",
-                            "enterprise/ha/backup-strategy"
+                            "enterprise/ha/backup-strategy",
+                            "enterprise/ha/recovery-procedures",
+                            "enterprise/ha/rto-rpo-targets"
                         ]
                     },
                     {
@@ -617,7 +704,9 @@
                             "enterprise/scalability/database-scaling",
                             "enterprise/scalability/cache-strategy",
                             "enterprise/scalability/cdn-configuration",
-                            "enterprise/scalability/performance-benchmarks"
+                            "enterprise/scalability/performance-benchmarks",
+                            "enterprise/scalability/bottleneck-identification",
+                            "enterprise/scalability/tuning-guide"
                         ]
                     },
                     {
@@ -629,7 +718,8 @@
                             "enterprise/migration/from-competitors",
                             "enterprise/migration/data-import",
                             "enterprise/migration/user-migration",
-                            "enterprise/migration/validation"
+                            "enterprise/migration/validation",
+                            "enterprise/migration/auth-migration"
                         ]
                     },
                     {
@@ -641,7 +731,9 @@
                             "enterprise/support/contact",
                             "enterprise/support/sla",
                             "enterprise/support/escalation",
-                            "enterprise/support/training"
+                            "enterprise/support/training",
+                            "enterprise/support/incident-communication",
+                            "enterprise/support/knowledge-base"
                         ]
                     }
                 ]
@@ -671,7 +763,9 @@
                             "internal/architecture/system-design/cross-segment-integration",
                             "internal/architecture/system-design/event-driven-architecture",
                             "internal/architecture/system-design/data-models",
-                            "internal/architecture/system-design/office-frontend"
+                            "internal/architecture/system-design/office-frontend",
+                            "internal/architecture/system-design/service-interaction-map",
+                            "internal/architecture/system-design/deployment-topology"
                         ]
                     },
                     {
@@ -698,7 +792,9 @@
                             "internal/architecture/specs/l1-strategic-specs",
                             "internal/architecture/specs/l2-tactical-specs",
                             "internal/architecture/specs/requirement-traceability",
-                            "internal/architecture/specs/verification-matrix"
+                            "internal/architecture/specs/verification-matrix",
+                            "internal/architecture/specs/requirements-index",
+                            "internal/architecture/specs/specification-standards"
                         ]
                     },
                     {
@@ -710,7 +806,9 @@
                             "internal/engineering/workflow/pr-process",
                             "internal/engineering/workflow/code-review",
                             "internal/engineering/workflow/testing-strategy",
-                            "internal/engineering/workflow/deployment-process"
+                            "internal/engineering/workflow/deployment-process",
+                            "internal/engineering/workflow/local-development-setup",
+                            "internal/engineering/workflow/debugging-strategies"
                         ]
                     },
                     {
@@ -722,7 +820,10 @@
                             "internal/engineering/standards/rust-standards",
                             "internal/engineering/standards/python-standards",
                             "internal/engineering/standards/typescript-standards",
-                            "internal/engineering/standards/proto-standards"
+                            "internal/engineering/standards/proto-standards",
+                            "internal/engineering/standards/documentation-standards",
+                            "internal/engineering/standards/testing-standards",
+                            "internal/engineering/standards/security-standards"
                         ]
                     },
                     {
@@ -745,7 +846,9 @@
                             "internal/engineering/performance/benchmarking",
                             "internal/engineering/performance/profiling",
                             "internal/engineering/performance/optimization-guide",
-                            "internal/engineering/performance/slo-sli-sla"
+                            "internal/engineering/performance/slo-sli-sla",
+                            "internal/engineering/performance/baseline-metrics",
+                            "internal/engineering/performance/performance-regression-testing"
                         ]
                     },
                     {
@@ -757,7 +860,9 @@
                             "internal/operations/incidents/response-process",
                             "internal/operations/incidents/communication",
                             "internal/operations/incidents/post-mortems",
-                            "internal/operations/incidents/blameless-culture"
+                            "internal/operations/incidents/blameless-culture",
+                            "internal/operations/incidents/runbooks-by-service",
+                            "internal/operations/incidents/escalation-procedures"
                         ]
                     },
                     {
@@ -768,7 +873,9 @@
                             "internal/operations/releases/versioning",
                             "internal/operations/releases/release-process",
                             "internal/operations/releases/rollback-procedures",
-                            "internal/operations/releases/change-management"
+                            "internal/operations/releases/change-management",
+                            "internal/operations/releases/release-checklist",
+                            "internal/operations/releases/post-release-validation"
                         ]
                     },
                     {
@@ -778,7 +885,9 @@
                             "internal/operations/capacity/overview",
                             "internal/operations/capacity/metrics",
                             "internal/operations/capacity/forecasting",
-                            "internal/operations/capacity/scaling-strategy"
+                            "internal/operations/capacity/scaling-strategy",
+                            "internal/operations/capacity/resource-allocation",
+                            "internal/operations/capacity/cost-forecasting"
                         ]
                     },
                     {
@@ -788,7 +897,9 @@
                             "internal/operations/cost/overview",
                             "internal/operations/cost/tracking",
                             "internal/operations/cost/optimization",
-                            "internal/operations/cost/budgeting"
+                            "internal/operations/cost/budgeting",
+                            "internal/operations/cost/cost-allocation",
+                            "internal/operations/cost/rightsizing-guide"
                         ]
                     },
                     {
@@ -798,7 +909,9 @@
                             "internal/product/strategy/vision",
                             "internal/product/strategy/roadmap",
                             "internal/product/strategy/okrs",
-                            "internal/product/strategy/competitive-analysis"
+                            "internal/product/strategy/competitive-analysis",
+                            "internal/product/strategy/market-research",
+                            "internal/product/strategy/product-requirements"
                         ]
                     },
                     {
@@ -819,7 +932,9 @@
                             "internal/product/research/user-personas",
                             "internal/product/research/interviews",
                             "internal/product/research/surveys",
-                            "internal/product/research/analytics"
+                            "internal/product/research/analytics",
+                            "internal/product/research/user-feedback",
+                            "internal/product/research/usability-testing"
                         ]
                     },
                     {
@@ -890,6 +1005,29 @@
                             "internal/finance/budget",
                             "internal/finance/expense-policy"
                         ]
+                    },
+                    {
+                        "group": "Data & Analytics",
+                        "icon": "chart-bar",
+                        "pages": [
+                            "internal/analytics/overview",
+                            "internal/analytics/metrics-dashboard",
+                            "internal/analytics/user-analytics",
+                            "internal/analytics/system-analytics",
+                            "internal/analytics/business-intelligence",
+                            "internal/analytics/event-analytics",
+                            "internal/analytics/performance-analytics"
+                        ]
+                    },
+                    {
+                        "group": "Documentation & Knowledge",
+                        "icon": "book-open",
+                        "pages": [
+                            "internal/documentation/consolidation-roadmap",
+                            "internal/documentation/scribe-completion-report",
+                            "internal/documentation/documentation-standards",
+                            "internal/documentation/taskset-archive"
+                        ]
                     }
                 ]
             }
@@ -925,44 +1063,101 @@
         }
     },
     "contextual": {
-        "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+        "options": [
+            "copy",
+            "view",
+            "chatgpt",
+            "claude",
+            "perplexity",
+            "mcp",
+            "cursor",
+            "vscode"
+        ]
     },
     "footer": {
         "links": [
             {
                 "title": "Product",
                 "links": [
-                    { "label": "Features", "href": "https://materi.com/features" },
-                    { "label": "Pricing", "href": "https://materi.com/pricing" },
-                    { "label": "Enterprise", "href": "https://enterprise.materi.com" },
-                    { "label": "Changelog", "href": "https://materi.com/changelog" }
+                    {
+                        "label": "Features",
+                        "href": "https://materi.com/features"
+                    },
+                    {
+                        "label": "Pricing",
+                        "href": "https://materi.com/pricing"
+                    },
+                    {
+                        "label": "Enterprise",
+                        "href": "https://enterprise.materi.com"
+                    },
+                    {
+                        "label": "Changelog",
+                        "href": "https://materi.com/changelog"
+                    }
                 ]
             },
             {
                 "title": "Resources",
                 "links": [
-                    { "label": "Documentation", "href": "/" },
-                    { "label": "API Reference", "href": "/api/introduction/overview" },
-                    { "label": "Status", "href": "https://status.materi.com" },
-                    { "label": "Blog", "href": "https://materi.com/blog" }
+                    {
+                        "label": "Documentation",
+                        "href": "/"
+                    },
+                    {
+                        "label": "API Reference",
+                        "href": "/api/introduction/overview"
+                    },
+                    {
+                        "label": "Status",
+                        "href": "https://status.materi.com"
+                    },
+                    {
+                        "label": "Blog",
+                        "href": "https://materi.com/blog"
+                    }
                 ]
             },
             {
                 "title": "Company",
                 "links": [
-                    { "label": "About", "href": "https://materi.com/about" },
-                    { "label": "Careers", "href": "https://materi.com/careers" },
-                    { "label": "Contact", "href": "https://materi.com/contact" },
-                    { "label": "Security", "href": "https://materi.com/security" }
+                    {
+                        "label": "About",
+                        "href": "https://materi.com/about"
+                    },
+                    {
+                        "label": "Careers",
+                        "href": "https://materi.com/careers"
+                    },
+                    {
+                        "label": "Contact",
+                        "href": "https://materi.com/contact"
+                    },
+                    {
+                        "label": "Security",
+                        "href": "https://materi.com/security"
+                    }
                 ]
             },
             {
                 "title": "Legal",
                 "links": [
-                    { "label": "Privacy", "href": "https://materi.com/privacy" },
-                    { "label": "Terms", "href": "https://materi.com/terms" },
-                    { "label": "DPA", "href": "https://materi.com/dpa" },
-                    { "label": "SLA", "href": "https://materi.com/sla" }
+                    {
+                        "label": "Privacy",
+                        "href": "https://materi.com/privacy"
+                    },
+                    {
+                        "label": "Terms",
+                        "href": "https://materi.com/terms"
+                    },
+                    {
+                        "label": "DPA",
+                        "href": "https://materi.com/dpa"
+                    },
+                    {
+                        "label": "SLA",
+                        "href": "https://materi.com/sla"
+                    }
                 ]
             }
         ],

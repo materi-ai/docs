@@ -1,6 +1,12 @@
 ---
-title: 'Deployment overview'
-description: 'How to think about deploying Materi services, what to verify, and where the sources of truth live'
+title: Deployment overview
+description: How to think about deploying Materi services, what to verify, and where the sources of truth live
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 This page describes deployment at a high level without assuming a specific hosting environment.

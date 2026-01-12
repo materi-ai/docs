@@ -1,0 +1,264 @@
+---
+title: Shield Service Architecture
+description: Centralized authentication and authorization service architecture
+icon: lock
+source: /Users/alexarno/materi/domain/shield/docs/ARCHITECTURE.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:06:36.221962Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+  - developer/domain/shield/authorization.md
+  - developer/domain/shield/user-management.md
+  - developer/domain/shield/oauth-saml.md
+---
+
+# Materi Shield Authentication Service Architecture
+
+## High-Level Architecture
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Load Balancer │────│   Django App     │────│   PostgreSQL    │
+│   (Nginx/ALB)   │    │   (Gunicorn)     │    │   (Primary DB)  │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                │
+                                ├────────────────────────────────┐
+                                │                                │
+                       ┌─────────────────┐              ┌─────────────────┐
+                       │     Redis       │              │   Email Service │
+                       │  (Cache/Session)│              │   (SendGrid)    │
+                       └─────────────────┘              └─────────────────┘
+```
+
+### Component Responsibilities
+
+1. **Load Balancer**: TLS termination, rate limiting, request routing
+2. **Django Application**: Core auth logic, API endpoints, business rules
+3. **PostgreSQL**: User data, sessions, audit logs with ACID guarantees
+4. **Redis**: Token blacklist, rate limiting counters, temporary data
+5. **Email Service**: Verification emails, password reset notifications
+
+### Data Flow
+
+1. **Registration Flow**:
+
+    ```
+    Client → API → Validation → DB Write → Email Queue → Email Service
+    ```
+
+2. **Login Flow**:
+
+    ```
+    Client → API → Auth Check → JWT Generation → Response + HTTP-Only Cookie
+    ```
+
+3. **Token Refresh**:
+    ```
+    Client → Refresh Token → Validation → New JWT + Rotated Refresh Token
+    ```
+
+## Project Structure
+
+```
+materi_shield/
+├── config/                 # Django settings and configuration
+│   ├── settings/
+│   │   ├── __init__.py
+│   │   ├── base.py        # Common settings
+│   │   ├── development.py # Dev-specific settings
+│   │   ├── production.py  # Production settings
+│   │   └── testing.py     # Test settings
+│   ├── urls.py            # Root URL configuration
+│   ├── wsgi.py            # WSGI application
+│   └── asgi.py            # ASGI application (future WebSocket)
+│
+├── apps/
+│   ├── accounts/          # User account management
+│   │   ├── models.py      # User, Profile models
+│   │   ├── serializers.py # DRF serializers
+│   │   ├── views.py       # API endpoints
+│   │   ├── permissions.py # Custom permissions
+│   │   ├── validators.py  # Custom validators
+│   │   └── tests/         # Account-specific tests
+│   │
+│   ├── authentication/    # Auth flows and token management
+│   │   ├── models.py      # RefreshToken, LoginAttempt
+│   │   ├── serializers.py # Auth serializers
+│   │   ├── views.py       # Login, logout, refresh endpoints
+│   │   ├── jwt_auth.py    # JWT utilities
+│   │   ├── throttling.py  # Rate limiting
+│   │   └── tests/
+│   │
+│   ├── oauth/            # Social authentication (OAuth/SAML)
+│   │   ├── providers/    # Provider-specific implementations
+│   │   ├── models.py     # OAuth tokens, provider configs
+│   │   ├── views.py      # OAuth callback handlers
+│   │   └── tests/
+│   │
+│   ├── workspaces/       # Multi-tenant workspace management
+│   │   ├── models.py     # Workspace, Membership models
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── permissions.py # RBAC implementation
+│   │   └── tests/
+│   │
+│   ├── audit/            # Security audit logging
+│   │   ├── models.py     # AuditLog, SecurityEvent
+│   │   ├── middleware.py # Audit middleware
+│   │   ├── signals.py    # Audit signal handlers
+│   │   └── tests/
+│   │
+│   └── common/           # Shared utilities
+│       ├── exceptions.py # Custom exceptions
+│       ├── mixins.py     # Common model/view mixins
+│       ├── permissions.py # Base permissions
+│       ├── validators.py # Common validators
+│       └── utils.py      # Helper functions
+│
+├── requirements/         # Dependency management
+│   ├── base.txt         # Core dependencies
+│   ├── development.txt  # Dev dependencies
+│   ├── production.txt   # Prod dependencies
+│   └── testing.txt      # Test dependencies
+│
+├── docker/              # Container configuration
+│   ├── Dockerfile       # Production container
+│   ├── docker-compose.yml # Local development
+│   └── entrypoint.sh    # Container startup script
+│
+├── docs/                # API documentation
+├── scripts/             # Management scripts
+├── .github/workflows/   # CI/CD pipelines
+└── tests/               # Integration and E2E tests
+```
+
+## Design Rationale
+
+### Separation of Concerns
+
+-   **Apps by Domain**: Each Django app handles a specific domain (accounts, auth, workspaces)
+-   **Layer Separation**: Models, serializers, views, and business logic are clearly separated
+-   **Configuration Management**: Environment-specific settings prevent config leaks
+
+### Security-First Design
+
+-   **JWT + Refresh Token Strategy**: Balance between stateless architecture and security
+-   **Rate Limiting**: Multiple layers (nginx, application, database)
+-   **Audit Logging**: Comprehensive security event tracking
+-   **Input Validation**: Multiple validation layers (serializers, models, custom validators)
+
+### Testability
+
+-   **Dependency Injection**: Easy mocking of external services
+-   **Small, Focused Classes**: Each component has a single responsibility
+-   **Test Isolation**: Separate test database and configuration
+-   **Integration Test Support**: Docker-based test environments
+
+### Maintainability
+
+-   **Clear Module Boundaries**: Each app can be developed/tested independently
+-   **Type Hints**: Full type annotation for better IDE support and catch errors early
+-   **Consistent Patterns**: Standard DRF patterns throughout the codebase
+-   **Documentation**: Inline docs and external API documentation
+
+### Operational Readiness
+
+-   **Health Checks**: Kubernetes-compatible readiness/liveness probes
+-   **Metrics Exposure**: Prometheus metrics for monitoring
+-   **Structured Logging**: JSON logs for centralized logging systems
+-   **Graceful Degradation**: Circuit breakers for external service failures
+
+## Token Strategy Analysis
+
+### Option 1: JWT + HTTP-Only Cookies (Recommended)
+
+**Pros:**
+
+-   XSS protection (tokens not accessible to JavaScript)
+-   Automatic inclusion in requests
+-   Stateless validation in resource servers
+-   Good performance (no database lookup on every request)
+
+**Cons:**
+
+-   CSRF protection required
+-   Token size limitations
+-   Difficult to revoke immediately
+
+**Implementation:**
+
+-   Short-lived access tokens (15 minutes)
+-   Long-lived refresh tokens (30 days)
+-   Secure, HTTP-only, SameSite cookies
+-   CSRF tokens for state-changing operations
+
+### Option 2: Opaque Tokens + Database Validation
+
+**Pros:**
+
+-   Easy revocation
+-   Smaller token size
+-   Complete server control
+
+**Cons:**
+
+-   Database lookup on every request
+-   Not truly stateless
+-   Higher latency
+
+### Option 3: JWT + Local Storage
+
+**Pros:**
+
+-   Simple implementation
+-   No CSRF concerns
+-   Good for SPAs
+
+**Cons:**
+
+-   XSS vulnerability
+-   Manual token management
+-   Not accessible from server-side
+
+## Recommended Approach
+
+We'll implement **Option 1 (JWT + HTTP-Only Cookies)** with the following enhancements:
+
+1. **Hybrid Strategy**: JWT for resource servers, secure cookies for web clients
+2. **Token Rotation**: Refresh tokens are rotated on each use
+3. **Revocation Support**: Redis-based token blacklist for critical revocations
+4. **Multiple Token Types**: Access, refresh, email verification, password reset
+5. **Secure Headers**: Comprehensive security headers including CSP
+
+## Security Considerations
+
+### Authentication Security
+
+-   Argon2 password hashing with appropriate cost parameters
+-   Account lockout after failed attempts
+-   Password strength requirements with entropy checking
+-   Secure password reset with time-limited tokens
+
+### Session Security
+
+-   Secure session cookies with appropriate flags
+-   Session invalidation on suspicious activity
+-   IP address and user agent tracking
+-   Concurrent session limits
+
+### API Security
+
+-   Rate limiting per endpoint and user
+-   Input sanitization and validation
+-   SQL injection prevention with ORM
+-   CORS configuration for cross-origin requests
+
+### Infrastructure Security
+
+-   TLS 1.3 minimum with strong cipher suites
+-   Security headers (HSTS, CSP, X-Frame-Options)
+-   Regular security updates and vulnerability scanning
+-   Secrets management with environment variables

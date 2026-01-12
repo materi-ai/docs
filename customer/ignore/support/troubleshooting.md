@@ -1,7 +1,8 @@
 ---
-title: "Troubleshooting Guide"
-description: "Solutions to common issues and step-by-step fixes for Materi problems"
-icon: "wrench"
+title: Troubleshooting Guide
+description: Solutions to common issues and step-by-step fixes for Materi problems
+icon: wrench
+relatedPages: []
 ---
 
 # Troubleshooting Guide

@@ -1,7 +1,8 @@
 ---
-title: 'Sharing Documents'
-description: 'Share documents with teammates, external collaborators, and the public'
-icon: 'share'
+title: Sharing Documents
+description: Share documents with teammates, external collaborators, and the public
+icon: share
+relatedPages: []
 ---
 
 Materi provides flexible sharing options to collaborate with anyone while maintaining control over your content.

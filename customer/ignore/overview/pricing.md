@@ -1,6 +1,12 @@
 ---
-title: 'Pricing'
-description: 'Simple, transparent pricing that scales with your team'
+title: Pricing
+description: Simple, transparent pricing that scales with your team
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Materi offers flexible pricing to fit teams of all sizes. Start free and upgrade as your needs grow.

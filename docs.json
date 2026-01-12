@@ -238,7 +238,8 @@
                             "developer/platform/aria/deployment",
                             "developer/platform/intelligence/scribe",
                             "developer/platform/intelligence/github-integrations",
-                            "developer/platform/intelligence/analytics"
+                            "developer/platform/intelligence/analytics",
+                            "developer/platform/intelligence/MATERI_POSTHOG_CONVEX_UNFAIR_ADVANTAGES"
                         ]
                     },
                     {

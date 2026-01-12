@@ -1,0 +1,815 @@
+---
+title: Scribe Remaining Work
+description: Documentation of remaining work items from Scribe project
+icon: document
+source: /Users/alexarno/materi/platform/intelligence/.scribe/REMAINING_WORK.md
+sourceRepo: https://github.com/materi-ai/materi
+lastMigrated: '2026-01-09T08:55:33.144957Z'
+status: migrated
+tags:
+- scribe
+- project
+- remaining
+---
+
+# Complete Work Remaining: Scribe × n8n MCP Initiative
+
+**Current Status**: Infrastructure complete, ready for operational phase
+**Date**: 2026-01-08
+**Scope**: Everything needed to reach full production capability
+
+---
+
+## Executive Summary
+
+**Completed** ✅:
+- 5 KB of architecture & design documentation
+- 920 LOC of production-ready Python code
+- 4 complete n8n workflow definitions (YAML)
+- Full runbook with operational procedures
+- Environment configuration templates
+- Deployment & troubleshooting scripts
+
+**Remaining** ⏳: ~100+ hours of work across 8 major phases
+
+---
+
+## Phase 1: Credential Setup & Testing (4-6 hours)
+
+### 1.1 n8n API Key Generation
+- [ ] Log in to hab.so1.io
+- [ ] Navigate to Settings → API section
+- [ ] Generate new API key
+- [ ] Store securely in `.env.n8n`
+- [ ] Verify key has necessary permissions (workflows, executions, logs)
+- **Owner**: DevOps/Infrastructure
+- **Effort**: 0.5 hours
+- **Risk**: Low
+
+### 1.2 Discord Webhook Setup
+- [ ] Create Discord server / use existing channel
+- [ ] Generate webhook URL
+- [ ] Test webhook with sample message
+- [ ] Add to `.env.n8n`
+- [ ] Configure alert channel for different severity levels
+- **Owner**: DevOps/Infrastructure
+- **Effort**: 1 hour
+- **Risk**: Low
+
+### 1.3 Environment Configuration File
+- [ ] Copy `.env.n8n.example` → `.env.n8n`
+- [ ] Add all required credentials
+- [ ] Validate all variables are set correctly
+- [ ] Test with `scripts/verify_prerequisites.sh`
+- [ ] Ensure file permissions are 600 (secure)
+- [ ] Document any non-standard values
+- **Owner**: DevOps/Infrastructure
+- **Effort**: 1 hour
+- **Risk**: Low
+
+### 1.4 Network & SSL Verification
+- [ ] Test connectivity to hab.so1.io (ping, nslookup, curl)
+- [ ] Verify SSL certificate is valid
+- [ ] Check firewall rules for HTTPS (port 443)
+- [ ] Verify no proxy issues blocking n8n communication
+- [ ] Test with verbose curl to validate response headers
+- **Owner**: Infrastructure/Network
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 1.5 Initial Connection Test
+- [ ] Run `scripts/test_connection.sh`
+- [ ] Verify health check passes
+- [ ] List existing workflows on hab.so1.io
+- [ ] Document any issues or warnings
+- [ ] Create incident if connection fails
+- **Owner**: DevOps
+- **Effort**: 1 hour
+- **Risk**: Medium (depends on external n8n instance)
+
+**Total Phase 1**: ~5 hours
+**Go/No-Go Gate**: Connection must pass health check
+
+---
+
+## Phase 2: Workflow Deployment (6-8 hours)
+
+### 2.1 Pre-Deployment Validation
+- [ ] Validate workflow YAML syntax
+- [ ] Verify all workflow templates are syntactically correct
+- [ ] Check for undefined variables or references
+- [ ] Validate node configurations
+- [ ] Test workflow templates with `python3 -m yaml`
+- **Owner**: Backend/DevOps
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 2.2 Deploy Specification Ingestion Workflow
+- [ ] Deploy to n8n via `scripts/deploy_workflow.sh specification-ingestion`
+- [ ] Verify deployment succeeded (check n8n UI)
+- [ ] Record workflow ID
+- [ ] Test with sample CSV file
+- [ ] Validate CSV → YAML conversion
+- [ ] Document any issues
+- **Owner**: Backend
+- **Effort**: 1.5 hours
+- **Risk**: Medium
+
+### 2.3 Deploy Cross-Reference Validation Workflow
+- [ ] Deploy via `scripts/deploy_workflow.sh cross-reference-validation`
+- [ ] Verify deployment succeeded
+- [ ] Record workflow ID
+- [ ] Test with existing requirements directory
+- [ ] Validate relationship checking works
+- [ ] Check validation report generation
+- **Owner**: Backend
+- **Effort**: 1.5 hours
+- **Risk**: Medium
+
+### 2.4 Deploy Documentation Publishing Workflow
+- [ ] Deploy via `scripts/deploy_workflow.sh documentation-publishing`
+- [ ] Verify deployment succeeded
+- [ ] Record workflow ID
+- [ ] Test MDX generation
+- [ ] Verify mint.json creation
+- [ ] Check output in `/platform/atlas/specs/`
+- **Owner**: Backend
+- **Effort**: 1.5 hours
+- **Risk**: Medium
+
+### 2.5 Deploy Performance SLA Reconciliation Workflow
+- [ ] Deploy via `scripts/deploy_workflow.sh performance-sla-reconciliation`
+- [ ] Verify deployment succeeded
+- [ ] Record workflow ID
+- [ ] Test metric fetching from Prometheus
+- [ ] Verify SLA comparison logic
+- [ ] Check GitHub issue creation
+- **Owner**: Backend
+- **Effort**: 1.5 hours
+- **Risk**: High (requires Prometheus setup)
+
+### 2.6 Post-Deployment Verification
+- [ ] List all workflows: `bash scripts/monitor_executions.sh`
+- [ ] Verify all 4 workflows are in n8n
+- [ ] Check each workflow is set to inactive initially
+- [ ] Document workflow IDs in spreadsheet
+- [ ] Create rollback points
+- **Owner**: DevOps
+- **Effort**: 1 hour
+- **Risk**: Low
+
+**Total Phase 2**: ~8 hours
+**Go/No-Go Gate**: All 4 workflows deployed and listed in n8n UI
+
+---
+
+## Phase 3: Initial Workflow Testing (8-12 hours)
+
+### 3.1 Unit Test: Specification Ingestion
+- [ ] Create test CSV with 10-20 sample requirements
+- [ ] Trigger workflow manually
+- [ ] Monitor execution with `scripts/test_workflow.sh`
+- [ ] Validate generated YAML files
+- [ ] Check Discord alert for success
+- [ ] Test error handling with malformed CSV
+- [ ] Verify Discord alert for failure
+- **Owner**: Backend/QA
+- **Effort**: 2 hours
+- **Risk**: Medium
+
+### 3.2 Unit Test: Cross-Reference Validation
+- [ ] Run validation on existing 718 requirements
+- [ ] Verify relationship checking completes
+- [ ] Check report generation (RELATIONSHIP_VALIDATION_REPORT.md)
+- [ ] Test with known broken references (inject errors)
+- [ ] Verify error detection
+- [ ] Test circular dependency detection
+- **Owner**: Backend/QA
+- **Effort**: 2 hours
+- **Risk**: Medium
+
+### 3.3 Unit Test: Documentation Publishing
+- [ ] Trigger workflow manually
+- [ ] Check MDX spec generation
+- [ ] Verify mint.json navigation structure
+- [ ] Validate generated markdown files
+- [ ] Check for broken links in generated docs
+- [ ] Test with partial requirement set
+- **Owner**: Backend/QA
+- **Effort**: 2 hours
+- **Risk**: Medium
+
+### 3.4 Unit Test: Performance SLA Reconciliation
+- [ ] Set up mock Prometheus metrics
+- [ ] Trigger workflow
+- [ ] Verify metric comparison logic
+- [ ] Check SLA threshold detection
+- [ ] Test GitHub issue creation
+- [ ] Verify Discord alert contains metrics
+- **Owner**: Backend/QA
+- **Effort**: 2.5 hours
+- **Risk**: High (external dependencies)
+
+### 3.5 Integration Testing
+- [ ] Run all 4 workflows sequentially
+- [ ] Verify data flows between workflows
+- [ ] Check requirement updates trigger validation
+- [ ] Test end-to-end: ingest → validate → publish → reconcile
+- [ ] Monitor metrics collection
+- [ ] Verify Discord notifications
+- **Owner**: QA
+- **Effort**: 2 hours
+- **Risk**: High
+
+### 3.6 Performance Testing
+- [ ] Load test with 100+ requirements
+- [ ] Measure workflow execution times
+- [ ] Check memory usage during execution
+- [ ] Test with large CSV files
+- [ ] Verify timeout handling
+- [ ] Document performance characteristics
+- **Owner**: Backend/QA
+- **Effort**: 2 hours
+- **Risk**: Medium
+
+**Total Phase 3**: ~12 hours
+**Go/No-Go Gate**: All 4 workflows tested and working
+
+---
+
+## Phase 4: Observability Setup (6-8 hours)
+
+### 4.1 Prometheus Integration
+- [ ] Install Prometheus (if not present)
+- [ ] Configure prometheus.yml for Scribe metrics
+- [ ] Set up metric scraping endpoint
+- [ ] Verify metrics collection working
+- [ ] Test `/tmp/scribe_metrics.txt` export
+- [ ] Configure retention policy
+- **Owner**: Infrastructure
+- **Effort**: 2 hours
+- **Risk**: Low
+
+### 4.2 Prometheus Pushgateway Integration (Optional)
+- [ ] Set up Prometheus Pushgateway (if needed)
+- [ ] Configure Scribe to push metrics
+- [ ] Verify metrics appear in Prometheus
+- [ ] Test metric expiration
+- [ ] Document configuration
+- **Owner**: Infrastructure
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 4.3 Grafana Dashboard Creation
+- [ ] Create new Grafana dashboard "Scribe × n8n"
+- [ ] Add panels for:
+  - [ ] Workflow execution count (total)
+  - [ ] Workflow success rate (%)
+  - [ ] Average execution duration
+  - [ ] Error count by workflow
+  - [ ] Active workflows gauge
+  - [ ] SLA violations over time
+- [ ] Configure alerts for high error rate
+- [ ] Set up dashboard refresh rates
+- [ ] Share dashboard with team
+- **Owner**: Infrastructure/Backend
+- **Effort**: 3 hours
+- **Risk**: Low
+
+### 4.4 Loki Log Aggregation (Optional)
+- [ ] Configure Loki for log ingestion
+- [ ] Set up Scribe log shipper
+- [ ] Create Loki queries for workflow logs
+- [ ] Add Loki datasource to Grafana
+- [ ] Create log dashboard panels
+- [ ] Test log search and filtering
+- **Owner**: Infrastructure
+- **Effort**: 2 hours
+- **Risk**: Low
+
+### 4.5 Discord Alert Configuration
+- [ ] Test all alert types:
+  - [ ] Workflow failure alerts
+  - [ ] Execution timeout alerts
+  - [ ] Deployment notifications
+  - [ ] Daily summary reports
+- [ ] Configure alert formatting
+- [ ] Add emoji and color coding
+- [ ] Set up alert routing by severity
+- [ ] Test alert delivery timing
+- **Owner**: DevOps/Backend
+- **Effort**: 1 hour
+- **Risk**: Low
+
+**Total Phase 4**: ~8 hours
+**Go/No-Go Gate**: Metrics visible in Prometheus/Grafana, Discord alerts working
+
+---
+
+## Phase 5: Scheduling & Automation (4-6 hours)
+
+### 5.1 Cron Job Configuration
+- [ ] Set up cron jobs for 3 scheduled workflows:
+  - [ ] Documentation Publishing (03:00 UTC daily)
+  - [ ] Cross-Reference Validation (04:00 UTC daily)
+  - [ ] Performance SLA Reconciliation (12:00 UTC daily)
+- [ ] Verify cron syntax
+- [ ] Test cron execution
+- [ ] Set up log rotation for cron logs
+- [ ] Create monitoring for cron failures
+- **Owner**: DevOps
+- **Effort**: 2 hours
+- **Risk**: Low
+
+### 5.2 System Health Checks
+- [ ] Set up health check cron job (every 6 hours)
+- [ ] Verify health check script works
+- [ ] Create alerts for health check failures
+- [ ] Document health check metrics
+- **Owner**: DevOps
+- **Effort**: 1 hour
+- **Risk**: Low
+
+### 5.3 Metrics Export Schedule
+- [ ] Set up metrics export every 60 seconds
+- [ ] Verify metrics file is updated
+- [ ] Configure log rotation for metrics
+- [ ] Test Prometheus scraping
+- **Owner**: DevOps
+- **Effort**: 1 hour
+- **Risk**: Low
+
+### 5.4 Backup Schedule
+- [ ] Set up daily backup job (02:00 UTC)
+- [ ] Verify backup completeness
+- [ ] Test backup restoration
+- [ ] Document backup location
+- [ ] Set up backup cleanup (keep 30 days)
+- **Owner**: DevOps
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+**Total Phase 5**: ~5.5 hours
+**Go/No-Go Gate**: All cron jobs executing successfully
+
+---
+
+## Phase 6: Documentation & Training (6-8 hours)
+
+### 6.1 Operations Manual
+- [ ] Create printed runbook copies
+- [ ] Document all common tasks with screenshots
+- [ ] Create troubleshooting decision tree
+- [ ] Document emergency procedures
+- [ ] Create checklists for common operations
+- **Owner**: Documentation/DevOps
+- **Effort**: 2 hours
+- **Risk**: Low
+
+### 6.2 Team Training
+- [ ] Conduct training session with operations team
+  - [ ] How to monitor workflows
+  - [ ] How to troubleshoot failures
+  - [ ] How to view metrics
+  - [ ] How to acknowledge alerts
+  - [ ] How to perform backups
+- [ ] Create video walkthrough of key operations
+- [ ] Practice emergency procedures
+- [ ] Q&A session
+- **Owner**: Lead DevOps
+- **Effort**: 3 hours
+- **Risk**: Low
+
+### 6.3 Developer Documentation
+- [ ] Create code documentation
+- [ ] Document workflow template format
+- [ ] Create developer guide for adding workflows
+- [ ] Document API usage examples
+- [ ] Create troubleshooting guide for developers
+- **Owner**: Backend/Documentation
+- **Effort**: 2 hours
+- **Risk**: Low
+
+### 6.4 Knowledge Transfer
+- [ ] Pair operations with on-call engineers
+- [ ] Create on-call runbook
+- [ ] Document escalation procedures
+- [ ] Create incident response templates
+- **Owner**: Operations/Lead
+- **Effort**: 1 hour
+- **Risk**: Low
+
+**Total Phase 6**: ~8 hours
+**Go/No-Go Gate**: Team trained and comfortable with operations
+
+---
+
+## Phase 7: Production Hardening (8-10 hours)
+
+### 7.1 Security Hardening
+- [ ] Review `.env.n8n` for exposed credentials
+- [ ] Implement secrets management (if needed)
+- [ ] Rotate API keys
+- [ ] Set up key rotation schedule
+- [ ] Verify no secrets in logs
+- [ ] Audit file permissions
+- [ ] Implement access controls
+- **Owner**: Security/DevOps
+- **Effort**: 2 hours
+- **Risk**: High
+
+### 7.2 Error Handling & Recovery
+- [ ] Test failure scenarios:
+  - [ ] Network timeout
+  - [ ] n8n unavailable
+  - [ ] Database connection failure
+  - [ ] Disk space full
+  - [ ] Memory exhaustion
+- [ ] Verify error recovery
+- [ ] Test automatic restart
+- [ ] Create recovery procedures
+- **Owner**: Backend/DevOps
+- **Effort**: 2.5 hours
+- **Risk**: Medium
+
+### 7.3 Load Testing
+- [ ] Test with concurrent executions
+- [ ] Measure resource usage
+- [ ] Identify bottlenecks
+- [ ] Optimize if needed
+- [ ] Document capacity limits
+- **Owner**: Backend/QA
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 7.4 Rate Limiting & Throttling
+- [ ] Implement API rate limiting
+- [ ] Configure backoff strategies
+- [ ] Test retry logic
+- [ ] Verify circuit breaker pattern
+- [ ] Document limits
+- **Owner**: Backend
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 7.5 Disaster Recovery Drills
+- [ ] Practice complete system restore
+- [ ] Time the restore procedure
+- [ ] Verify RPO (Recovery Point Objective)
+- [ ] Verify RTO (Recovery Time Objective)
+- [ ] Document lessons learned
+- **Owner**: DevOps
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+**Total Phase 7**: ~10 hours
+**Go/No-Go Gate**: All security and resilience measures in place
+
+---
+
+## Phase 8: Production Deployment & Handoff (6-8 hours)
+
+### 8.1 Production Readiness Checklist
+- [ ] All 4 workflows deployed and tested
+- [ ] Monitoring and alerting operational
+- [ ] Backups verified working
+- [ ] Team trained and on-call ready
+- [ ] Documentation complete
+- [ ] Security hardening done
+- [ ] Performance acceptable
+- **Owner**: Tech Lead
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 8.2 Gradual Rollout
+- [ ] Activate 1st workflow (documentation publishing)
+- [ ] Monitor for 24 hours
+- [ ] Activate 2nd workflow (cross-reference validation)
+- [ ] Monitor for 24 hours
+- [ ] Activate 3rd workflow (SLA reconciliation)
+- [ ] Monitor for 24 hours
+- [ ] Activate 4th workflow (specification ingestion)
+- [ ] Monitor for 24 hours
+- **Owner**: DevOps/Lead
+- **Effort**: 2 hours (plus 96 hours monitoring)
+- **Risk**: Medium
+
+### 8.3 Incident Response Setup
+- [ ] Configure on-call rotation
+- [ ] Set up PagerDuty integration (if applicable)
+- [ ] Create incident templates
+- [ ] Set up war room procedures
+- [ ] Document escalation paths
+- **Owner**: Operations/Lead
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 8.4 Handoff to Operations
+- [ ] Transfer ownership to ops team
+- [ ] Verify ops team can perform all tasks
+- [ ] Establish SLA for incident response
+- [ ] Set up communication channels
+- [ ] Schedule post-launch review
+- **Owner**: Project Lead/Operations Lead
+- **Effort**: 1.5 hours
+- **Risk**: Low
+
+### 8.5 Post-Launch Monitoring
+- [ ] Monitor system for 1 week
+- [ ] Address any issues
+- [ ] Collect metrics and feedback
+- [ ] Optimize based on real-world usage
+- [ ] Document improvements needed
+- **Owner**: DevOps/Backend
+- **Effort**: 2 hours (plus 168 hours monitoring)
+- **Risk**: Low
+
+**Total Phase 8**: ~8 hours (plus continuous monitoring)
+**Go/No-Go Gate**: System stable in production
+
+---
+
+## Parallel Workstreams
+
+### A. Integration with Traceo Engine
+
+**Objective**: Connect n8n workflows to Traceo requirement engine
+
+- [ ] Study Traceo API / data model
+- [ ] Create API client for Traceo
+- [ ] Implement CSV ingestion into Traceo
+- [ ] Implement requirement update notifications
+- [ ] Create bidirectional sync mechanism
+- [ ] Test end-to-end integration
+- **Effort**: 15-20 hours
+- **Owner**: Backend
+- **Timeline**: Can start after Phase 2
+
+### B. Integration with GitHub
+
+**Objective**: Connect to GitHub for issue creation and tracking
+
+- [ ] Set up GitHub API authentication
+- [ ] Create issue creation workflow
+- [ ] Implement issue linking to requirements
+- [ ] Create GitHub comments from alerts
+- [ ] Implement PR checking for requirement violations
+- **Effort**: 8-10 hours
+- **Owner**: Backend
+- **Timeline**: Can start after Phase 3
+
+### C. Integration with Slack
+
+**Objective**: Extend alerting to Slack (in addition to Discord)
+
+- [ ] Create Slack webhook integration
+- [ ] Implement Slack message formatting
+- [ ] Create Slack channel routing
+- [ ] Add Slack thread support for alert context
+- **Effort**: 4-6 hours
+- **Owner**: Backend
+- **Timeline**: Can start after Phase 4
+
+### D. Build Web Dashboard
+
+**Objective**: Create web UI for monitoring (beyond Grafana)
+
+- [ ] Design dashboard UX
+- [ ] Build backend API for dashboard data
+- [ ] Build React frontend
+- [ ] Implement real-time updates
+- [ ] Add workflow control UI
+- **Effort**: 20-30 hours
+- **Owner**: Frontend/Backend
+- **Timeline**: Can start after Phase 7
+
+---
+
+## Optimization & Enhancement Opportunities
+
+### High Priority (Should do)
+
+- [ ] **Workflow Versioning**: Implement version control for workflows
+- [ ] **Dry Run Mode**: Add ability to test workflows without side effects
+- [ ] **Workflow Dependencies**: Allow workflows to trigger other workflows
+- [ ] **Custom Metrics**: Add business-specific metrics beyond system metrics
+- [ ] **Smart Retries**: Implement exponential backoff with jitter
+- **Effort**: 8-12 hours
+- **Timeline**: Post-launch optimization
+
+### Medium Priority (Nice to have)
+
+- [ ] **Workflow Templates Library**: Publish reusable workflow components
+- [ ] **Multi-Tenant Support**: Allow multiple requirement repositories
+- [ ] **API Gateway**: Create management API for workflow control
+- [ ] **Workflow Approval Process**: Require approval before production deployment
+- [ ] **Blue/Green Deployments**: Zero-downtime workflow updates
+- **Effort**: 15-20 hours
+- **Timeline**: After stabilization
+
+### Low Priority (Future consideration)
+
+- [ ] **Machine Learning**: Anomaly detection in metrics
+- [ ] **Predictive Alerts**: Predict failures before they happen
+- [ ] **Custom Workflow Builder UI**: Visual workflow designer
+- [ ] **Multi-Region Support**: Deploy to multiple n8n instances
+- [ ] **Workflow Marketplace**: Share workflows with community
+- **Effort**: 30-50 hours
+- **Timeline**: Long-term roadmap
+
+---
+
+## Risk Mitigation
+
+### Identified Risks
+
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|-----------|
+| n8n instance unavailable | Medium | High | Implement fallback n8n instance, frequent backups |
+| Workflow performance degradation | Medium | Medium | Load testing, capacity planning, monitoring |
+| Integration failures | Medium | High | Comprehensive testing, error handling, fallbacks |
+| Team unfamiliar with system | Low | Medium | Training, documentation, on-call process |
+| Data loss / backups fail | Low | Critical | Test restore procedures, multiple backup locations |
+| Security breach / credential leak | Low | Critical | Secrets management, regular audits, key rotation |
+
+### Contingency Plans
+
+- [ ] **Plan A**: Primary n8n at hab.so1.io
+- [ ] **Plan B**: Backup n8n instance (standby)
+- [ ] **Plan C**: Manual workflow execution procedures
+- [ ] **Plan D**: Offline requirement management (fallback)
+
+---
+
+## Resource Requirements
+
+### Team Composition
+
+- **1 DevOps Engineer**: 40 hours (setup, deployment, infrastructure)
+- **1 Backend Engineer**: 30 hours (testing, integration, optimization)
+- **1 QA Engineer**: 20 hours (testing, validation)
+- **1 Documentation Specialist**: 8 hours (docs, training materials)
+- **1 Project Lead**: 16 hours (coordination, oversight)
+
+**Total**: ~114 hours over 3-4 weeks (with parallel work)
+
+### Infrastructure Requirements
+
+- n8n instance (hab.so1.io) ✅ Already exists
+- PostgreSQL (requirements repo) ✅ Already exists
+- Prometheus + Grafana (monitoring)
+- Discord server (alerting)
+- GitHub repo (version control)
+- Backup storage (S3 or similar)
+
+### Tools & Services
+
+- n8n (cloud at hab.so1.io)
+- Python 3.12+
+- Git / GitHub
+- Docker (optional, for containerized services)
+- Prometheus + Grafana (optional, for advanced monitoring)
+- PostgreSQL (existing)
+
+---
+
+## Success Criteria
+
+### Phase 1 Success
+- [ ] Connection to n8n established and verified
+- [ ] All credentials securely configured
+- [ ] No network issues detected
+
+### Phase 2 Success
+- [ ] All 4 workflows deployed to n8n
+- [ ] Each workflow has unique ID
+- [ ] Workflows appear in n8n UI
+
+### Phase 3 Success
+- [ ] All 4 workflows execute successfully
+- [ ] Expected outputs generated
+- [ ] Alerts sent to Discord
+- [ ] No execution errors
+
+### Phase 4 Success
+- [ ] Metrics visible in Prometheus
+- [ ] Grafana dashboard functional
+- [ ] Discord alerts received in real-time
+
+### Phase 5 Success
+- [ ] Scheduled workflows execute on time
+- [ ] Cron jobs working correctly
+- [ ] No missed executions
+
+### Phase 6 Success
+- [ ] Team trained and certified
+- [ ] Runbooks complete and accurate
+- [ ] Team can perform emergency procedures
+
+### Phase 7 Success
+- [ ] No security vulnerabilities
+- [ ] System recovers from failures
+- [ ] Performance acceptable under load
+
+### Phase 8 Success
+- [ ] System running in production
+- [ ] SLA met (no critical incidents)
+- [ ] Team comfortable with operations
+- [ ] ROI achieved
+
+---
+
+## Timeline Estimate
+
+### Aggressive (Parallel work, 2 weeks)
+```
+Week 1:
+  Mon-Tue: Phase 1 (Credential setup)
+  Wed-Fri: Phase 2 (Deployment)
+
+Week 2:
+  Mon-Wed: Phase 3 (Testing) + Phase 4 (Observability)
+  Thu-Fri: Phase 5 (Scheduling) + Phase 6 (Documentation)
+
+Week 3:
+  Mon-Tue: Phase 7 (Hardening)
+  Wed-Fri: Phase 8 (Production deployment)
+```
+
+### Realistic (Sequential, 4-5 weeks)
+```
+Week 1: Phase 1 + Phase 2
+Week 2: Phase 3 + Phase 4
+Week 3: Phase 5 + Phase 6
+Week 4: Phase 7
+Week 5: Phase 8 + Stabilization
+```
+
+### Conservative (With buffer, 6-8 weeks)
+```
+Weeks 1-2: Phase 1 + Phase 2 + Buffer
+Weeks 3-4: Phase 3 + Phase 4 + Buffer
+Weeks 5: Phase 5 + Phase 6
+Weeks 6-7: Phase 7 + Production deployment
+Week 8: Stabilization + Optimization
+```
+
+---
+
+## Next Steps (Immediate)
+
+1. **This Week**:
+   - [ ] Assign DevOps lead for Phase 1
+   - [ ] Generate n8n API key
+   - [ ] Create Discord webhook
+   - [ ] Run Phase 1 startup checklist
+
+2. **Next Week**:
+   - [ ] Complete Phase 1 (connection verified)
+   - [ ] Begin Phase 2 (workflow deployment)
+   - [ ] Set up basic monitoring
+
+3. **Following Week**:
+   - [ ] Complete Phase 2-3 (all workflows deployed and tested)
+   - [ ] Set up Prometheus/Grafana
+   - [ ] Configure Discord alerts
+
+4. **After That**:
+   - [ ] Phase 4-5 (automation & scheduling)
+   - [ ] Team training (Phase 6)
+   - [ ] Production deployment (Phase 8)
+
+---
+
+## Decision Points & Gate Reviews
+
+| Gate | Success Criteria | Approver | Timeline |
+|------|-----------------|----------|----------|
+| Phase 1 | Connection passes health check | DevOps Lead | End Week 1 |
+| Phase 2 | All 4 workflows deployed | Backend Lead | Mid Week 2 |
+| Phase 3 | All workflows tested successfully | QA Lead | End Week 2 |
+| Phase 4 | Metrics & alerts verified | Ops Lead | End Week 3 |
+| Phase 5 | Scheduling working correctly | DevOps Lead | Mid Week 3 |
+| Phase 6 | Team trained | Project Lead | Mid Week 4 |
+| Phase 7 | Security hardening complete | Security | End Week 4 |
+| Phase 8 | Production deployment | Project Lead | End Week 5 |
+
+---
+
+## Document References
+
+| Document | Purpose | Owner | Status |
+|----------|---------|-------|--------|
+| RUNBOOK.md | Daily operations procedures | DevOps | ✅ Complete |
+| SETUP_N8N_MCP.md | Setup guide (10 phases) | DevOps | ✅ Complete |
+| DEPLOYMENT_CHECKLIST.md | Interactive deployment guide | DevOps | ✅ Complete |
+| N8N_MCP_INTEGRATION.md | Architecture documentation | Backend | ✅ Complete |
+| MCP_SUMMARY.md | Quick reference | Backend | ✅ Complete |
+| REMAINING_WORK.md | This document | Project Lead | ✅ Complete |
+
+---
+
+**Last Updated**: 2026-01-08
+**Next Review**: After Phase 1 completion
+**Status**: Ready to begin Phase 1 immediately
+

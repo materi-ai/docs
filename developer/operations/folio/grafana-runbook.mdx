@@ -1,0 +1,1741 @@
+---
+title: Grafana Operations Runbook
+description: Guide for Grafana dashboard management and monitoring
+icon: document
+source: /Users/alexarno/materi/docs/MATERI-GRAFANA-RUNBOOK.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:55:33.011969Z"
+status: migrated
+tags: 
+relatedPages: []
+---
+
+# Materi Grafana Observability Runbook
+
+> **Version:** 1.0
+> **Last Updated:** January 2026
+> **Maintainers:** Platform Engineering Team
+
+This document provides comprehensive guidance on Materi's Grafana-based observability stack, including metrics collection, dashboards, alerting, distributed tracing, and frontend monitoring.
+
+---
+
+## Table of Contents
+
+1. [Architecture Overview](#architecture-overview)
+2. [Grafana Cloud Integration](#grafana-cloud-integration)
+3. [Grafana Alloy Configuration](#grafana-alloy-configuration)
+4. [Metrics Collection Pipeline](#metrics-collection-pipeline)
+5. [Dashboards Reference](#dashboards-reference)
+6. [Alerting System](#alerting-system)
+7. [SLO & Burn Rate Alerting](#slo--burn-rate-alerting)
+8. [Distributed Tracing](#distributed-tracing)
+9. [Log Aggregation & Correlation](#log-aggregation--correlation)
+10. [Frontend Observability (Faro)](#frontend-observability-faro)
+11. [Service-Specific Metrics](#service-specific-metrics)
+12. [Recording Rules](#recording-rules)
+13. [Troubleshooting Guide](#troubleshooting-guide)
+14. [Operational Procedures](#operational-procedures)
+
+---
+
+## Architecture Overview
+
+Materi employs a multi-layered observability architecture combining local metrics collection, Grafana Cloud integration, and the internal Folio observability hub.
+
+```mermaid
+graph TB
+    subgraph "Frontend (Canvas)"
+        FE[Office App<br/>React/Vite]
+        FARO[Grafana Faro SDK]
+        FE --> FARO
+    end
+
+    subgraph "Backend Services"
+        API[API Service<br/>Go/Fiber<br/>:9090]
+        SHIELD[Shield Service<br/>Django<br/>:9091]
+        RELAY[Relay Service<br/>Rust/Axum<br/>:9092]
+        PRINTERY[Printery Worker<br/>Go<br/>:9090]
+        MANUSCRIPT[Manuscript Service<br/>Go<br/>:9090]
+        FOLIO[Folio Hub<br/>Go<br/>:9093]
+    end
+
+    subgraph "Infrastructure"
+        PG[(PostgreSQL)]
+        REDIS[(Redis)]
+        PG_EXP[Postgres Exporter<br/>:9187]
+        REDIS_EXP[Redis Exporter<br/>:9121]
+        NODE_EXP[Node Exporter<br/>:9100]
+        CADVISOR[cAdvisor<br/>:8080]
+        PG --> PG_EXP
+        REDIS --> REDIS_EXP
+    end
+
+    subgraph "Metrics Collection"
+        ALLOY[Grafana Alloy<br/>Local Mac]
+        PROM[Prometheus<br/>:9090]
+    end
+
+    subgraph "Grafana Cloud"
+        GC_PROM[Grafana Cloud<br/>Prometheus]
+        GC_LOKI[Grafana Cloud<br/>Loki]
+        GC_TEMPO[Grafana Cloud<br/>Tempo]
+        GC_FARO[Grafana Cloud<br/>Faro Collector]
+        GC_DASH[materi.grafana.net<br/>Dashboards]
+    end
+
+    subgraph "Alerting"
+        AM[AlertManager<br/>:9093]
+        SLACK[Slack Channels]
+        EMAIL[Email Notifications]
+    end
+
+    %% Metrics Flow
+    API --> ALLOY
+    SHIELD --> ALLOY
+    RELAY --> ALLOY
+    FOLIO --> ALLOY
+    PG_EXP --> ALLOY
+
+    ALLOY -->|Remote Write| GC_PROM
+    ALLOY -->|Remote Write| FOLIO
+
+    PROM --> AM
+    AM --> SLACK
+    AM --> EMAIL
+
+    %% Frontend Flow
+    FARO -->|RUM Data| GC_FARO
+
+    %% Dashboards
+    GC_PROM --> GC_DASH
+    GC_LOKI --> GC_DASH
+    GC_TEMPO --> GC_DASH
+
+    style ALLOY fill:#ff6b35,stroke:#fff,color:#fff
+    style GC_DASH fill:#f46800,stroke:#fff,color:#fff
+    style FOLIO fill:#7c3aed,stroke:#fff,color:#fff
+```
+
+### Key Components
+
+| Component | Purpose | Location |
+|-----------|---------|----------|
+| **Grafana Alloy** | Metrics collection agent | Local Mac (Homebrew service) |
+| **Prometheus** | Local metrics storage & queries | Docker/Kubernetes |
+| **AlertManager** | Alert routing & notifications | Docker/Kubernetes |
+| **Grafana Cloud** | Managed observability platform | materi.grafana.net |
+| **Folio** | Internal observability hub | Railway deployment |
+| **Faro** | Frontend RUM & tracing | Browser SDK |
+
+---
+
+## Grafana Cloud Integration
+
+### Access Information
+
+| Resource | URL |
+|----------|-----|
+| **Grafana Dashboard** | https://materi.grafana.net |
+| **Prometheus API** | https://prometheus-prod-55-prod-gb-south-1.grafana.net |
+| **Loki API** | https://logs-prod-035.grafana.net |
+| **Faro Collector** | https://faro-collector-prod-gb-south-1.grafana.net |
+
+### Authentication
+
+```mermaid
+sequenceDiagram
+    participant Alloy as Grafana Alloy
+    participant GC as Grafana Cloud
+    participant Folio as Folio Hub
+
+    Note over Alloy: Dual-write configuration
+
+    Alloy->>GC: POST /api/prom/push<br/>Basic Auth (Instance ID + API Key)
+    GC-->>Alloy: 200 OK
+
+    Alloy->>Folio: POST /api/v1/write<br/>Bearer Token (optional)
+    Folio-->>Alloy: 200 OK
+
+    Note over GC: Metrics stored for 13 months
+    Note over Folio: Internal aggregation & routing
+```
+
+### Environment Variables
+
+```bash
+# Grafana Cloud Prometheus
+GRAFANA_CLOUD_PROMETHEUS_URL=https://prometheus-prod-55-prod-gb-south-1.grafana.net/api/prom/push
+GRAFANA_CLOUD_PROMETHEUS_USER=2874131
+GRAFANA_CLOUD_API_KEY=glc_eyJv...
+
+# Grafana Cloud Loki
+GRAFANA_CLOUD_LOKI_URL=https://logs-prod-035.grafana.net/loki/api/v1/push
+GRAFANA_CLOUD_LOKI_USER=1432742
+
+# Faro (Frontend)
+FARO_SOURCE_MAP_ENDPOINT=https://faro-api-prod-gb-south-1.grafana.net/faro/api/v1
+FARO_APP_ID=<app-id>
+FARO_STACK_ID=<stack-id>
+```
+
+---
+
+## Grafana Alloy Configuration
+
+Grafana Alloy is the unified telemetry collector that scrapes metrics from all Materi services and forwards them to both Grafana Cloud and Folio.
+
+### Installation & Management
+
+```bash
+# Install via Homebrew
+brew install alloy
+
+# Start as background service
+brew services start alloy
+
+# Or manually copy plist and load
+cp /opt/homebrew/Cellar/alloy/1.12.0/homebrew.mxcl.alloy.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+
+# Check status
+launchctl list | grep alloy
+
+# View logs
+tail -f /opt/homebrew/var/log/alloy.log
+
+# Stop service
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+```
+
+### Configuration File Location
+
+```
+/opt/homebrew/etc/alloy/config.alloy
+```
+
+### Configuration Architecture
+
+```mermaid
+flowchart LR
+    subgraph "Scrape Targets"
+        S1[Shield<br/>shield.materi.dev/metrics]
+        S2[API<br/>api.materi.dev/metrics]
+        S3[Folio<br/>folio.materi.dev/metrics]
+        S4[PostgreSQL<br/>Railway DB]
+    end
+
+    subgraph "Alloy Processing"
+        SCRAPE[prometheus.scrape]
+        RELABEL[discovery.relabel]
+        FILTER[prometheus.relabel<br/>Metric Filtering]
+    end
+
+    subgraph "Remote Write"
+        RW1[Grafana Cloud<br/>metrics_service]
+        RW2[Folio Hub<br/>folio]
+    end
+
+    S1 --> SCRAPE
+    S2 --> SCRAPE
+    S3 --> SCRAPE
+    S4 --> SCRAPE
+
+    SCRAPE --> RELABEL
+    RELABEL --> FILTER
+    FILTER --> RW1
+    FILTER --> RW2
+```
+
+### Complete Alloy Configuration
+
+```hcl
+// Remote Write Destinations
+prometheus.remote_write "metrics_service" {
+  endpoint {
+    url = "https://prometheus-prod-55-prod-gb-south-1.grafana.net/api/prom/push"
+    basic_auth {
+      username = "2874131"
+      password = "<grafana-cloud-api-key>"
+    }
+  }
+}
+
+prometheus.remote_write "folio" {
+  endpoint {
+    url = "https://folio.materi.dev/api/v1/write"
+    queue_config {
+      capacity             = 10000
+      max_shards           = 5
+      max_samples_per_send = 500
+    }
+  }
+  external_labels = {
+    collector   = "alloy"
+    platform    = "materi"
+    source      = "local-mac"
+  }
+}
+
+// Service Scrape Configurations
+prometheus.scrape "shield" {
+  targets = [{
+    __address__ = "shield.materi.dev",
+    service     = "shield",
+    environment = "production",
+  }]
+  forward_to      = [prometheus.remote_write.folio.receiver, prometheus.remote_write.metrics_service.receiver]
+  scrape_interval = "30s"
+  scrape_timeout  = "10s"
+  scheme          = "https"
+  metrics_path    = "/metrics"
+}
+
+prometheus.scrape "api" {
+  targets = [{
+    __address__ = "api.materi.dev",
+    service     = "api",
+    environment = "production",
+  }]
+  forward_to      = [prometheus.remote_write.folio.receiver, prometheus.remote_write.metrics_service.receiver]
+  scrape_interval = "30s"
+  scrape_timeout  = "10s"
+  scheme          = "https"
+  metrics_path    = "/metrics"
+}
+
+// PostgreSQL Monitoring
+prometheus.exporter.postgres "integrations_postgres_exporter" {
+  data_source_names = ["postgresql://postgres:***@mainline.proxy.rlwy.net:35389/railway?sslmode=require"]
+}
+
+prometheus.scrape "integrations_postgres_exporter" {
+  targets    = discovery.relabel.integrations_postgres_exporter.output
+  forward_to = [prometheus.relabel.integrations_postgres_exporter.receiver]
+  job_name   = "integrations/postgres_exporter"
+}
+
+// Alloy Self-Monitoring
+prometheus.exporter.self "alloy_check" { }
+
+prometheus.scrape "alloy_check" {
+  targets         = discovery.relabel.alloy_check.output
+  forward_to      = [prometheus.relabel.alloy_check.receiver]
+  scrape_interval = "60s"
+}
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+```
+
+### Scrape Intervals
+
+| Target | Interval | Timeout | Notes |
+|--------|----------|---------|-------|
+| Services (API, Shield, Relay) | 30s | 10s | Standard service metrics |
+| PostgreSQL | 30s | 10s | Database health & performance |
+| Redis | 30s | 10s | Cache metrics |
+| Node Exporter | 30s | 10s | System metrics |
+| Alloy Self | 60s | 10s | Collector health |
+
+---
+
+## Metrics Collection Pipeline
+
+```mermaid
+flowchart TB
+    subgraph "Service Layer"
+        direction LR
+        API_M[API Metrics<br/>Go Prometheus Client]
+        SHIELD_M[Shield Metrics<br/>Django Prometheus]
+        RELAY_M[Relay Metrics<br/>metrics-rs]
+    end
+
+    subgraph "Collection Layer"
+        ALLOY_SC[Alloy Scraper<br/>30s interval]
+        PROM_SC[Prometheus Scraper<br/>15s interval]
+    end
+
+    subgraph "Storage Layer"
+        GC_STORE[Grafana Cloud<br/>13 month retention]
+        LOCAL_PROM[Local Prometheus<br/>30 day retention]
+        FOLIO_STORE[Folio Aggregator]
+    end
+
+    subgraph "Query Layer"
+        GRAFANA[Grafana Dashboards]
+        ALERTS[AlertManager]
+        API_QUERY[Metrics API]
+    end
+
+    API_M --> ALLOY_SC
+    SHIELD_M --> ALLOY_SC
+    RELAY_M --> ALLOY_SC
+
+    API_M --> PROM_SC
+    SHIELD_M --> PROM_SC
+    RELAY_M --> PROM_SC
+
+    ALLOY_SC --> GC_STORE
+    ALLOY_SC --> FOLIO_STORE
+    PROM_SC --> LOCAL_PROM
+
+    GC_STORE --> GRAFANA
+    LOCAL_PROM --> GRAFANA
+    LOCAL_PROM --> ALERTS
+    FOLIO_STORE --> API_QUERY
+```
+
+### Prometheus Configuration (Local)
+
+```yaml
+# /operations/folio/prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: "materi"
+    environment: "development"
+
+rule_files:
+  - "alerts.yml"
+
+scrape_configs:
+  # API Service (Go)
+  - job_name: "materi-api"
+    static_configs:
+      - targets: ["materi-api:9090"]
+    scrape_interval: 15s
+    metrics_path: /metrics
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: "api"
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        target_label: service
+        replacement: "api"
+
+  # Shield Service (Django)
+  - job_name: "materi-shield"
+    static_configs:
+      - targets: ["materi-shield:9090"]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: "shield"
+
+  # Relay Service (Rust)
+  - job_name: "materi-collaboration"
+    static_configs:
+      - targets: ["materi-collaboration:9090"]
+
+  # Infrastructure
+  - job_name: "postgres"
+    static_configs:
+      - targets: ["postgres-exporter:9187"]
+
+  - job_name: "redis"
+    static_configs:
+      - targets: ["redis-exporter:9121"]
+
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
+```
+
+---
+
+## Dashboards Reference
+
+### Dashboard Inventory
+
+| Dashboard | UID | Purpose | Location |
+|-----------|-----|---------|----------|
+| **Service Health** | `service-health` | Overall service status | `/operations/folio/grafana/` |
+| **CI/CD Pipeline** | `cicd-pipeline` | Deployment tracking | `/operations/folio/grafana/` |
+| **Infrastructure Overview** | `infrastructure` | System resources | `/operations/folio/grafana/` |
+| **Shield Auth** | `shield-auth` | Authentication metrics | `/operations/folio/grafana/` |
+| **Materi Overview** | `materi-overview` | Platform summary | `/operations/monitoring/grafana/` |
+| **Phase 2 Resilience** | `resilience` | Circuit breakers, pools | `/operations/monitoring/grafana/` |
+| **Printery Worker** | `printery` | Event processing | `/operations/monitoring/grafana/` |
+| **Aria AI Engine** | `aria` | AI/ML metrics | `/platform/intelligence/aria/monitoring/` |
+
+### Service Health Dashboard
+
+```mermaid
+graph TB
+    subgraph "Row 1: Health Overview"
+        P1[Service Status<br/>UP/DOWN stat]
+        P2[Total HTTP Requests<br/>Counter]
+        P3[Error Rate<br/>Gauge %]
+        P4[Active Connections<br/>Gauge]
+    end
+
+    subgraph "Row 2: Latency"
+        P5[P50 Latency<br/>Time series]
+        P6[P95 Latency<br/>Time series]
+        P7[P99 Latency<br/>Time series]
+    end
+
+    subgraph "Row 3: By Service"
+        P8[Request Rate by Service<br/>Stacked graph]
+        P9[Error Rate by Service<br/>Stacked graph]
+    end
+
+    subgraph "Row 4: Infrastructure"
+        P10[Database Connections<br/>Gauge]
+        P11[Redis Memory<br/>Gauge]
+        P12[CPU Usage<br/>Time series]
+    end
+```
+
+**Key Panels:**
+
+| Panel | Query | Threshold |
+|-------|-------|-----------|
+| Service Up/Down | `up{job=~"materi-.*"}` | 1 = Green, 0 = Red |
+| Error Rate | `sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))` | <1% Green, <5% Yellow, >5% Red |
+| P95 Latency | `histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))` | <200ms Green, <500ms Yellow |
+
+### CI/CD Pipeline Dashboard
+
+```mermaid
+graph TB
+    subgraph "Deployment Tracking"
+        D1[Deployment Frequency<br/>per environment]
+        D2[Deployment Success Rate<br/>percentage]
+        D3[Mean Time to Deploy<br/>duration]
+    end
+
+    subgraph "Build Metrics"
+        B1[Build Duration<br/>time series]
+        B2[Test Coverage<br/>gauge]
+        B3[Failed Tests<br/>counter]
+    end
+
+    subgraph "Canary Analysis"
+        C1[Canary Traffic %<br/>gauge]
+        C2[Canary Error Rate<br/>comparison]
+        C3[Rollback Events<br/>annotations]
+    end
+```
+
+### Infrastructure Overview Dashboard
+
+Monitors underlying infrastructure health:
+
+- **CPU/Memory/Disk** utilization per node
+- **Pod counts** by service
+- **Network I/O** rates
+- **Container restarts**
+- **Storage IOPS**
+
+### Printery Worker Dashboard
+
+```mermaid
+graph LR
+    subgraph "Event Processing"
+        E1[Events Processed/sec]
+        E2[Processing Latency P95]
+        E3[Events by Type Pie]
+    end
+
+    subgraph "Error Handling"
+        R1[Retry Rate]
+        R2[DLQ Size]
+        R3[Circuit Breaker State]
+    end
+
+    subgraph "Consumer Health"
+        C1[Consumer Lag]
+        C2[Partition Assignment]
+        C3[Rebalance Events]
+    end
+
+    E1 --> R1
+    R1 --> C1
+```
+
+**Key Metrics:**
+
+| Metric | Description |
+|--------|-------------|
+| `printery_events_processed` | Total events processed |
+| `printery_events_failed` | Failed event processing |
+| `printery_event_processing_duration_seconds` | Processing latency histogram |
+| `printery_dlq_size` | Dead letter queue depth |
+| `printery_consumer_lag` | Lag behind latest offset |
+
+### Phase 2 Resilience Dashboard
+
+Monitors circuit breakers, connection pools, and event ordering:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Closed: Normal Operation
+    Closed --> Open: Failure Threshold Exceeded
+    Open --> HalfOpen: Timeout Elapsed
+    HalfOpen --> Closed: Probe Succeeds
+    HalfOpen --> Open: Probe Fails
+
+    note right of Closed: Green indicator
+    note right of Open: Red indicator
+    note right of HalfOpen: Yellow indicator
+```
+
+**Circuit Breaker Panel Queries:**
+
+```promql
+# State visualization
+materi_circuit_breaker_state
+
+# Success rate
+rate(materi_circuit_breaker_successes_total[5m]) / rate(materi_circuit_breaker_requests_total[5m])
+
+# Request duration P95
+histogram_quantile(0.95, rate(materi_circuit_breaker_request_duration_seconds_bucket[5m]))
+
+# Rejection rate
+rate(materi_circuit_breaker_rejections_total[5m])
+```
+
+---
+
+## Alerting System
+
+### Alert Routing Architecture
+
+```mermaid
+flowchart TB
+    subgraph "Alert Sources"
+        PROM_ALERT[Prometheus<br/>Alert Rules]
+        GRAFANA_ALERT[Grafana<br/>Alert Rules]
+    end
+
+    subgraph "AlertManager"
+        ROUTE[Route Tree]
+        INHIBIT[Inhibition Rules]
+        GROUP[Grouping]
+        DEDUPE[Deduplication]
+    end
+
+    subgraph "Receivers"
+        CRITICAL[#materi-critical<br/>+ oncall@materi.com]
+        CICD[#materi-deployments]
+        SECURITY[#materi-security<br/>+ security@materi.com]
+        PRODUCTION[#materi-production]
+        INFRA[#materi-infrastructure]
+        DATABASE[#materi-database]
+        BUSINESS[#materi-analytics]
+    end
+
+    PROM_ALERT --> ROUTE
+    GRAFANA_ALERT --> ROUTE
+
+    ROUTE --> INHIBIT
+    INHIBIT --> GROUP
+    GROUP --> DEDUPE
+
+    DEDUPE -->|severity: critical| CRITICAL
+    DEDUPE -->|component: cicd| CICD
+    DEDUPE -->|component: security| SECURITY
+    DEDUPE -->|environment: production| PRODUCTION
+    DEDUPE -->|component: infrastructure| INFRA
+    DEDUPE -->|component: database/cache| DATABASE
+    DEDUPE -->|component: business| BUSINESS
+```
+
+### Alert Categories
+
+#### Service Health Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `ServiceDown` | `up{job=~"materi-.*"} == 0` | Critical | 2m |
+| `HighErrorRate` | Error rate > 5% | Critical | 5m |
+| `HighLatency` | P95 > 500ms | Warning | 10m |
+
+#### Database Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `DatabaseDown` | `up{job="postgres"} == 0` | Critical | 1m |
+| `DatabaseConnectionPoolLow` | Available < 20% | Warning | 5m |
+| `SlowDatabaseQueries` | Avg query > 1s | Warning | 10m |
+
+#### Redis Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `RedisDown` | `up{job="redis"} == 0` | Critical | 1m |
+| `RedisMemoryHigh` | Memory > 90% | Warning | 5m |
+| `RedisHighEvictionRate` | Evictions > 0 | Warning | 5m |
+
+#### CI/CD Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `WorkflowFailure` | Failed workflows in 1h | Warning | - |
+| `DeploymentFailure` | Failed deployments | Critical | - |
+| `LongBuildTime` | Build > 15 minutes | Warning | - |
+
+#### Security Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `VulnerabilityDetected` | Vulnerabilities found | Critical | - |
+| `SecretExposed` | Secrets in commits | Critical | - |
+| `DDoSAttackDetected` | Shield Advanced trigger | Critical | 1m |
+| `SQLInjectionAttempts` | WAF blocks > 10/hr | Warning | - |
+
+#### Storage Alerts
+
+| Alert | Expression | Severity | For |
+|-------|------------|----------|-----|
+| `StorageHighErrorRate` | Error rate > 5% | Warning | 5m |
+| `StorageUploadFailure` | >5 failures in 5m | Critical | 2m |
+| `StorageProviderUnreachable` | Health check = 0 | Critical | 2m |
+
+### AlertManager Configuration
+
+```yaml
+# /operations/folio/alertmanager.yml
+global:
+  smtp_smarthost: "localhost:587"
+  smtp_from: "alerts@materi.com"
+  slack_api_url: "https://hooks.slack.com/services/..."
+
+route:
+  group_by: ["alertname", "environment", "component"]
+  group_wait: 10s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: "default"
+
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: "critical-alerts"
+      group_wait: 0s
+      repeat_interval: 5m
+      continue: true
+
+    # CI/CD alerts
+    - match:
+        component: cicd
+      receiver: "cicd-alerts"
+      group_wait: 30s
+
+    # Security alerts
+    - match:
+        component: security
+      receiver: "security-alerts"
+      group_wait: 0s
+      repeat_interval: 1h
+
+# Inhibition rules
+inhibit_rules:
+  # Don't alert on service issues if the whole node is down
+  - source_match:
+      severity: "critical"
+      component: "infrastructure"
+    target_match_re:
+      component: "service|database|cache"
+    equal: ["cluster"]
+```
+
+### Slack Notification Channels
+
+| Channel | Purpose | Alert Types |
+|---------|---------|-------------|
+| `#materi-critical` | Critical incidents | ServiceDown, DatabaseDown, DDoS |
+| `#materi-deployments` | CI/CD events | WorkflowFailure, DeploymentFailure |
+| `#materi-security` | Security events | Vulnerabilities, Secrets, Attacks |
+| `#materi-production` | Production issues | All production severity alerts |
+| `#materi-infrastructure` | Infra health | CPU, Disk, Network |
+| `#materi-database` | DB/Cache issues | Connection pool, slow queries |
+| `#materi-analytics` | Business metrics | Custom business alerts |
+
+---
+
+## SLO & Burn Rate Alerting
+
+Materi implements multi-window burn rate alerting for SLO management.
+
+### SLO Definitions
+
+| Service | Availability SLO | Latency SLO | Error Budget/Month |
+|---------|-----------------|-------------|-------------------|
+| API | 99.9% | P99 < 200ms | 43.2 minutes |
+| Shield | 99.95% | P99 < 100ms | 21.6 minutes |
+| Relay | 99.9% | P99 < 50ms | 43.2 minutes |
+| Redis | 99.99% | P99 < 10ms | 4.32 minutes |
+| PostgreSQL | 99.99% | P99 < 100ms | 4.32 minutes |
+
+### Burn Rate Windows
+
+```mermaid
+gantt
+    title Burn Rate Alert Windows
+    dateFormat X
+    axisFormat %s
+
+    section Fast Burn (14.4x)
+    1h window       :0, 3600
+    5m confirmation :0, 300
+
+    section Medium Burn (6x)
+    6h window       :0, 21600
+    30m confirmation:0, 1800
+
+    section Slow Burn (1x)
+    3d window       :0, 259200
+    6h confirmation :0, 21600
+```
+
+| Burn Rate | Window | Confirmation | Budget Exhaustion | Severity |
+|-----------|--------|--------------|-------------------|----------|
+| Fast (14.4x) | 1 hour | 5 minutes | ~5 days | Critical |
+| Medium (6x) | 6 hours | 30 minutes | ~12.5 days | Warning |
+| Slow (1x) | 3 days | 6 hours | 30 days | Warning |
+
+### Burn Rate Alert Queries
+
+```promql
+# Fast burn (14.4x) - Folio example
+(
+  sum(rate(http_requests_total{service="folio",code=~"5.."}[1h]))
+  /
+  sum(rate(http_requests_total{service="folio"}[1h]))
+) > (14.4 * 0.001)
+and
+(
+  sum(rate(http_requests_total{service="folio",code=~"5.."}[5m]))
+  /
+  sum(rate(http_requests_total{service="folio"}[5m]))
+) > (14.4 * 0.001)
+
+# Latency burn rate
+(
+  1 - (
+    sum(rate(http_request_duration_seconds_bucket{service="folio",le="0.5"}[1h]))
+    /
+    sum(rate(http_request_duration_seconds_count{service="folio"}[1h]))
+  )
+) > (14.4 * 0.01)
+```
+
+### Error Budget Exhaustion Alerts
+
+| Alert | Threshold | Action |
+|-------|-----------|--------|
+| `ErrorBudget50PercentConsumed` | 50% consumed | Consider slowing deployments |
+| `ErrorBudget75PercentConsumed` | 75% consumed | Freeze non-critical deployments |
+| `ErrorBudget90PercentConsumed` | 90% consumed | Freeze all except hotfixes |
+| `ErrorBudgetExhausted` | 100% consumed | SLO breach, incident response |
+
+---
+
+## Distributed Tracing
+
+### Trace Flow Architecture
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant API
+    participant Shield
+    participant Relay
+    participant OTEL as OTEL Collector
+    participant Tempo
+    participant Grafana
+
+    Browser->>API: Request (traceparent header)
+    Note over API: Generate span, propagate context
+
+    API->>Shield: Auth check (traceparent)
+    Shield-->>API: Token validated
+
+    API->>Relay: WebSocket upgrade (traceparent)
+
+    API->>OTEL: Export spans (OTLP)
+    Shield->>OTEL: Export spans (OTLP)
+    Relay->>OTEL: Export spans (OTLP)
+
+    OTEL->>Tempo: Store traces
+
+    Grafana->>Tempo: Query traces
+    Tempo-->>Grafana: Trace visualization
+```
+
+### Context Propagation
+
+Materi supports multiple propagation formats for compatibility:
+
+| Format | Headers | Services |
+|--------|---------|----------|
+| W3C Trace Context | `traceparent`, `tracestate` | All services |
+| B3 | `X-B3-TraceId`, `X-B3-SpanId`, etc. | API, Folio |
+| Jaeger | `uber-trace-id` | Legacy support |
+| Correlation ID | `X-Request-ID`, `X-Correlation-ID` | All services |
+
+### OpenTelemetry Collector Configuration
+
+```yaml
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  filelog:
+    include:
+      - /var/log/pods/materi_*/*/*.log
+    operators:
+      - type: json_parser
+      - type: trace_parser
+        trace_id:
+          parse_from: attributes.trace_id
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+
+  resource:
+    attributes:
+      - key: service.namespace
+        value: materi
+        action: upsert
+
+exporters:
+  otlp/tempo:
+    endpoint: tempo.materi.svc.cluster.local:4317
+
+  loki:
+    endpoint: http://loki.materi.svc.cluster.local:3100/loki/api/v1/push
+    labels:
+      resource:
+        service.name: "service"
+      attributes:
+        trace_id: "trace_id"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch, resource]
+      exporters: [otlp/tempo]
+
+    logs:
+      receivers: [otlp, filelog]
+      processors: [batch, resource]
+      exporters: [loki]
+```
+
+### Tempo Configuration
+
+```yaml
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+
+compactor:
+  compaction:
+    block_retention: 168h  # 7 days
+
+metrics_generator:
+  processor:
+    service_graphs:
+      dimensions:
+        - service.namespace
+        - http.method
+        - http.status_code
+    span_metrics:
+      dimensions:
+        - service.name
+        - http.route
+```
+
+### Service Graph Generation
+
+Tempo automatically generates service graphs from trace data:
+
+```mermaid
+graph LR
+    FE[Frontend] -->|HTTP| API
+    API -->|gRPC| Shield
+    API -->|WS| Relay
+    API -->|SQL| PostgreSQL
+    API -->|Redis| Redis
+    Shield -->|SQL| PostgreSQL
+    Relay -->|Redis PubSub| Redis
+```
+
+---
+
+## Log Aggregation & Correlation
+
+### Log-to-Trace Correlation
+
+```mermaid
+flowchart LR
+    subgraph "Service Logs"
+        LOG1[{"trace_id": "abc123",<br/>"span_id": "def456",<br/>"message": "Request started"}]
+    end
+
+    subgraph "Loki"
+        DERIVED[Derived Fields<br/>trace_id extraction]
+    end
+
+    subgraph "Grafana"
+        LINK[Clickable Trace Link]
+        TEMPO_VIEW[Tempo Trace View]
+    end
+
+    LOG1 --> DERIVED
+    DERIVED --> LINK
+    LINK --> TEMPO_VIEW
+```
+
+### Loki Datasource Configuration
+
+```yaml
+datasources:
+  - name: Loki
+    uid: loki
+    type: loki
+    url: http://loki.materi.svc.cluster.local:3100
+    jsonData:
+      derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: '"trace_id":"([a-f0-9]+)"'
+          name: TraceID
+          url: '${__value.raw}'
+        - datasourceUid: tempo
+          matcherRegex: 'trace_id=([a-f0-9]+)'
+          name: TraceID
+          url: '${__value.raw}'
+```
+
+### Service-Specific Logging
+
+#### Go Services (API, Folio)
+
+```go
+import (
+    "go.opentelemetry.io/otel/trace"
+    "go.uber.org/zap"
+)
+
+func LogWithTrace(ctx context.Context, logger *zap.Logger, msg string) {
+    span := trace.SpanFromContext(ctx)
+    if span.SpanContext().IsValid() {
+        logger.Info(msg,
+            zap.String("trace_id", span.SpanContext().TraceID().String()),
+            zap.String("span_id", span.SpanContext().SpanID().String()),
+        )
+    }
+}
+```
+
+#### Python Services (Shield)
+
+```python
+import structlog
+from opentelemetry import trace
+
+def add_trace_context(logger, method_name, event_dict):
+    span = trace.get_current_span()
+    if span.is_recording():
+        ctx = span.get_span_context()
+        event_dict["trace_id"] = format(ctx.trace_id, "032x")
+        event_dict["span_id"] = format(ctx.span_id, "016x")
+    return event_dict
+
+structlog.configure(
+    processors=[
+        add_trace_context,
+        structlog.processors.JSONRenderer()
+    ]
+)
+```
+
+#### Rust Services (Relay)
+
+```rust
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+
+let fmt_layer = tracing_subscriber::fmt::layer()
+    .json()
+    .with_span_events(tracing_subscriber::fmt::format::FmtSpan::CLOSE);
+
+tracing_subscriber::registry()
+    .with(fmt_layer)
+    .with(tracing_opentelemetry::layer())
+    .init();
+```
+
+---
+
+## Frontend Observability (Faro)
+
+### Faro Architecture
+
+```mermaid
+flowchart TB
+    subgraph "Browser"
+        REACT[React App]
+        FARO_SDK[Faro Web SDK]
+        WV[Web Vitals<br/>LCP, FID, CLS, TTFB, INP, FCP]
+        ROUTER[React Router<br/>Instrumentation]
+        ERRORS[Error Boundary]
+        TRACES[Browser Traces]
+    end
+
+    subgraph "Build Pipeline"
+        VITE[Vite Build]
+        SOURCEMAP[Source Maps]
+        UPLOAD[Faro Rollup Plugin]
+    end
+
+    subgraph "Grafana Cloud"
+        COLLECTOR[Faro Collector]
+        FRONTEND_APP[Frontend Application]
+        RUM[Real User Monitoring]
+    end
+
+    REACT --> FARO_SDK
+    FARO_SDK --> WV
+    FARO_SDK --> ROUTER
+    FARO_SDK --> ERRORS
+    FARO_SDK --> TRACES
+
+    FARO_SDK -->|POST /collect| COLLECTOR
+
+    VITE --> SOURCEMAP
+    SOURCEMAP --> UPLOAD
+    UPLOAD --> FRONTEND_APP
+
+    COLLECTOR --> FRONTEND_APP
+    FRONTEND_APP --> RUM
+```
+
+### Faro SDK Configuration
+
+```typescript
+// /products/canvas/apps/office/src/services/faro.ts
+
+interface FaroConfig {
+    collectorUrl: string;
+    appName: string;
+    appVersion: string;
+    environment: string;
+    samplingRate: number;
+    persistentSessions: boolean;
+    enableTracing: boolean;
+    propagateTraceHeaderCorsUrls: RegExp[];
+}
+
+function buildConfig(): FaroConfig {
+    const env = import.meta.env;
+
+    const apiUrls: RegExp[] = [];
+    if (env.VITE_API_URL) {
+        apiUrls.push(new RegExp(env.VITE_API_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    }
+    if (env.VITE_SHIELD_API_URL) {
+        apiUrls.push(new RegExp(env.VITE_SHIELD_API_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    }
+
+    return {
+        collectorUrl: env.VITE_FARO_COLLECTOR_URL || '',
+        appName: env.VITE_FARO_APP_NAME || 'Office (Beta)',
+        appVersion: env.VITE_FARO_APP_VERSION || '1.0.0',
+        environment: env.VITE_ENVIRONMENT || 'development',
+        samplingRate: parseFloat(env.VITE_FARO_SAMPLING_RATE || '1'),
+        persistentSessions: env.VITE_FARO_PERSISTENT_SESSIONS === 'true',
+        enableTracing: env.VITE_ENABLE_PERFORMANCE_MONITORING === 'true',
+        propagateTraceHeaderCorsUrls: apiUrls,
+    };
+}
+```
+
+### Faro API Methods
+
+| Method | Purpose | Example |
+|--------|---------|---------|
+| `setFaroUser()` | Set user context after auth | `setFaroUser({ id: user.id, email: user.email })` |
+| `clearFaroUser()` | Clear on logout | `clearFaroUser()` |
+| `pushFaroEvent()` | Custom event | `pushFaroEvent('document_created', { docId: '123' })` |
+| `pushFaroError()` | Report error | `pushFaroError(error, { component: 'Editor' })` |
+| `pushFaroLog()` | Custom log | `pushFaroLog('User action', 'info', { action: 'save' })` |
+| `pushFaroMeasurement()` | Custom metric | `pushFaroMeasurement('api_call', { duration: 150 })` |
+
+### Web Vitals Tracked
+
+| Metric | Description | Good | Needs Work | Poor |
+|--------|-------------|------|------------|------|
+| **LCP** | Largest Contentful Paint | < 2.5s | < 4s | > 4s |
+| **FID** | First Input Delay | < 100ms | < 300ms | > 300ms |
+| **CLS** | Cumulative Layout Shift | < 0.1 | < 0.25 | > 0.25 |
+| **TTFB** | Time to First Byte | < 800ms | < 1800ms | > 1800ms |
+| **INP** | Interaction to Next Paint | < 200ms | < 500ms | > 500ms |
+| **FCP** | First Contentful Paint | < 1.8s | < 3s | > 3s |
+
+### Source Map Upload (Vite)
+
+```typescript
+// vite.config.ts
+import faroUploader from '@grafana/faro-rollup-plugin';
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+
+    const shouldUploadSourceMaps =
+        mode === 'production' &&
+        env.FARO_SOURCE_MAP_API_KEY;
+
+    return {
+        plugins: [
+            react(),
+            shouldUploadSourceMaps && faroUploader({
+                appName: env.VITE_FARO_APP_NAME || 'Office (Beta)',
+                endpoint: env.FARO_SOURCE_MAP_ENDPOINT || 'https://faro-api-prod-gb-south-1.grafana.net/faro/api/v1',
+                appId: env.FARO_APP_ID || '',
+                stackId: env.FARO_STACK_ID || '',
+                apiKey: env.FARO_SOURCE_MAP_API_KEY,
+                gzipContents: true,
+            }),
+        ].filter(Boolean),
+        build: {
+            sourcemap: true,
+        },
+    };
+});
+```
+
+### Environment Variables
+
+```bash
+# Faro Configuration
+VITE_FARO_COLLECTOR_URL=https://faro-collector-prod-gb-south-1.grafana.net/collect/<app-id>
+VITE_FARO_APP_NAME="Office (Beta)"
+VITE_FARO_APP_VERSION=1.0.0
+VITE_ENVIRONMENT=production
+VITE_FARO_SAMPLING_RATE=1
+VITE_FARO_PERSISTENT_SESSIONS=true
+VITE_ENABLE_PERFORMANCE_MONITORING=true
+
+# Source Map Upload
+FARO_SOURCE_MAP_ENDPOINT=https://faro-api-prod-gb-south-1.grafana.net/faro/api/v1
+FARO_APP_ID=<app-id>
+FARO_STACK_ID=<stack-id>
+FARO_SOURCE_MAP_API_KEY=<api-key>
+```
+
+---
+
+## Service-Specific Metrics
+
+### API Service (Go/Fiber)
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `http_requests_total` | Counter | Total HTTP requests |
+| `http_request_duration_seconds` | Histogram | Request latency |
+| `api_documents_created_total` | Counter | Documents created |
+| `api_database_query_duration_seconds` | Histogram | DB query latency |
+| `api_cache_hits_total` | Counter | Cache hits |
+| `api_cache_misses_total` | Counter | Cache misses |
+
+### Shield Service (Django)
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `shield_auth_success_total` | Counter | Successful authentications |
+| `shield_auth_failure_total` | Counter | Failed authentications |
+| `shield_token_issued_total` | Counter | Tokens issued |
+| `shield_token_refreshed_total` | Counter | Token refreshes |
+| `shield_request_duration_seconds` | Histogram | Request latency |
+
+### Relay Service (Rust/Axum)
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `relay_websocket_connections` | Gauge | Active WS connections |
+| `relay_messages_received_total` | Counter | Messages received |
+| `relay_messages_sent_total` | Counter | Messages sent |
+| `relay_operation_duration_seconds` | Histogram | OT operation latency |
+| `relay_presence_updates_total` | Counter | Presence broadcasts |
+
+### Printery Worker (Go)
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `printery_events_processed` | Counter | Events processed |
+| `printery_events_failed` | Counter | Failed events |
+| `printery_event_processing_duration_seconds` | Histogram | Processing latency |
+| `printery_dlq_size` | Gauge | DLQ depth |
+| `printery_consumer_lag` | Gauge | Consumer lag |
+| `printery_circuit_breaker_state` | Gauge | CB state (0/1/2) |
+
+### Folio Hub (Go)
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `folio_metrics_received` | Counter | Remote write samples |
+| `folio_http_requests_total` | Counter | API requests |
+| `folio_storm_federation_active` | Gauge | Storm federation status |
+| `folio_query_duration_seconds` | Histogram | Query latency |
+
+---
+
+## Recording Rules
+
+Recording rules pre-compute expensive queries to improve dashboard performance.
+
+### HTTP Metrics
+
+```yaml
+groups:
+  - name: "http-metrics"
+    interval: 15s
+    rules:
+      - record: "http:requests:per_second"
+        expr: "sum(rate(http_requests_total[1m])) by (service, method, status)"
+
+      - record: "http:request:duration_p50"
+        expr: |
+          histogram_quantile(0.50,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+          )
+
+      - record: "http:request:duration_p95"
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+          )
+
+      - record: "http:request:duration_p99"
+        expr: |
+          histogram_quantile(0.99,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+          )
+
+      - record: "http:error_rate"
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+          /
+          sum(rate(http_requests_total[5m])) by (service)
+```
+
+### Database Metrics
+
+```yaml
+- name: "database-metrics"
+  interval: 30s
+  rules:
+    - record: "db:connections:ratio"
+      expr: |
+        pg_stat_activity_count
+        / pg_stat_activity_max_connections
+
+    - record: "db:cache:hit_ratio"
+      expr: |
+        sum(pg_stat_user_tables_heap_blks_hit)
+        /
+        (sum(pg_stat_user_tables_heap_blks_hit) + sum(pg_stat_user_tables_heap_blks_read))
+
+    - record: "db:transactions:per_second"
+      expr: "sum(rate(pg_stat_database_xact_commit[1m]))"
+```
+
+### Redis Metrics
+
+```yaml
+- name: "redis-metrics"
+  interval: 30s
+  rules:
+    - record: "redis:memory:ratio"
+      expr: |
+        redis_memory_used_bytes / redis_memory_max_bytes
+
+    - record: "redis:cache:hit_ratio"
+      expr: |
+        redis_keyspace_hits_total
+        / (redis_keyspace_hits_total + redis_keyspace_misses_total)
+
+    - record: "redis:eviction_rate"
+      expr: "sum(rate(redis_evicted_keys_total[5m]))"
+```
+
+### CI/CD Metrics
+
+```yaml
+- name: "cicd-metrics"
+  interval: 60s
+  rules:
+    - record: "ci:workflow:success_rate"
+      expr: |
+        sum(ci_workflow_completed_total{status="success"})
+        / sum(ci_workflow_completed_total)
+
+    - record: "ci:deployment:frequency"
+      expr: |
+        sum(rate(ci_deployments_total[1d])) by (environment)
+```
+
+### Business Metrics
+
+```yaml
+- name: "business-metrics"
+  interval: 60s
+  rules:
+    - record: "business:auth:success_rate"
+      expr: |
+        sum(shield_auth_success_total)
+        / (sum(shield_auth_success_total) + sum(shield_auth_failure_total))
+
+    - record: "business:collaboration:active_sessions"
+      expr: "relay_websocket_connections"
+
+    - record: "business:documents:created_per_day"
+      expr: "increase(api_documents_created_total[1d])"
+```
+
+---
+
+## Troubleshooting Guide
+
+### Alloy Not Collecting Metrics
+
+```mermaid
+flowchart TD
+    START[Alloy Not Working] --> CHECK1{Service Running?}
+    CHECK1 -->|No| FIX1[launchctl load ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist]
+    CHECK1 -->|Yes| CHECK2{Config Valid?}
+
+    CHECK2 -->|No| FIX2[alloy fmt config.alloy<br/>Check syntax errors]
+    CHECK2 -->|Yes| CHECK3{Targets Reachable?}
+
+    CHECK3 -->|No| FIX3[curl -s https://shield.materi.dev/metrics<br/>Check service health]
+    CHECK3 -->|Yes| CHECK4{Remote Write OK?}
+
+    CHECK4 -->|No| FIX4[Check Grafana Cloud credentials<br/>Verify API key not expired]
+    CHECK4 -->|Yes| FIX5[Check /opt/homebrew/var/log/alloy.log]
+```
+
+**Commands:**
+
+```bash
+# Check if Alloy is running
+launchctl list | grep alloy
+
+# View Alloy logs
+tail -f /opt/homebrew/var/log/alloy.log
+
+# Test target reachability
+curl -s https://shield.materi.dev/metrics | head -20
+
+# Validate config
+alloy fmt /opt/homebrew/etc/alloy/config.alloy
+
+# Restart Alloy
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+```
+
+### Missing Metrics in Grafana
+
+1. **Check Alloy scrape targets:**
+   ```bash
+   curl -s http://localhost:12345/-/ready
+   ```
+
+2. **Verify remote write is working:**
+   - Check Alloy logs for `remote_write` errors
+   - Look for HTTP 4xx/5xx responses
+
+3. **Check metric labels:**
+   ```promql
+   # In Grafana, verify metrics exist
+   {service="shield"}
+   ```
+
+4. **Verify scrape interval alignment:**
+   - Dashboard time range should be > scrape_interval
+
+### Alerts Not Firing
+
+```mermaid
+flowchart TD
+    START[Alert Not Firing] --> CHECK1{Rule Loaded?}
+    CHECK1 -->|No| FIX1[Check rule_files in prometheus.yml]
+    CHECK1 -->|Yes| CHECK2{Expression Valid?}
+
+    CHECK2 -->|No| FIX2[Test query in Grafana Explore]
+    CHECK2 -->|Yes| CHECK3{Threshold Met?}
+
+    CHECK3 -->|No| FIX3[Current value below threshold<br/>Alert working correctly]
+    CHECK3 -->|Yes| CHECK4{For Duration Elapsed?}
+
+    CHECK4 -->|No| FIX4[Wait for 'for' duration]
+    CHECK4 -->|Yes| CHECK5{AlertManager Receiving?}
+
+    CHECK5 -->|No| FIX5[Check alerting config in prometheus.yml]
+    CHECK5 -->|Yes| FIX6[Check AlertManager routing rules]
+```
+
+### Traces Not Appearing
+
+1. **Verify OTEL endpoint:**
+   ```bash
+   # Check if OTEL collector is running
+   curl -s http://otel-collector:4317/health
+   ```
+
+2. **Check trace context propagation:**
+   ```bash
+   # Look for traceparent header in requests
+   curl -v https://api.materi.dev/health 2>&1 | grep -i traceparent
+   ```
+
+3. **Verify Tempo ingestion:**
+   - Check Tempo logs for ingestion errors
+   - Verify storage path exists and is writable
+
+### Faro Not Sending Data
+
+1. **Check browser console:**
+   ```javascript
+   // Run in browser console
+   window.testFaro()
+   ```
+
+2. **Verify collector URL:**
+   - Open Network tab, filter by "collect"
+   - Check for blocked requests (ad blockers)
+
+3. **Test connectivity:**
+   ```javascript
+   fetch('https://faro-collector-prod-gb-south-1.grafana.net/collect/<app-id>', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify({ logs: [{ message: 'test' }] })
+   }).then(r => console.log(r.status))
+   ```
+
+---
+
+## Operational Procedures
+
+### Adding a New Service to Monitoring
+
+1. **Expose Prometheus metrics endpoint:**
+   ```go
+   // Go example
+   import "github.com/prometheus/client_golang/prometheus/promhttp"
+
+   http.Handle("/metrics", promhttp.Handler())
+   ```
+
+2. **Add to Alloy config:**
+   ```hcl
+   prometheus.scrape "new_service" {
+     targets = [{
+       __address__ = "new-service.materi.dev",
+       service     = "new-service",
+       environment = "production",
+     }]
+     forward_to = [prometheus.remote_write.folio.receiver, prometheus.remote_write.metrics_service.receiver]
+     scrape_interval = "30s"
+     scheme          = "https"
+     metrics_path    = "/metrics"
+   }
+   ```
+
+3. **Add to local Prometheus:**
+   ```yaml
+   - job_name: "materi-new-service"
+     static_configs:
+       - targets: ["new-service:9090"]
+   ```
+
+4. **Create dashboard:**
+   - Copy existing dashboard JSON as template
+   - Update queries for new service metrics
+
+5. **Add alert rules:**
+   ```yaml
+   - alert: NewServiceDown
+     expr: up{job="materi-new-service"} == 0
+     for: 2m
+     labels:
+       severity: critical
+   ```
+
+### Rotating Grafana Cloud API Keys
+
+1. Generate new key in Grafana Cloud UI
+2. Update Alloy config:
+   ```bash
+   sudo vim /opt/homebrew/etc/alloy/config.alloy
+   # Update password in basic_auth block
+   ```
+3. Restart Alloy:
+   ```bash
+   launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+   launchctl load ~/Library/LaunchAgents/homebrew.mxcl.alloy.plist
+   ```
+4. Verify metrics flowing:
+   ```bash
+   tail -f /opt/homebrew/var/log/alloy.log | grep "remote_write"
+   ```
+
+### Creating Custom Dashboards
+
+1. **Start from template:**
+   - Use existing dashboard as base
+   - Export JSON from Grafana
+
+2. **Add to version control:**
+   ```bash
+   # Save to appropriate directory
+   cp dashboard.json /Users/alexarno/materi/operations/folio/grafana/
+   ```
+
+3. **Configure provisioning:**
+   ```yaml
+   # /operations/folio/grafana/provisioning/dashboards/dashboards.yml
+   apiVersion: 1
+   providers:
+     - name: 'materi-dashboards'
+       folder: 'Materi'
+       type: file
+       options:
+         path: /var/lib/grafana/dashboards
+   ```
+
+### Incident Response with Observability
+
+```mermaid
+flowchart TB
+    INCIDENT[Incident Detected] --> ALERT[Check Alert Details]
+    ALERT --> DASHBOARD[Open Linked Dashboard]
+
+    DASHBOARD --> SCOPE{Scope Impact}
+
+    SCOPE -->|Single Service| TRACE[Find Trace ID]
+    SCOPE -->|Multiple Services| OVERVIEW[Check Overview Dashboard]
+
+    TRACE --> LOGS[Correlate Logs]
+    OVERVIEW --> DEPS[Check Dependency Graph]
+
+    LOGS --> ROOT[Identify Root Cause]
+    DEPS --> ROOT
+
+    ROOT --> FIX[Apply Fix]
+    FIX --> VERIFY[Verify in Dashboards]
+
+    VERIFY --> RESOLVE[Resolve Alert]
+```
+
+**Quick Links During Incidents:**
+
+| What to Check | Where |
+|---------------|-------|
+| Service health overview | Materi Overview Dashboard |
+| Recent deployments | CI/CD Pipeline Dashboard |
+| Error details | Loki logs with trace correlation |
+| Request flow | Tempo trace view |
+| Infrastructure health | Infrastructure Dashboard |
+| Database performance | PostgreSQL exporter metrics |
+
+---
+
+## File Reference
+
+### Configuration Files
+
+| File | Purpose |
+|------|---------|
+| `/opt/homebrew/etc/alloy/config.alloy` | Local Alloy config |
+| `/operations/alloy/config.alloy` | Railway Alloy config |
+| `/operations/folio/alloy/config.alloy` | Folio Alloy config |
+| `/operations/folio/prometheus/prometheus.yml` | Prometheus scrape config |
+| `/operations/folio/prometheus/alert-rules.yml` | Alert definitions |
+| `/operations/folio/prometheus/recording-rules.yml` | Recording rules |
+| `/operations/folio/prometheus/burn-rate-alerts.yaml` | SLO burn rate alerts |
+| `/operations/folio/alertmanager.yml` | AlertManager routing |
+| `/operations/folio/observability/trace-log-correlation.yaml` | OTEL/Tempo/Loki config |
+
+### Dashboard Files
+
+| File | Dashboard |
+|------|-----------|
+| `/operations/folio/grafana/dashboard-service-health.json` | Service Health |
+| `/operations/folio/grafana/dashboard-cicd-pipeline.json` | CI/CD Pipeline |
+| `/operations/folio/grafana/dashboard-infrastructure-overview.json` | Infrastructure |
+| `/operations/folio/grafana/dashboard-shield-auth.json` | Shield Auth |
+| `/operations/monitoring/grafana/dashboards/materi-overview.json` | Platform Overview |
+| `/operations/monitoring/grafana/dashboards/phase-2-resilience.json` | Resilience |
+| `/operations/monitoring/grafana/dashboards/printery-dashboard.json` | Printery Worker |
+| `/platform/intelligence/aria/monitoring/grafana-dashboard-aria.json` | Aria AI |
+
+### Frontend Observability
+
+| File | Purpose |
+|------|---------|
+| `/products/canvas/apps/office/src/services/faro.ts` | Faro SDK initialization |
+| `/products/canvas/apps/office/vite.config.ts` | Faro Rollup plugin config |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| **Alloy** | Grafana's unified telemetry collector (successor to Promtail, Agent) |
+| **Burn Rate** | Rate at which error budget is being consumed |
+| **CLS** | Cumulative Layout Shift - visual stability metric |
+| **DLQ** | Dead Letter Queue - failed message storage |
+| **Exemplar** | Sample trace ID attached to a metric for correlation |
+| **Faro** | Grafana frontend observability SDK |
+| **FID** | First Input Delay - interactivity metric |
+| **Folio** | Materi's internal observability hub service |
+| **INP** | Interaction to Next Paint - responsiveness metric |
+| **LCP** | Largest Contentful Paint - loading performance metric |
+| **OT** | Operational Transform - real-time collaboration algorithm |
+| **OTEL** | OpenTelemetry - observability framework |
+| **Recording Rule** | Pre-computed PromQL query stored as new metric |
+| **Remote Write** | Prometheus protocol for sending metrics |
+| **RUM** | Real User Monitoring - frontend performance tracking |
+| **SLI** | Service Level Indicator - measured metric |
+| **SLO** | Service Level Objective - target for SLI |
+| **Tempo** | Grafana's distributed tracing backend |
+| **TTFB** | Time to First Byte - server response time metric |
+
+---
+
+## Support & Resources
+
+- **Grafana Cloud Console:** https://materi.grafana.net
+- **Grafana Documentation:** https://grafana.com/docs/
+- **Prometheus Documentation:** https://prometheus.io/docs/
+- **OpenTelemetry Documentation:** https://opentelemetry.io/docs/
+- **Internal Runbooks:** https://docs.materi.dev/runbooks/
+
+For questions or issues, contact the Platform Engineering team via `#materi-infrastructure` Slack channel.

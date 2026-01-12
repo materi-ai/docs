@@ -1,0 +1,611 @@
+---
+title: Claude Development Guide
+description: Development patterns, architecture patterns, and conventions for Materi
+icon: code
+source: /Users/alexarno/materi/.claude/CLAUDE.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:48:35.561749Z"
+status: migrated
+tags: 
+relatedPages:
+  - architecture-overview.mdx
+  - developer/products/specifications/overview.md
+---
+
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Overview
+
+Materi is an enterprise-grade content management platform with real-time collaboration, event-driven architecture, and hybrid authentication. It follows a polyglot microservices architecture where each service uses the best language for its domain.
+
+## Architecture
+
+### Core Services
+
+**API Service** (`/api`) - Go 1.25+ / Fiber v2
+- Primary HTTP API for document management, AI integration, and file operations
+- PostgreSQL (pgx/v5, sqlx), Redis, MinIO file storage
+- JWT authentication, Prometheus metrics, Zap logging
+- Entry point: `cmd/api/main.go`
+
+**Shield Service** (`/shield`) - Python 3.11+ / Django 4.2+
+- Centralized authentication, authorization, and user management
+- Django REST Framework, PostgreSQL, Redis, Celery
+- OAuth 2.0, SAML 2.0, GDPR compliance
+- Entry point: `manage.py`
+
+**Relay Service** (`/relay`) - Rust 1.78+ / Axum
+- Real-time collaborative document editing with WebSocket support
+- Operational transform, vector clock conflict resolution
+- PostgreSQL (sqlx), Redis pub/sub, JWT validation
+- Entry point: `src/main.rs`
+
+**Nestr** (`/nestr`) - Go CLI Tool
+- Multi-repository orchestration and workspace assembly
+- Not a runtime service - development/operational tool only
+
+### Event-Driven Architecture
+
+All services communicate via **Redis Streams** for cross-service synchronization:
+
+- `materi:events:collaboration` - Real-time operations, presence updates
+- `materi:events:users` - User lifecycle (created, updated, deleted, permissions)
+- `materi:events:documents` - Document CRUD events
+- `materi:events:workspaces` - Workspace management events
+
+**Event Schemas**: Defined in `/shared/proto/*.proto` using Protocol Buffers for type-safe cross-service contracts.
+
+**Processing Guarantees**:
+- At-least-once delivery with idempotent event handlers
+- Consumer groups for horizontal scaling
+- Dead letter queues for permanently failed events
+- Event replay capability for debugging
+
+### Service Communication Patterns
+
+1. **HTTP REST**: Client → API/Shield
+2. **WebSockets**: Client ↔ Relay (real-time collaboration)
+3. **Redis Streams**: Async event publishing/consuming between services
+4. **Redis Pub/Sub**: Real-time presence updates
+5. **Internal APIs**: Service-to-service HTTP calls (e.g., API → Shield for token validation)
+
+### Bidirectional Sync
+
+- HTTP API operations → Broadcast to WebSocket clients
+- WebSocket operations → Sync to main database via API
+- Permission changes in Shield → Cache invalidation in Relay
+- Real-time updates propagate to all connected clients
+
+### Database Architecture
+
+- **Shared PostgreSQL 15+**: Used by API, Shield, and Relay
+- Each service owns specific domain models
+- Event-driven synchronization maintains consistency
+- Migration coordination via `assembly.yml` manifest
+
+## Common Development Commands
+
+### Root-Level Operations (Makefile)
+
+```bash
+# Initial setup
+make setup                    # Create directories, copy configs
+
+# Build and start
+make build                    # Build all services (Docker)
+make start                    # Start core services (postgres, redis, api, shield, relay)
+make start-full               # Start with monitoring (Prometheus, Grafana, Jaeger)
+make stop                     # Stop all services
+make restart                  # Restart core services
+
+# Development
+make test                     # Run tests for all services
+make lint                     # Run linters (golangci-lint, flake8, clippy)
+make format                   # Format code (gofmt, black, cargo fmt)
+
+# Database operations
+make migrate                  # Run migrations for all services
+make migrate-status           # Show migration status
+make db-backup                # Backup all databases
+
+# Monitoring
+make status                   # Show service status and health checks
+make logs                     # Tail logs from all services
+make logs-service SERVICE=api # Tail logs from specific service
+make metrics                  # Show current metrics
+
+# Service-specific operations
+make restart-service SERVICE=api
+make test-service SERVICE=shield
+make shell SERVICE=relay
+make db-shell                 # PostgreSQL shell
+make redis-shell              # Redis CLI
+
+# Quality assurance
+make qa                       # Full QA suite: lint + test + security + rust checks
+make security-scan            # Run security scans (gosec, bandit, cargo audit)
+make rust-check               # Rust quality checks (clippy, fmt, audit, deny)
+```
+
+### API Service (Go)
+
+```bash
+cd api
+
+# Build
+make build                    # Build API binary and migration tool
+make build-race               # Build with race detector
+
+# Development
+make run                      # Run API server locally
+make dev                      # Run with hot reload (air)
+make test                     # Run tests with coverage
+make lint                     # Run golangci-lint
+make format                   # Run gofmt + goimports
+
+# Database migrations
+make migrate-up ENV=development    # Apply migrations
+make migrate-down ENV=development  # Rollback migration
+make migrate-status ENV=development
+make db-create ENV=development     # Create database
+make db-reset ENV=development      # Drop and recreate (DESTRUCTIVE)
+
+# Security and benchmarks
+make security                 # Run gosec security scanner
+make test-bench               # Run benchmarks
+```
+
+### Shield Service (Python/Django)
+
+```bash
+cd shield
+
+# Development
+python manage.py runserver           # Development server
+python manage.py shell               # Django shell
+python manage.py createsuperuser     # Create admin user
+
+# Database
+python manage.py migrate             # Apply migrations
+python manage.py makemigrations      # Create new migrations
+python manage.py showmigrations      # Show migration status
+
+# Testing
+python manage.py test                                  # Run all tests
+python manage.py test apps.users.tests                # Run specific app tests
+python manage.py test --settings=config.settings.test # Use test settings
+pytest                                                 # Run with pytest
+pytest --cov=apps --cov-report=html                   # With coverage
+
+# Code quality
+flake8 . --max-line-length=100 --exclude=migrations,venv
+black . --line-length=100 --exclude=migrations
+bandit -r apps/ -f json                # Security scanning
+
+# Data management
+python manage.py loaddata fixtures/test_data.json
+python manage.py dumpdata apps.users > fixtures/users.json
+```
+
+### Relay Service (Rust)
+
+```bash
+cd relay
+
+# Build
+make build                    # Release build
+make build-dev                # Debug build
+make build-docker             # Docker build
+
+# Development
+make run                      # Run relay service
+make dev                      # Run with auto-reload
+make watch                    # Watch and rebuild on changes
+
+# Testing
+make test                     # Run all tests
+make test-unit                # Unit tests only
+make test-integration         # Integration tests
+make test-coverage            # Generate coverage report
+
+# Code quality
+make lint                     # Run clippy
+make fmt                      # Format code
+make fmt-check                # Check formatting
+make audit                    # Security audit
+make deny                     # Run cargo-deny checks
+
+# Database (SQLx)
+make db-migrate               # Run migrations
+make db-rollback              # Rollback migration
+make db-reset                 # Reset database (DESTRUCTIVE)
+make sqlx-prepare             # Prepare offline queries
+
+# Performance
+make bench                    # Run benchmarks
+make flamegraph               # Generate performance flamegraph
+```
+
+### Running a Single Test
+
+**API (Go)**:
+```bash
+cd api
+go test -v -run TestSpecificFunction ./internal/service/document_test.go
+go test -v -run TestDocumentService ./internal/service/
+```
+
+**Shield (Python)**:
+```bash
+cd shield
+python manage.py test apps.users.tests.test_views.UserViewTestCase.test_create_user
+pytest apps/users/tests/test_views.py::TestUserView::test_create_user -v
+```
+
+**Relay (Rust)**:
+```bash
+cd relay
+cargo test test_specific_function -- --nocapture
+cargo test --test integration_test -- --nocapture
+```
+
+## Architecture Patterns and Conventions
+
+### Hybrid Authentication Flow
+
+1. User authenticates via Shield (JWT + refresh tokens)
+2. Shield returns JWT with user claims (user_id, roles, permissions)
+3. API/Relay validate JWT and cache user context in Redis (1 hour TTL)
+4. On cache hit: Fast auth (~1ms), on miss: Shield validation + cache update
+5. Token refresh: Exchange refresh token for new access token via Shield
+
+### Event Publishing Pattern
+
+**When publishing events**:
+```go
+// API (Go) - After database transaction commits
+event := events.NewDocumentCreatedEvent(documentID, userID, workspaceID)
+eventBus.Publish(ctx, "materi:events:documents", event)
+```
+
+**When consuming events**:
+- Handlers MUST be idempotent (handle duplicate processing)
+- Use transaction wrappers for database operations
+- Log event processing with correlation IDs
+- Handle errors with exponential backoff retry
+
+### Permission Validation
+
+**In Relay (performance-critical)**:
+- Cache permissions from Shield in Redis (15 min TTL)
+- Validate on every WebSocket operation
+- Invalidate cache when Shield publishes permission change events
+
+**In API**:
+- Middleware validates JWT and extracts user context
+- RBAC checks in service layer before database operations
+- Document-level permissions checked before any access
+
+### Operational Transform (Relay)
+
+Relay uses **vector clocks** for operation ordering and conflict resolution:
+- Each client operation tagged with vector clock
+- Server transforms concurrent operations
+- Undo/redo implemented via operation inversion
+- Document locking prevents conflicts during critical operations
+
+### Database Migration Coordination
+
+When adding migrations that affect multiple services:
+1. Update migration files in each service
+2. Test locally with `make migrate`
+3. Update `assembly.yml` if adding new shared tables
+4. Run migrations in order: Shield → API → Relay
+5. Use backward-compatible migrations (add columns with defaults, deprecate before removing)
+
+### Testing Patterns
+
+**Unit Tests**:
+- Mock external services (Redis, PostgreSQL, other services)
+- Use test containers for integration tests requiring real databases
+- Test coverage targets: Models 95%+, Views/Controllers 85%+, Services 90%+
+
+**Integration Tests**:
+- Located in `/testing` directory
+- E2E tests use Playwright for full user flows
+- Load tests use Locust (targets in root Makefile)
+- Contract tests validate API schemas match OpenAPI specs
+
+**Test Databases**:
+- API: `materi_test` on port 5432
+- Relay: `materi_relay_test` on port 5433
+- Shield: Uses Django test database (created automatically)
+
+### Code Quality Standards
+
+**Go** (API):
+- Follow Go best practices and effective Go guidelines
+- Use `gofmt` and `goimports` for formatting
+- Run `golangci-lint` with timeout of 5m
+- Maintain test coverage above 80%
+
+**Python** (Shield):
+- Follow PEP 8 style guide
+- Use `black` formatter (line length 100)
+- Run `flake8` for linting
+- Use type hints for public APIs
+- Maintain test coverage above 85%
+
+**Rust** (Relay):
+- Use `rustfmt` for formatting (edition 2021)
+- Run `clippy` with `-D warnings` (treat warnings as errors)
+- Use `cargo audit` for security vulnerabilities
+- Run `cargo deny` for license and dependency checks
+- Maintain test coverage above 80%
+
+### Logging and Observability
+
+**Structured Logging**:
+- API: Zap logger with JSON format
+- Shield: Python structlog with JSON renderer
+- Relay: tracing crate with JSON subscriber
+
+**Correlation IDs**:
+- Generated at API gateway/entry point
+- Passed in `X-Request-ID` header
+- Logged with every operation
+- Propagated through event streams
+
+**Metrics Endpoints**:
+- API: `http://localhost:9090/metrics`
+- Shield: `http://localhost:9091/metrics`
+- Relay: `http://localhost:9092/metrics`
+- All expose Prometheus-compatible metrics
+
+**Distributed Tracing**:
+- Jaeger UI: `http://localhost:16686`
+- OpenTelemetry traces across all services
+- Trace context propagated via headers and events
+
+### Health Check Endpoints
+
+All services expose:
+- `GET /health` - Basic health (service up)
+- `GET /ready` - Readiness check (dependencies healthy)
+- `GET /metrics` - Prometheus metrics
+
+Service URLs (local development):
+- API: `http://localhost:8080`
+- Shield: `http://localhost:8000`
+- Relay: `ws://localhost:8081` (WebSocket), `http://localhost:8081` (HTTP)
+
+### Docker Compose Files
+
+- `docker-compose.unified.yml` - Complete platform (use this for development)
+- `docker-compose.event-driven.yml` - Event system testing
+- `docker-compose.hybrid-auth.yml` - Authentication flow testing
+- Service-specific compose files in each service directory
+
+### Environment Variables
+
+**Common across services**:
+- `ENVIRONMENT` - development, staging, production
+- `LOG_LEVEL` - debug, info, warn, error
+- `DATABASE_URL` - PostgreSQL connection string
+- `REDIS_URL` - Redis connection string
+- `JWT_SECRET` - Shared secret for JWT validation
+- `ENABLE_METRICS` - Enable Prometheus metrics (true/false)
+- `ENABLE_TRACING` - Enable distributed tracing (true/false)
+
+**Service-specific configs**:
+- See `.env.example` in each service directory
+- Never commit `.env` files (in `.gitignore`)
+
+## Common Development Workflows
+
+### Adding a New Feature
+
+1. **Plan**: Identify which service(s) need changes
+2. **Database**: If schema changes needed, create migrations in affected services
+3. **Events**: If cross-service communication needed, define event schema in `/shared/proto`
+4. **Implement**: Code changes with tests
+5. **Quality**: Run `make lint` and `make test` for affected service(s)
+6. **Integration**: Test with `make start-full` and verify cross-service behavior
+7. **Documentation**: Update API docs if public endpoints changed
+
+### Debugging Across Services
+
+1. Start full stack: `make start-full`
+2. Check service health: `make status`
+3. Tail logs: `make logs` or `make logs-service SERVICE=api`
+4. Check metrics: Visit Grafana at `http://localhost:3000`
+5. Trace requests: Visit Jaeger at `http://localhost:16686`
+6. Inspect events: `make redis-shell` then `XREAD STREAMS materi:events:documents $ BLOCK 5000`
+7. Database inspection: `make db-shell`
+
+### Working with Events
+
+**Viewing event streams**:
+```bash
+make redis-shell
+XLEN materi:events:documents                           # Count events
+XREAD COUNT 10 STREAMS materi:events:documents 0       # Read first 10
+XREAD STREAMS materi:events:documents $ BLOCK 5000     # Wait for new events
+```
+
+**Testing event flow**:
+1. Trigger action in one service (e.g., create document via API)
+2. Verify event published: Check Redis stream
+3. Verify event consumed: Check logs of consuming service
+4. Verify side effects: Check database or cache updates
+
+### Performance Testing
+
+```bash
+# Load test API endpoints
+make load-test
+
+# Or use hey directly
+hey -n 1000 -c 10 -m POST -H "Authorization: Bearer <token>" \
+  -d '{"title":"Test"}' \
+  http://localhost:8080/api/v1/documents
+
+# Rust benchmarks
+cd relay && make bench
+
+# Generate flamegraph
+cd relay && make flamegraph
+```
+
+### Security Scanning
+
+```bash
+# Scan all services
+make security-scan
+
+# Service-specific
+cd api && make security         # gosec
+cd shield && bandit -r apps/    # Python security
+cd relay && make audit          # cargo-audit
+```
+
+## Project Structure Highlights
+
+```
+/api                  # Go/Fiber HTTP API service
+  /cmd/api           # Application entry point
+  /cmd/migrate       # Database migration tool
+  /internal          # Business logic, controllers, services
+  /migrations        # SQL migration files
+
+/shield              # Django authentication service
+  /apps              # Django applications (users, workspaces, audit)
+  /config/settings   # Environment-specific settings
+
+/relay               # Rust real-time collaboration service
+  /src               # Rust source code
+  /migrations        # SQLx migration files
+  /tests             # Integration tests
+
+/shared              # Cross-service shared components
+  /proto             # Protocol Buffer event schemas
+  /events            # Event system documentation
+
+/testing             # E2E and integration tests
+  /e2e               # Playwright end-to-end tests
+  /load              # Locust load tests
+
+/docs                # Architecture and API documentation
+/monitoring          # Prometheus, Grafana configs
+/scripts             # Build and deployment scripts
+```
+
+## Important Notes
+
+- **SQLx Offline Mode**: Relay uses SQLx with compile-time query verification. Query metadata is cached in `.sqlx/query-metadata.json`. If adding new queries, run `cd relay && make sqlx-prepare` after testing with a live database.
+
+- **Shared Database**: API, Shield, and Relay share the same PostgreSQL instance. Coordinate schema changes via the event system and migrations.
+
+- **Service-to-Service Auth**: Internal API calls use shared secrets, not JWT. See each service's config for `INTERNAL_API_SECRET`.
+
+- **Hot Reload**: Use `make dev-api`, `make dev-shield`, or `cd relay && make dev` for development with auto-reload.
+
+- **Assembly Manifest**: `/assembly.yml` defines the multi-repo workspace structure. Used by Nestr CLI for orchestration.
+
+- **Monitoring Stack**: Only started with `make start-full`. Omit for faster local development iteration.
+
+## CI/CD Pipeline Architecture
+
+### Overview
+
+Materi uses GitHub Actions for CI/CD with a multi-stage pipeline architecture. All pipelines report metrics to Shield (webhooks) and Folio (Prometheus Pushgateway).
+
+### Workflows
+
+| Workflow | Purpose | Trigger |
+|----------|---------|---------|
+| `ci.yml` | API service CI (Go) | PR, push to main |
+| `shield.yml` | Shield service CI (Python) | PR, push to main |
+| `relay.yml` | Relay service CI (Rust) | PR, push to main |
+| `printery.yml` | Printery worker CI (Go) | PR, push to main |
+| `manuscript.yml` | Manuscript service CI (Go) | PR, push to main |
+| `folio.yml` | Folio observability CI (Go) | PR, push to main |
+| `integration-tests.yml` | Cross-service integration tests | After service CI |
+| `security-tests.yml` | SAST, dependency, container scanning | PR, push to main |
+| `security-gate.yml` | Block deploy on security violations | Before deployment |
+| `deploy.yml` | Unified deployment (rolling) | Manual trigger |
+| `canary-deploy.yml` | Progressive canary deployment | Manual trigger |
+| `rollback-verification.yml` | Verify rollback success | Manual/automatic |
+| `pipeline-metrics.yml` | CI/CD metrics collection | On workflow completion |
+
+### CI/CD Commands
+
+```bash
+# Trigger workflows manually
+gh workflow run deploy.yml -f environment=staging -f version=v1.2.3
+gh workflow run canary-deploy.yml -f service=api -f version=v1.2.3
+gh workflow run security-tests.yml -f full_scan=true
+
+# Check workflow status
+gh run list --workflow=ci.yml --limit 10
+gh run view <run_id> --log
+
+# Download artifacts
+gh run download <run_id> -n test-results
+```
+
+### Security Scanning
+
+All services undergo security scanning:
+
+- **Go** (API, Printery, Manuscript, Folio): gosec
+- **Python** (Shield): bandit
+- **Rust** (Relay): cargo-audit, cargo-deny
+- **Containers**: Trivy
+- **Secrets**: trufflehog, gitleaks
+
+Security gate blocks deployment on:
+- Critical/High vulnerabilities (without waiver)
+- Detected secrets in code
+- License violations
+
+### Canary Deployments
+
+Progressive traffic shifting with Flagger:
+1. Deploy canary version (10% traffic)
+2. Analyze metrics (error rate, latency)
+3. Progressive increase: 10% → 25% → 50% → 75% → 100%
+4. Auto-rollback on threshold violation
+
+```bash
+# Start canary deployment
+gh workflow run canary-deploy.yml \
+  -f service=api \
+  -f version=v1.2.3 \
+  -f progressive=true
+
+# Check canary status
+kubectl get canary -n materi
+kubectl describe canary api -n materi
+```
+
+### Observability Integration
+
+All pipelines report to:
+- **Shield Webhook**: Pipeline events (start, complete, deploy, rollback)
+- **Folio Pushgateway**: Prometheus metrics (duration, success rate, findings)
+- **Grafana Dashboard**: `materi-cicd-pipeline` for visualization
+
+Key metrics:
+- `cicd_pipeline_duration_seconds`
+- `cicd_pipeline_runs_total`
+- `cicd_deployment_total`
+- `cicd_security_findings_total`
+
+### Related Documentation
+
+- [CI/CD Runbook](../docs/operations/cicd-runbook.md)
+- [Deployment Runbook](../docs/operations/deployment-runbook.md)
+- [Service Integrations](../.materi/folio/service-integrations.yml)

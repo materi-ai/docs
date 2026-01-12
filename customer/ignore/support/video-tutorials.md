@@ -1,7 +1,8 @@
 ---
-title: "Video Tutorials"
-description: "Learn Materi through comprehensive video guides and tutorials for all skill levels"
-icon: "video"
+title: Video Tutorials
+description: Learn Materi through comprehensive video guides and tutorials for all skill levels
+icon: video
+relatedPages: []
 ---
 
 # Video Tutorials

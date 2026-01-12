@@ -1,0 +1,48 @@
+---
+title: Requirements Relations & Traceability
+description: Requirement relationships, dependencies, and traceability matrix
+icon: network
+source: /Users/alexarno/materi/.atlas/.spec/__requirements__/RELATIONS.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.264634Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+  - developer/domain/shield/authorization.md
+  - developer/domain/shield/user-management.md
+  - developer/domain/shield/oauth-saml.md
+---
+
+# Requirements Traceability Relationships
+
+This document defines the relationship types used for traceability between requirements.
+
+## Vertical Traceability (Hierarchical)
+
+-   **satisfies**: Lower level requirement satisfies a higher level requirement
+-   **implements**: Concrete implementation of an abstract requirement
+-   **decomposes_into**: High-level requirement breaks down into detailed requirements
+-   **supports**: Enables or facilitates another requirement
+
+## Horizontal Traceability (Peer Relationships)
+
+-   **depends_on**: Requires another requirement for functionality
+-   **conflicts_with**: Cannot coexist with another requirement
+-   **relates_to**: General relationship or similarity
+
+## Verification Traceability
+
+-   **verified_by**: Test cases that validate the requirement
+-   **validates**: Verification artifact validates requirement
+
+## Constraint Traceability
+
+-   **constrains**: Imposes restrictions on implementation
+-   **constrained_by**: Subject to restrictions from other requirements
+
+## Change Traceability
+
+-   **affects**: Changes to this requirement impact others
+-   **affected_by**: Changes to other requirements impact this one

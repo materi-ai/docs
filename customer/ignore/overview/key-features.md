@@ -1,6 +1,12 @@
 ---
-title: 'Key Features'
-description: 'Explore the features that make Materi the ideal platform for collaborative content creation'
+title: Key Features
+description: Explore the features that make Materi the ideal platform for collaborative content creation
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Materi combines powerful editing capabilities, intelligent AI assistance, and enterprise-grade collaboration into one unified platform. Here's everything you can do with Materi.

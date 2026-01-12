@@ -1,7 +1,8 @@
 ---
-title: "Offline Mode"
-description: "Continue working without internet connectivity and sync seamlessly when you reconnect"
-icon: "wifi-slash"
+title: Offline Mode
+description: Continue working without internet connectivity and sync seamlessly when you reconnect
+icon: wifi-slash
+relatedPages: []
 ---
 
 # Offline Mode

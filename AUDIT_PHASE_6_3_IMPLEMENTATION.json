@@ -1,0 +1,430 @@
+{
+  "timestamp": "2026-01-09T10:42:40.292577Z",
+  "phase": "6.3",
+  "operation": "bidirectional_linking",
+  "files_modified": 0,
+  "reciprocals_created": 67,
+  "reciprocals_updated": 0,
+  "modifications": [
+    {
+      "type": "reciprocal_added",
+      "source": "architecture-overview.mdx",
+      "target": "developer/products/canvas/architecture.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "architecture-overview.mdx",
+      "target": "developer/introduction/architecture.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "architecture-overview.mdx",
+      "target": "developer/platform/intelligence/scribe/architecture.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "development.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "development.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-48.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-48.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-49.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-49.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-28.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-28.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-14.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-14.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-4.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-4.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-5.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-5.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-15.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-15.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-29.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-29.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-17.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-17.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-7.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-7.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-6.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-6.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-16.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-16.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-12.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-12.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-2.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-2.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-3.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-3.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-13.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-13.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-11.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-11.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-1.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-1.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-39.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-39.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-38.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-38.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-10.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-10.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-35.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-35.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-21.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-21.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-20.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-20.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-34.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-34.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-22.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-22.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-36.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-36.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-37.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-37.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-23.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-23.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-27.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-27.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-33.mdx",
+      "target": "architecture-overview.mdx",
+      "status": "success"
+    },
+    {
+      "type": "reciprocal_added",
+      "source": "developer/products/product-doc-33.mdx",
+      "target": "developer/products/specifications/overview.md",
+      "status": "success"
+    }
+  ],
+  "errors": [
+    {
+      "source": "index.mdx",
+      "target": "TASKSET_3_PHASE1_COMPLETION_REPORT.md",
+      "error": "No frontmatter in TASKSET_3_PHASE1_COMPLETION_REPORT.md"
+    },
+    {
+      "source": "index.mdx",
+      "target": "CLEANUP_AND_ARCHIVAL_PLAN.md",
+      "error": "No frontmatter in CLEANUP_AND_ARCHIVAL_PLAN.md"
+    },
+    {
+      "source": "index.mdx",
+      "target": "CLEANUP_EXECUTION_REPORT.md",
+      "error": "No frontmatter in CLEANUP_EXECUTION_REPORT.md"
+    }
+  ],
+  "errors_count": 3
+}

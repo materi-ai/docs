@@ -1,0 +1,718 @@
+---
+title: Shield Service Overview
+description: Centralized authentication, authorization, and user management service
+icon: lock
+source: /Users/alexarno/materi/domain/shield/README.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.269639Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+---
+
+# Shield - Materi Admin & Auth
+
+> Django-based administrative service providing user management, authentication, and internal tooling for the Materi platform.
+
+[![CI Status](https://github.com/materi/materi-admin/workflows/CI/badge.svg)](https://github.com/materi/materi-admin/actions)
+[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
+[![Django Version](https://img.shields.io/badge/django-4.2-green)](https://www.djangoproject.com/)
+
+## Overview
+
+Materi Shield provides authentication, user management, and administrative services for the Materi platform with event-driven architecture for cross-service data consistency.
+
+### Core Responsibilities
+
+-   **User Management**: Account creation, profiles, and lifecycle management
+-   **Authentication**: OAuth 2.0, SAML 2.0, and JWT token management
+-   **Authorization**: Role-based access control (RBAC) and permissions
+-   **Workspace Administration**: Multi-tenant workspace management
+-   **Event Publishing**: User and authentication events for service synchronization
+-   **Internal APIs**: Service-to-service communication endpoints
+-   **Admin Dashboard**: System configuration and monitoring
+
+### Event-Driven Integration
+
+Shield participates in the event-driven ecosystem to maintain data consistency across services:
+
+#### Published Events
+
+```python
+# User lifecycle events
+user.created        # New user registration
+user.updated        # Profile or settings changes
+user.deleted        # Account deletion (soft/hard)
+user.login          # Authentication events
+user.logout         # Session termination
+
+# Workspace events
+workspace.created           # New workspace creation
+workspace.updated          # Settings modifications
+workspace.member.added     # User joins workspace
+workspace.member.removed   # User leaves workspace
+```
+
+#### Consumed Events
+
+```python
+# From API service
+document.created    # Update workspace statistics
+document.updated    # Track user activity
+document.deleted    # Update document counts
+
+# From Collaboration service
+collaboration.session.started  # Update user activity metrics
+operation.applied             # Track collaboration engagement
+```
+
+## Tech Stack
+
+-   **Framework**: Django 4.2+
+-   **Database**: PostgreSQL 15+ (shared with materi-api)
+-   **Cache**: Redis 7+
+-   **Authentication**: Django Allauth, python-social-auth
+-   **Admin**: Django Admin with custom theming
+-   **Testing**: Pytest with pytest-django
+
+## Prerequisites
+
+-   Python 3.11+
+-   Docker & Docker Compose
+-   PostgreSQL 15+
+-   Redis 7+
+
+## Quick Start
+
+### 1. Clone and Setup
+
+```bash
+git clone https://github.com/materi/materi-admin.git
+cd materi-admin
+```
+
+### 2. Install Dependencies
+
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements/dev.txt
+```
+
+### 3. Environment Configuration
+
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+Required environment variables:
+
+```env
+# Django
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+DJANGO_SETTINGS_MODULE=core.settings.development
+
+# Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/materi
+
+# Redis (Caching & Events)
+REDIS_URL=redis://localhost:6379
+REDIS_PASSWORD=materi_redis_2024
+REDIS_DB=0
+
+# Event System Configuration
+EVENT_CONSUMER_GROUP=shield-service
+EVENT_CONSUMER_NAME=shield-service-1
+ENABLE_EVENT_PUBLISHING=true
+ENABLE_EVENT_CONSUMPTION=true
+INSTANCE_ID=shield-01
+
+# OAuth Providers
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+
+# SAML
+SAML_IDP_METADATA_URL=https://idp.example.com/metadata
+
+# Email
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=noreply@getmateri.com
+EMAIL_HOST_PASSWORD=...
+
+# Sentry
+SENTRY_DSN=https://...@sentry.io/...
+```
+
+### 4. Database Setup
+
+```bash
+# Run migrations
+python src/manage.py migrate
+
+# Create superuser
+python src/manage.py createsuperuser
+
+# Load initial data (optional)
+python src/manage.py loaddata fixtures/initial_data.json
+```
+
+### 5. Run Development Server
+
+```bash
+# Using manage.py
+python src/manage.py runserver 0.0.0.0:8001
+
+# Or using Docker Compose
+docker-compose up
+```
+
+The admin panel will be available at: `http://localhost:8001/admin`
+
+## Project Structure
+
+```
+src/
+├── accounts/
+│   ├── models.py           # User, Profile models
+│   ├── views.py            # Account views
+│   ├── forms.py            # User forms
+│   ├── admin.py            # User admin interface
+│   └── signals.py          # Post-save signals
+├── workspaces/
+│   ├── models.py           # Workspace, Membership models
+│   ├── views.py            # Workspace management
+│   ├── admin.py            # Workspace admin
+│   └── permissions.py      # Permission classes
+├── authentication/
+│   ├── oauth.py            # OAuth 2.0 handlers
+│   ├── saml.py             # SAML 2.0 handlers
+│   ├── backends.py         # Custom auth backends
+│   ├── middleware.py       # Auth middleware
+│   └── internal_api.py     # Service-to-service endpoints
+├── events/
+│   ├── __init__.py         # Event app configuration
+│   ├── event_system.py     # Event publishing/consumption
+│   └── management/
+│       └── commands/
+│           └── consume_events.py  # Event consumer command
+├── core/
+│   ├── settings/
+│   │   ├── base.py         # Base settings
+│   │   ├── development.py  # Dev settings
+│   │   ├── staging.py      # Staging settings
+│   │   └── production.py   # Production settings
+│   ├── urls.py             # URL configuration
+│   ├── wsgi.py             # WSGI config
+│   └── asgi.py             # ASGI config
+└── manage.py               # Django management script
+```
+
+## Development
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=src --cov-report=html
+
+# Run specific test file
+pytest src/accounts/tests/test_models.py
+
+# Run tests in parallel
+pytest -n auto
+```
+
+### Code Quality
+
+```bash
+# Format code
+black src/
+isort src/
+
+# Lint
+pylint src/
+flake8 src/
+
+# Type checking
+mypy src/
+```
+
+### Database Migrations
+
+```bash
+# Create new migration
+python src/manage.py makemigrations
+
+# Apply migrations
+python src/manage.py migrate
+
+# Squash migrations
+python src/manage.py squashmigrations accounts 0001 0005
+
+# Show migration plan
+python src/manage.py showmigrations
+```
+
+### Custom Management Commands
+
+```bash
+# Sync users from external system
+python src/manage.py sync_users --source=ldap
+
+# Generate API keys
+python src/manage.py generate_api_key --user=admin@example.com
+
+# Export workspace data
+python src/manage.py export_workspace --id=123 --format=json
+
+# Event System Commands
+python src/manage.py consume_events --streams=all
+python src/manage.py consume_events --streams=topic:document.created topic:collaboration.session.started
+python src/manage.py event_status
+python src/manage.py replay_events --from=2024-01-01 --to=2024-01-02
+```
+
+## Admin Interface
+
+### Accessing Admin Panel
+
+Navigate to `http://localhost:8001/admin` and log in with superuser credentials.
+
+### Custom Admin Features
+
+#### User Management
+
+-   Bulk user import/export
+-   User activity logs
+-   Password reset via admin
+-   Account suspension/activation
+
+#### Workspace Administration
+
+-   Workspace creation & deletion
+-   Member management
+-   Billing & subscription tracking
+-   Usage analytics dashboard
+
+#### System Configuration
+
+-   Feature flags (toggle features per workspace)
+-   Rate limit configuration
+-   Email template management
+-   System-wide announcements
+
+### Admin Permissions
+
+```python
+# In Django admin
+User Permissions:
+- accounts.view_user
+- accounts.add_user
+- accounts.change_user
+- accounts.delete_user
+
+Workspace Permissions:
+- workspaces.view_workspace
+- workspaces.add_workspace
+- workspaces.change_workspace
+- workspaces.delete_workspace
+```
+
+## Authentication
+
+### OAuth 2.0 Setup
+
+#### Google OAuth
+
+1. Create OAuth credentials in Google Cloud Console
+2. Set authorized redirect URI: `http://localhost:8001/auth/google/callback`
+3. Add credentials to `.env`:
+
+```env
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-client-secret
+```
+
+#### GitHub OAuth
+
+1. Create OAuth App in GitHub Settings
+2. Set callback URL: `http://localhost:8001/auth/github/callback`
+3. Add credentials to `.env`
+
+### SAML 2.0 Setup
+
+```python
+# settings/production.py
+SAML_CONFIG = {
+    'entityid': 'https://admin.getmateri.com',
+    'service': {
+        'sp': {
+            'endpoints': {
+                'assertion_consumer_service': [
+                    ('https://admin.getmateri.com/auth/saml/acs', BINDING_HTTP_POST),
+                ],
+            },
+        },
+    },
+}
+```
+
+### Session Management
+
+```python
+# Session timeout: 2 weeks
+SESSION_COOKIE_AGE = 1209600
+
+# Session on browser close
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Secure cookies in production
+SESSION_COOKIE_SECURE = True  # HTTPS only
+SESSION_COOKIE_HTTPONLY = True  # No JS access
+SESSION_COOKIE_SAMESITE = 'Lax'
+```
+
+## API Endpoints
+
+### Internal API (for materi-api communication)
+
+#### User Management
+
+```bash
+# Get user by ID
+GET /internal/api/users/{id}/
+
+# Create user
+POST /internal/api/users/
+{
+  "email": "user@example.com",
+  "password": "secure-password",
+  "first_name": "John",
+  "last_name": "Doe"
+}
+
+# Update user
+PATCH /internal/api/users/{id}/
+
+# Validate JWT token (Hybrid Authentication)
+GET /internal/api/auth/validate-token/
+Headers: X-Internal-Request: {shared_secret|true}, Authorization: Bearer {token}
+
+# Get complete user context
+GET /internal/api/users/{user_id}/
+Headers: X-Internal-Request: {shared_secret|true}, Authorization: Bearer {token}
+
+# Invalidate user cache
+POST /internal/api/users/{user_id}/invalidate-cache/
+Headers: X-Internal-Request: {shared_secret|true}
+
+# Revoke JWT token
+POST /internal/api/auth/revoke-token/
+Headers: X-Internal-Request: {shared_secret|true}
+{
+  "token": "eyJ..."
+}
+```
+
+#### Workspace Management
+
+```bash
+# List user workspaces
+GET /internal/api/workspaces/?user_id={id}
+
+# Create workspace
+POST /internal/api/workspaces/
+{
+  "name": "Acme Corp",
+  "owner_id": 123,
+  "plan": "enterprise"
+}
+```
+
+## Testing Strategy
+
+### Unit Tests
+
+```python
+# src/accounts/tests/test_models.py
+import pytest
+from accounts.models import User
+
+@pytest.mark.django_db
+def test_user_creation():
+    user = User.objects.create_user(
+        email='test@example.com',
+        password='testpass123'
+    )
+    assert user.email == 'test@example.com'
+    assert user.check_password('testpass123')
+```
+
+### Integration Tests
+
+```python
+# src/accounts/tests/test_views.py
+import pytest
+from django.urls import reverse
+
+@pytest.mark.django_db
+def test_login_success(client):
+    user = User.objects.create_user(
+        email='test@example.com',
+        password='testpass123'
+    )
+    response = client.post(reverse('login'), {
+        'email': 'test@example.com',
+        'password': 'testpass123'
+    })
+    assert response.status_code == 302  # Redirect on success
+```
+
+### Test Coverage Goals
+
+-   Models: 95%+
+-   Views: 85%+
+-   Forms: 90%+
+-   Utilities: 90%+
+
+## Deployment
+
+### Docker Build
+
+```bash
+# Build image
+docker build -t materi-admin:latest .
+
+# Run container
+docker run -p 8001:8001 --env-file .env materi-admin:latest
+```
+
+### Collect Static Files
+
+```bash
+# Collect static files for production
+python src/manage.py collectstatic --no-input
+
+# Compress static files
+python src/manage.py compress
+```
+
+### Database Optimization
+
+```bash
+# Analyze query performance
+python src/manage.py sqlsequencereset accounts workspaces
+
+# Vacuum database
+psql -U materi -d materi -c "VACUUM ANALYZE;"
+```
+
+## Monitoring
+
+### Django Admin Actions Logging
+
+All admin actions are automatically logged:
+
+```python
+from django.contrib.admin.models import LogEntry
+
+# View recent admin actions
+recent_actions = LogEntry.objects.all()[:100]
+```
+
+### Performance Monitoring
+
+```python
+# settings/base.py
+MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'silk.middleware.SilkyMiddleware',  # SQL query profiling
+    # ... other middleware
+]
+```
+
+Access Silk profiler at: `http://localhost:8001/silk/`
+
+### Health Check
+
+```bash
+# Health endpoint
+curl http://localhost:8001/health/
+
+# Database connectivity
+curl http://localhost:8001/health/db/
+
+# Cache connectivity
+curl http://localhost:8001/health/cache/
+
+# Event system health
+curl http://localhost:8001/health/events/
+```
+
+### Event System Monitoring
+
+```bash
+# Monitor event streams
+redis-cli XINFO STREAM materi:events:all
+
+# Check consumer group status
+redis-cli XINFO GROUPS materi:events:all
+
+# View pending events
+redis-cli XPENDING materi:events:all shield-service
+
+# Monitor event publishing rate
+redis-cli MONITOR | grep XADD
+
+# Check event processing lag
+python src/manage.py event_status
+```
+
+## Security
+
+### Security Settings
+
+```python
+# settings/production.py
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_SECURE = True
+```
+
+### Secret Rotation
+
+```bash
+# Generate new secret key
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+
+# Update SECRET_KEY in environment
+# Restart all Django processes
+```
+
+### CORS Configuration
+
+```python
+# For internal API communication with materi-api
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "https://api.getmateri.com",
+]
+```
+
+## Troubleshooting
+
+### Migration Issues
+
+```bash
+# Show migration status
+python src/manage.py showmigrations
+
+# Fake migration (if already applied manually)
+python src/manage.py migrate accounts 0005 --fake
+
+# Reset migrations (⚠️ DESTRUCTIVE)
+python src/manage.py migrate accounts zero
+python src/manage.py migrate accounts
+```
+
+### Cache Issues
+
+```bash
+# Clear all cache
+python src/manage.py clear_cache
+
+# Clear specific cache
+from django.core.cache import cache
+cache.delete('user_permissions_123')
+```
+
+### Session Issues
+
+```bash
+# Clear expired sessions
+python src/manage.py clearsessions
+
+# Clear all sessions (logs out all users)
+python src/manage.py flush_sessions
+```
+
+### Event System Issues
+
+```bash
+# Restart event consumer
+sudo supervisorctl restart shield-event-consumer
+
+# Check event consumer logs
+tail -f /var/log/shield/event_consumer.log
+
+# Reset consumer group position
+redis-cli XGROUP DESTROY materi:events:all shield-service
+redis-cli XGROUP CREATE materi:events:all shield-service 0
+
+# Replay events from specific time
+python src/manage.py replay_events --from="2024-01-01T10:00:00Z" --consumer-group=shield-service
+
+# Check Redis memory usage
+redis-cli INFO memory
+
+# Monitor Redis slow queries
+redis-cli SLOWLOG GET 10
+
+# Test event publishing
+python -c "
+from apps.events.event_system import event_publisher
+event_publisher.publish_user_event(
+    user=User.objects.first(),
+    event_type='user.test'
+)"
+```
+
+## Contributing
+
+See root repository [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+
+### Django-Specific Guidelines
+
+-   Follow Django coding style
+-   Use class-based views where appropriate
+-   Document all custom managers and querysets
+-   Add docstrings to all models and methods
+-   Write migrations for schema changes
+
+## License
+
+Copyright © 2025 Materi. All rights reserved.
+
+## Support
+
+-   **Documentation**: [https://docs.getmateri.com/admin](https://docs.getmateri.com/admin)
+-   **Issues**: [GitHub Issues](https://github.com/materi/materi-admin/issues)
+-   **Slack**: #materi-admin channel
+
+---
+
+**Maintained by**: Backend Team  
+**Last Updated**: November 2, 2025

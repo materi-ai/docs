@@ -3,26 +3,15 @@ id: materi-infrastructure-spec
 slug: /infrastructure/cto-spec
 sidebar_label: CTO Infrastructure Specification
 sidebar_position: 1
-title: 'Materi – CTO-Level Hardware, Infrastructure & Systems Specification'
-description: "A production-grade, AI-first infrastructure specification for Materi's real-time collaboration platform. Covers compute, networking, GPU strategy, MLOps, observability, and ADHD-optimized developer experience."
-keywords:
-    - infrastructure specification
-    - AI company hardware
-    - real-time collaboration infrastructure
-    - GPU strategy
-    - MLOps
-    - distributed systems
-    - CTO playbook
-    - developer experience
-authors:
-    - name: Office of the CTO
-tags:
-    - infrastructure
-    - hardware
-    - mlops
-    - platform
-last_update:
-    date: 2025-01-15
+title: Materi – CTO-Level Hardware, Infrastructure & Systems Specification
+description: A production-grade, AI-first infrastructure specification for Materi's real-time collaboration platform. Covers compute, networking, GPU strategy, MLOps, observability, and ADHD-optimized developer experience.
+keywords: 
+authors: 
+- name: Office of the CTO
+tags: 
+last_update: 
+date: 2025-01-15
+relatedPages: []
 ---
 
 import TabItem from "@theme/TabItem";

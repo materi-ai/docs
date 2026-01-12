@@ -1,0 +1,3542 @@
+{
+  "TASKSET_3_PHASE1_COMPLETION_REPORT.md": [],
+  "CLEANUP_AND_ARCHIVAL_PLAN.md": [],
+  "CLEANUP_EXECUTION_REPORT.md": [],
+  "TASKSET_4_PHASE2_COMPLETION_REPORT.md": [],
+  "TASKSET_5_PHASE3_BATCH_FRAMEWORK.md": [],
+  "TASKSET_5_PHASE3_COMPLETION_REPORT.md": [],
+  "index.mdx": [
+    "TASKSET_3_PHASE1_COMPLETION_REPORT.md",
+    "CLEANUP_AND_ARCHIVAL_PLAN.md",
+    "CLEANUP_EXECUTION_REPORT.md"
+  ],
+  "architecture-overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "TASKSET_4_PHASE2_BATCH_FRAMEWORK.md": [],
+  "concepts.mdx": [],
+  "PROJECT_COMPLETION_SUMMARY.md": [],
+  "TASKSET_3_FINAL_SUMMARY.md": [],
+  "INTEGRATION_MAPPING_MATRIX.md": [],
+  "README.md": [],
+  "introduction.mdx": [],
+  "TASKSET_3_BATCH_MIGRATION_FRAMEWORK.md": [],
+  "TASKSET_2_INTEGRATION_STRATEGY.md": [],
+  "TASKSET_3_PHASE1_STATUS.md": [],
+  "MINT_JSON_ENHANCEMENTS.md": [],
+  "quickstart.mdx": [],
+  "development.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "TASKSET_6_LINKING_MATRIX.md": [],
+  "documentation-contract.mdx": [],
+  "TASKSET_2_COMPLETION_REPORT.md": [],
+  "OWNERS.md": [],
+  "TASKSET_6_CROSS_REFERENCE_FRAMEWORK.md": [],
+  "snippets/snippet-intro.mdx": [],
+  "snippets/generated/events-proto-summary.mdx": [],
+  "snippets/examples/http-bearer-auth.mdx": [],
+  "snippets/examples/retries/fetch-with-backoff.mdx": [],
+  "snippets/examples/webhooks/send-signed-webhook-bash.mdx": [],
+  "snippets/examples/webhooks/verify-signature-python.mdx": [],
+  "snippets/examples/webhooks/verify-signature-node.mdx": [],
+  "developer/products/product-doc-48.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-49.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-28.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-14.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-4.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-5.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-15.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-29.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-17.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-7.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-6.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-16.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-12.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-2.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-3.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-13.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-11.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-1.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-39.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-38.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-10.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-35.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-21.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-20.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-34.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-22.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-36.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-37.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-23.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-27.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-33.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-32.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-26.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-30.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-24.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-18.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-8.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-9.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-19.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-25.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-31.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-42.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-43.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-41.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-40.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-44.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-50.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-45.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-47.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/product-doc-46.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/specifications/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/products/specifications/requirement-types.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/specifications/traceability.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/specifications/verification.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/products/canvas/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/products/canvas/setup.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/real-time-sync.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/state-management.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/testing.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/component-library.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/deployment.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/products/canvas/api-integration.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/canvas/storybook.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/atlas/structure.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/atlas/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/products/atlas/mdx-components.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/products/atlas/contributing.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-5.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-4.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-6.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/git-workflow.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-7.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-3.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-2.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/contributing/dev-guide-1.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-16.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/documentation.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-17.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-29.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-15.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-14.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-28.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-10.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/pr-process.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-11.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-13.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-12.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-23.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-22.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-20.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-21.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-25.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-19.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-18.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-24.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-30.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-26.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-27.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/code-standards.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-9.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/dev-guide-8.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/contributing/issue-templates.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/introduction/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/introduction/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/introduction/tech-stack.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/introduction/getting-started.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/introduction/claude-development-guide.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/platform/platform-doc-32.mdx": [],
+  "developer/platform/platform-doc-26.mdx": [],
+  "developer/platform/platform-doc-27.mdx": [],
+  "developer/platform/platform-doc-33.mdx": [],
+  "developer/platform/platform-doc-25.mdx": [],
+  "developer/platform/platform-doc-31.mdx": [],
+  "developer/platform/platform-doc-19.mdx": [],
+  "developer/platform/platform-doc-18.mdx": [],
+  "developer/platform/platform-doc-30.mdx": [],
+  "developer/platform/platform-doc-24.mdx": [],
+  "developer/platform/platform-doc-20.mdx": [],
+  "developer/platform/platform-doc-34.mdx": [],
+  "developer/platform/platform-doc-35.mdx": [],
+  "developer/platform/platform-doc-21.mdx": [],
+  "developer/platform/platform-doc-37.mdx": [],
+  "developer/platform/platform-doc-23.mdx": [],
+  "developer/platform/platform-doc-22.mdx": [],
+  "developer/platform/platform-doc-36.mdx": [],
+  "developer/platform/platform-doc-51.mdx": [],
+  "developer/platform/platform-doc-45.mdx": [],
+  "developer/platform/platform-doc-44.mdx": [],
+  "developer/platform/platform-doc-50.mdx": [],
+  "developer/platform/platform-doc-46.mdx": [],
+  "developer/platform/platform-doc-52.mdx": [],
+  "developer/platform/platform-doc-53.mdx": [],
+  "developer/platform/platform-doc-47.mdx": [],
+  "developer/platform/platform-doc-43.mdx": [],
+  "developer/platform/platform-doc-57.mdx": [],
+  "developer/platform/platform-doc-56.mdx": [],
+  "developer/platform/platform-doc-42.mdx": [],
+  "developer/platform/platform-doc-8.mdx": [],
+  "developer/platform/platform-doc-68.mdx": [],
+  "developer/platform/platform-doc-54.mdx": [],
+  "developer/platform/platform-doc-40.mdx": [],
+  "developer/platform/platform-doc-41.mdx": [],
+  "developer/platform/platform-doc-55.mdx": [],
+  "developer/platform/platform-doc-69.mdx": [],
+  "developer/platform/platform-doc-9.mdx": [],
+  "developer/platform/platform-doc-4.mdx": [],
+  "developer/platform/platform-doc-64.mdx": [],
+  "developer/platform/platform-doc-58.mdx": [],
+  "developer/platform/platform-doc-59.mdx": [],
+  "developer/platform/platform-doc-65.mdx": [],
+  "developer/platform/platform-doc-5.mdx": [],
+  "developer/platform/platform-doc-7.mdx": [],
+  "developer/platform/platform-doc-67.mdx": [],
+  "developer/platform/platform-doc-66.mdx": [],
+  "developer/platform/platform-doc-6.mdx": [],
+  "developer/platform/platform-doc-2.mdx": [],
+  "developer/platform/platform-doc-62.mdx": [],
+  "developer/platform/platform-doc-63.mdx": [],
+  "developer/platform/platform-doc-3.mdx": [],
+  "developer/platform/platform-doc-1.mdx": [],
+  "developer/platform/platform-doc-49.mdx": [],
+  "developer/platform/platform-doc-61.mdx": [],
+  "developer/platform/platform-doc-60.mdx": [],
+  "developer/platform/platform-doc-48.mdx": [],
+  "developer/platform/platform-doc-13.mdx": [],
+  "developer/platform/platform-doc-12.mdx": [],
+  "developer/platform/platform-doc-10.mdx": [],
+  "developer/platform/platform-doc-38.mdx": [],
+  "developer/platform/platform-doc-39.mdx": [],
+  "developer/platform/platform-doc-11.mdx": [],
+  "developer/platform/platform-doc-29.mdx": [],
+  "developer/platform/platform-doc-15.mdx": [],
+  "developer/platform/platform-doc-14.mdx": [],
+  "developer/platform/platform-doc-28.mdx": [],
+  "developer/platform/platform-doc-16.mdx": [],
+  "developer/platform/platform-doc-17.mdx": [],
+  "developer/platform/intelligence/analytics.md": [],
+  "developer/platform/intelligence/MATERI_POSTHOG_CONVEX_UNFAIR_ADVANTAGES.mdx": [],
+  "developer/platform/intelligence/github-integrations.md": [],
+  "developer/platform/intelligence/scribe.md": [],
+  "developer/platform/intelligence/scribe/operator-guide.md": [],
+  "developer/platform/intelligence/scribe/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/platform/intelligence/scribe/troubleshooting.md": [],
+  "developer/platform/intelligence/scribe/architecture.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/platform/intelligence/scribe/team-training.md": [],
+  "developer/platform/intelligence/scribe/alert-response.md": [],
+  "developer/platform/aria/code-safety.md": [],
+  "developer/platform/aria/graceful-degradation.md": [],
+  "developer/platform/aria/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/platform/aria/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/platform/aria/model-integration.md": [],
+  "developer/platform/aria/testing.md": [],
+  "developer/platform/aria/text-analysis.md": [],
+  "developer/platform/aria/deployment.md": [],
+  "developer/platform/aria/diagram-analysis.md": [],
+  "developer/platform/aria/enhancement-suggestions.md": [],
+  "developer/operations/service-doc-10.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-38.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-39.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-11.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-13.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-12.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-16.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-17.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-29.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-15.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-14.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-28.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-11.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-9.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-6.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-7.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-8.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-10.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-12.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-5.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-4.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-13.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-17.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-1.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-48.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-16.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-14.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-3.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-2.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-15.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-18.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-46.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-47.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-1.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-3.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-45.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-44.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-2.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-6.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-40.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-9.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-8.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-41.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-7.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-5.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-43.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-42.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/operational-doc-4.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-25.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-31.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-19.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-18.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-30.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-24.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-32.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-26.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-27.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-33.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-37.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-23.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-22.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-36.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-20.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-34.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-35.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/service-doc-21.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/log-rotation.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/backup-restore.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/cross-region-backup.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/optimization-strategies.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/load-testing.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/vertical-scaling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/horizontal-scaling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/documentation-standards.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/retry-strategies.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/graceful-degradation.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/benchmarking.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/capacity-planning.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/point-in-time-recovery.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/incident-response.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/escalation.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/profiling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/backup-restore.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/maintenance.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/performance-tuning.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/incident-communication.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/cost-optimization.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/autoscaling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/cache-management.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/incident-severity.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/circuit-breakers.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/scaling.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/runbook-development.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/database-maintenance.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/database-backup.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/load-balancing.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/connection-pooling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/post-mortem.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/bulkhead.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/training.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/failover.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/chaos-engineering.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/dr-testing.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/data-migration.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/disaster-recovery.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/incident-response.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/recovery-objectives.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/disaster-recovery.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/runbooks/scaling.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/deployment/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/operations/deployment/cicd-security.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-8.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-9.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-orchestration.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/monitoring-during-deploy.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/traffic-shifting.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/deployment-runbook.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-main.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops-multitenancy.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/production-readiness-checklist.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-production.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-relay.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops-secrets.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/blue-green.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops-drift.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/flux.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-multirepo.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/health-checks.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/argocd.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-quality.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/rollback.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-12.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops-rollback.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-4.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-5.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/cicd-staging.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-13.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops-sync.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-11.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ci-cd-runbook.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-7.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-6.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/rollout.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/gitops.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-10.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-14.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-2.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-3.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/blue-green.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ci-cd.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/canary.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-15.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-1.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/deployment/ops-guide-16.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-14.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-4.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-5.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/database-replication.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-15.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-cost.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-practices.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-7.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-6.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/operations/infrastructure/infra-12.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-2.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-3.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-13.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-networking.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/networking.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-11.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-1.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-10.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/dns.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-monitoring.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-testing.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-storage.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/sharding.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/ingress.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-security.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-ha.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/load-balancing-advanced.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/service-mesh.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/caching.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-automation.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-multi-cluster.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-modules.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/kubernetes-advanced-networking.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-state.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-cost.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/data-consistency.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-scaling.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/terraform-environments.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/security.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-8.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/infrastructure/infra-9.mdx": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "developer/operations/folio/jaeger-architecture.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/operations/folio/prometheus-advanced.mdx": [],
+  "developer/operations/folio/jaeger-tuning.mdx": [],
+  "developer/operations/folio/slo-management.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/operations/folio/jaeger-sampling.mdx": [],
+  "developer/operations/folio/alertmanager-advanced.mdx": [],
+  "developer/operations/folio/alertmanager-receivers.mdx": [],
+  "developer/operations/folio/grafana-dashboards.mdx": [],
+  "developer/operations/folio/alerting.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/loki-scaling.mdx": [],
+  "developer/operations/folio/grafana-provisioning.mdx": [],
+  "developer/operations/folio/prometheus.mdx": [],
+  "developer/operations/folio/jaeger-storage.mdx": [],
+  "developer/operations/folio/loki-querying.mdx": [],
+  "developer/operations/folio/alertmanager.mdx": [],
+  "developer/operations/folio/loki-performance.mdx": [],
+  "developer/operations/folio/grafana-runbook.mdx": [],
+  "developer/operations/folio/alertmanager-silencing.mdx": [],
+  "developer/operations/folio/prometheus-recording.mdx": [],
+  "developer/operations/folio/capacity-analytics.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/metrics-analysis.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/prometheus-retention.mdx": [],
+  "developer/operations/folio/grafana-runbook.md": [],
+  "developer/operations/folio/grafana-teams.mdx": [],
+  "developer/operations/folio/logging.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/prometheus-queries.mdx": [],
+  "developer/operations/folio/loki-troubleshooting.mdx": [],
+  "developer/operations/folio/jaeger.mdx": [],
+  "developer/operations/folio/alertmanager-templates.mdx": [],
+  "developer/operations/folio/tracing.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/loki-relabeling.mdx": [],
+  "developer/operations/folio/metrics.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/grafana-panels.mdx": [],
+  "developer/operations/folio/loki-retention.mdx": [],
+  "developer/operations/folio/prometheus-clustering.mdx": [],
+  "developer/operations/folio/loki.mdx": [],
+  "developer/operations/folio/anomaly-detection.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/alertmanager-routing.mdx": [],
+  "developer/operations/folio/jaeger-integration.mdx": [],
+  "developer/operations/folio/prometheus-scraping.mdx": [],
+  "developer/operations/folio/dashboards.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "developer/operations/folio/grafana-advanced.mdx": [],
+  "developer/operations/folio/jaeger-instrumentation.mdx": [],
+  "developer/operations/folio/grafana.mdx": [],
+  "developer/operations/folio/grafana-alerts.mdx": [],
+  "developer/testing/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/testing/e2e-tests.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/testing/chaos-engineering.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/testing/load-tests.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/testing/unit-tests.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/testing/integration-tests.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/testing/contract-tests.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/architecture/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/recipes/send-pipeline-metrics-webhook.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/recipes/verify-webhook-signature.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/recipes/test-shield-github-actions-webhook.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/events/publishing.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/retry-patterns.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/redis-streams.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/consuming.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/dead-letter-queue.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/idempotency.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/events/event-envelope.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-24.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-30.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-18.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-19.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-31.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-25.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-33.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-27.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-26.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-32.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-36.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-22.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-23.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-37.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-21.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-35.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-34.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-20.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-5.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-1.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-4.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-6.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-15.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-2.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-44.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-3.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-14.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-7.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-3.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-10.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-7.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-41.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-40.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-6.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-11.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-2.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-13.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-4.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-42.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-43.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-5.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-12.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-1.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-8.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-detail-9.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-9.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-8.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-11.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-39.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-38.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-10.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-12.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-13.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-17.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-16.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-28.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-14.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-15.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/service-integration-29.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "developer/domain/shield/authentication.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/database-schema.mdx": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/domain/shield/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/shield/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/shield/authorization.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/user-management.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/oauth-saml.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/testing.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/architecture.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/domain/shield/deployment.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/shield/api.mdx": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/manuscript/versioning.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/manuscript/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/manuscript/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/manuscript/event-schemas.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/manuscript/custom-options.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/manuscript/msx-inspector.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/manuscript/code-generation.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/printery/resilience-patterns.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/printery/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/domain/printery/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/printery/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/printery/consumer-groups.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/printery/deployment.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/printery/handler-registry.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/authentication.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/detailed-overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/api/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/domain/api/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/api/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/api/endpoints.mdx": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/setup.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/endpoints.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/rate-limiting.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/testing.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/api/deployment.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/detailed-overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/relay/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "developer/domain/relay/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/relay/presence-tracking.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/overview.mdx": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "developer/domain/relay/guide.mdx": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/testing.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/operational-transform.mdx": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/deployment.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/operational-transform.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "developer/domain/relay/websocket-protocol.md": [
+    "developer/platform/platform-doc-32.mdx",
+    "developer/platform/platform-doc-26.mdx",
+    "architecture-overview.mdx"
+  ],
+  "frontend/V1_FRONTEND_GAP_ANALYSIS.md": [],
+  "enterprise/security/authentication.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/certificate-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/secrets-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/audit-logging.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/security/audit-logs.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/scim-provisioning.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/api-security.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/sso-saml.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/authentication.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/compliance-certifications.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/network-segmentation.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/authentication-security.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/vulnerability-scanning.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/encryption.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/evidence-collection.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/waf.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-8.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/penetration-testing.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/network-security.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/data-residency.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/data-protection.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-6.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-7.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/encryption.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-5.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/penetration-testing.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-4.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/ddos-protection.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-1.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-3.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/access-control.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/forensics.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/vulnerability-disclosure.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/network-security.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-guide-2.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/security-policy.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/security/incident-response.mdx": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "enterprise/security/breach-notification.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/integration/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/integration/ldap-ad.md": [],
+  "enterprise/integration/webhooks.md": [],
+  "enterprise/integration/google-workspace.md": [],
+  "enterprise/integration/okta.md": [],
+  "enterprise/integration/api-gateway.md": [],
+  "enterprise/integration/azure-ad.md": [],
+  "enterprise/integration/custom-sso.md": [],
+  "enterprise/admin/license-management.md": [],
+  "enterprise/admin/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/admin/user-management.md": [],
+  "enterprise/admin/billing.md": [],
+  "enterprise/admin/support.md": [],
+  "enterprise/admin/usage-analytics.md": [],
+  "enterprise/admin/workspace-management.md": [],
+  "enterprise/support/sla.md": [],
+  "enterprise/support/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/support/training.md": [],
+  "enterprise/support/contact.md": [],
+  "enterprise/support/support-tiers.md": [],
+  "enterprise/support/escalation.md": [],
+  "enterprise/deployment/self-hosted/backup-restore.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/self-hosted/kubernetes.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/self-hosted/requirements.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/self-hosted/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/deployment/self-hosted/configuration.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/self-hosted/docker-compose.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/self-hosted/upgrading.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/cloud-dedicated/custom-domains.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/cloud-dedicated/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/deployment/cloud-dedicated/provisioning.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/cloud-dedicated/vpc-peering.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/cloud-dedicated/monitoring.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/hybrid/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "enterprise/deployment/hybrid/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/deployment/hybrid/data-residency.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/deployment/hybrid/compliance.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "enterprise/scalability/database-scaling.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "enterprise/scalability/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/scalability/performance-benchmarks.md": [
+    "introduction.mdx",
+    "snippets/snippet-intro.mdx",
+    "api/introduction/versioning.md",
+    "api/introduction/rate-limits.md",
+    "api/introduction/pagination.md"
+  ],
+  "enterprise/scalability/horizontal-scaling.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "enterprise/scalability/cache-strategy.md": [],
+  "enterprise/scalability/cdn-configuration.md": [],
+  "enterprise/ha/architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "enterprise/ha/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/ha/backup-strategy.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "enterprise/ha/failover.md": [],
+  "enterprise/ha/disaster-recovery.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "enterprise/ha/load-balancing.md": [],
+  "enterprise/monitoring/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/monitoring/performance-tuning.md": [
+    "introduction.mdx",
+    "snippets/snippet-intro.mdx",
+    "api/introduction/versioning.md",
+    "api/introduction/rate-limits.md",
+    "api/introduction/pagination.md"
+  ],
+  "enterprise/monitoring/alerting.md": [],
+  "enterprise/monitoring/logging.md": [],
+  "enterprise/monitoring/capacity-planning.md": [],
+  "enterprise/monitoring/metrics.md": [],
+  "enterprise/monitoring/health-checks.md": [],
+  "enterprise/overview/pricing.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/overview/sla.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/overview/what-is-enterprise.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/overview/feature-comparison.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/migration/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "enterprise/migration/validation.md": [],
+  "enterprise/migration/data-import.md": [],
+  "enterprise/migration/from-cloud.md": [],
+  "enterprise/migration/from-competitors.md": [],
+  "enterprise/migration/user-migration.md": [],
+  "internal/security/compliance/monitoring.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/security/compliance/hipaa.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/threat-modeling.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/policy-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/soc2.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/hipaa.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/soc2.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/data-governance.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/change-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/gdpr.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/vendor-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/iso27001.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/asset-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/risk-management.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/gdpr.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/iso27001.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/compliance/assessment.mdx": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/vulnerabilities/scanning.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/vulnerabilities/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/security/vulnerabilities/reporting.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/vulnerabilities/remediation.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/vulnerabilities/disclosure.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/practices/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/security/practices/secure-coding.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/practices/threat-modeling.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/practices/dependency-management.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/practices/code-review-security.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/security/practices/secrets-management.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/product/research/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/product/research/interviews.md": [],
+  "internal/product/research/analytics.md": [],
+  "internal/product/research/user-personas.md": [],
+  "internal/product/research/surveys.md": [],
+  "internal/product/documentation/consolidation-roadmap.mdx": [],
+  "internal/product/development/planning.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "internal/product/development/launch.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "internal/product/development/execution.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "internal/product/development/discovery.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "internal/product/strategy/competitive-analysis.md": [],
+  "internal/product/strategy/vision.md": [],
+  "internal/product/strategy/roadmap.md": [],
+  "internal/product/strategy/okrs.md": [],
+  "internal/operations/releases/versioning.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/releases/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/operations/releases/rollback-procedures.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/releases/release-process.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/releases/change-management.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/cost/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/operations/cost/tracking.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/cost/optimization.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/cost/budgeting.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/capacity/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/operations/capacity/forecasting.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/capacity/scaling-strategy.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/capacity/metrics.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/incidents/communication.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/incidents/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/operations/incidents/post-mortems.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/incidents/response-process.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/incidents/blameless-culture.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/operations/incidents/severity-levels.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/architecture/specs/requirement-traceability.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/l2-tactical-specs.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/verification-matrix.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/concept-of-operations.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/taxonomy-index.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/architecture/specs/l1-strategic-specs.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/system-design-relay.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/technology-strategy.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/specs/requirements-relations.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-004-protocol-buffers.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/architecture/adrs/adr-deployment-decisions.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-003-operational-transform.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-006-polyglot-services.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-002-event-driven-communication.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-001-microservices-architecture.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-007-graceful-degradation.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/adrs/adr-005-redis-streams.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/operations-architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/architecture/system-design/cross-segment-integration.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/platform-services.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/data-models.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/office-frontend.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/product-architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/event-driven-architecture.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/architecture/system-design/domain-services.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "internal/hr/benefits.md": [],
+  "internal/hr/remote-work.md": [],
+  "internal/hr/compensation.md": [],
+  "internal/hr/performance-reviews.md": [],
+  "internal/hr/engineering-levels.md": [],
+  "internal/hr/onboarding.md": [],
+  "internal/finance/expense-policy.md": [],
+  "internal/finance/budget.md": [],
+  "internal/legal/contracts.md": [],
+  "internal/legal/privacy-policy.md": [],
+  "internal/legal/intellectual-property.md": [],
+  "internal/legal/terms-of-service.md": [],
+  "internal/overview/communication.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/overview/welcome.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/overview/team-structure.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/overview/tools.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/engineering/ownership/product-team.md": [],
+  "internal/engineering/ownership/operations-team.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "internal/engineering/ownership/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/engineering/ownership/platform-team.md": [],
+  "internal/engineering/ownership/domain-team.md": [],
+  "internal/engineering/ownership/on-call-rotation.md": [],
+  "internal/engineering/workflow/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/engineering/workflow/deployment-process.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "internal/engineering/workflow/code-review.md": [],
+  "internal/engineering/workflow/pr-process.md": [],
+  "internal/engineering/workflow/testing-strategy.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "internal/engineering/workflow/issue-templates.md": [],
+  "internal/engineering/performance/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/engineering/performance/benchmarking.md": [],
+  "internal/engineering/performance/profiling.md": [],
+  "internal/engineering/performance/optimization-guide.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md",
+    "developer/introduction/tech-stack.md",
+    "developer/introduction/getting-started.md",
+    "developer/introduction/claude-development-guide.mdx"
+  ],
+  "internal/engineering/performance/slo-sli-sla.md": [],
+  "internal/engineering/standards/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/engineering/standards/python-standards.md": [],
+  "internal/engineering/standards/rust-standards.md": [],
+  "internal/engineering/standards/proto-standards.md": [],
+  "internal/engineering/standards/go-standards.md": [],
+  "internal/engineering/standards/typescript-standards.md": [],
+  "internal/analytics/metrics-dashboard.md": [],
+  "internal/analytics/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "internal/analytics/business-intelligence.md": [],
+  "internal/analytics/user-analytics.md": [],
+  "internal/analytics/system-analytics.md": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "docs/SRS-ISSUE-TEMPLATES-WORKFLOW-ORCHESTRATION.md": [],
+  "docs/MAINTENANCE_VERIFICATION.md": [],
+  "docs/ULTIMATE-LLM-PROMPT.md": [],
+  "docs/COMPLETE_DEPLOYMENT_GUIDE.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "docs/ARIA-AUDIT-ISSUES.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "docs/SDD-GITHUB-ORG-STRUCTURE.md": [],
+  "docs/MINTLIFY-STRUCTURE.md": [],
+  "docs/STUB_REWRITE_PLAN.md": [],
+  "docs/CICD_TEMPLATES_GUIDE.md": [
+    "developer/operations/folio/prometheus-advanced.mdx",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "docs/SDD_MIGRATION_MANIFEST.md": [],
+  "docs/TASKSET_7_GAP_AUDIT.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "docs/TASKSET_1_GAP_MAP.md": [],
+  "tasksets/TASKSET_4_IMPLEMENTATION.md": [],
+  "tasksets/INTEGRATION_EXECUTIVE_SUMMARY.md": [],
+  "tasksets/INTEGRATION_IMPLEMENTATION_GUIDE.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "tasksets/INTEGRATION_READINESS_REPORT.md": [],
+  "tasksets/TASKSET_4_CHECKLIST.md": [],
+  "tasksets/TASKSET_4_QUICK_REFERENCE.md": [],
+  "tasksets/TASKSET_0_COMPLETION_REPORT.md": [],
+  "tasksets/TASKSET_4_INTEGRATION_GUIDE.md": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "tasksets/TASKSET_4_COMPLETE.md": [],
+  "tasksets/INTEGRATION_QUICK_REFERENCE.md": [],
+  "tasksets/TASKSET_0_QUICK_REFERENCE.md": [],
+  "mflow/01-mflow-architecture-guide.mdx": [
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx",
+    "developer/domain/shield/authorization.md",
+    "developer/domain/shield/user-management.md",
+    "developer/domain/shield/oauth-saml.md"
+  ],
+  "mflow/04-forge-event-schema-reference.mdx": [],
+  "mflow/05-development-workflow-resources.mdx": [
+    "architecture-overview.mdx",
+    "developer/products/specifications/overview.md"
+  ],
+  "mflow/03-folio-observability-guide.mdx": [],
+  "mflow/02-environment-setup-railway.mdx": [],
+  "materi/linear-workflows.mdx": [],
+  "materi/hardware-spec.md": [],
+  "api/websocket/authentication.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "api/websocket/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "api/websocket/connection.md": [],
+  "api/websocket/operations.md": [
+    "developer/products/canvas/deployment.md",
+    "developer/operations/deployment/cicd-security.mdx",
+    "developer/operations/folio/prometheus-advanced.mdx"
+  ],
+  "api/websocket/error-handling.md": [],
+  "api/websocket/presence.md": [],
+  "api/websocket/events.md": [],
+  "api/sdks/go.md": [],
+  "api/sdks/python.md": [],
+  "api/sdks/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "api/sdks/rust.md": [],
+  "api/sdks/javascript-typescript.md": [],
+  "api/sdks/java.md": [],
+  "api/introduction/authentication.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "api/introduction/versioning.md": [],
+  "api/introduction/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "api/introduction/rate-limits.md": [],
+  "api/introduction/pagination.md": [],
+  "api/introduction/webhooks.md": [],
+  "api/introduction/errors.md": [],
+  "api/graphql/queries.md": [],
+  "api/graphql/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "api/graphql/schema.md": [],
+  "api/graphql/mutations.md": [],
+  "api/graphql/subscriptions.md": [],
+  "api/events/aria-events.md": [],
+  "api/events/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "api/events/audit-events.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "api/events/user-events.md": [],
+  "api/events/notification-events.md": [],
+  "api/events/workspace-events.md": [],
+  "api/events/document-events.md": [],
+  "api/events/collaboration-events.md": [],
+  "api/rest/collaboration/list-sessions.md": [],
+  "api/rest/collaboration/comments.md": [],
+  "api/rest/collaboration/get-session.md": [],
+  "api/rest/collaboration/mentions.md": [],
+  "api/rest/collaboration/get-presence.md": [],
+  "api/rest/auth/refresh-token.md": [],
+  "api/rest/auth/oauth.md": [],
+  "api/rest/auth/login.md": [],
+  "api/rest/auth/logout.md": [],
+  "api/rest/auth/saml.md": [],
+  "api/rest/workspaces/delete-workspace.md": [],
+  "api/rest/workspaces/get-workspace.md": [],
+  "api/rest/workspaces/update-workspace.md": [],
+  "api/rest/workspaces/create-workspace.md": [],
+  "api/rest/workspaces/workspace-members.md": [],
+  "api/rest/workspaces/workspace-roles.md": [],
+  "api/rest/workspaces/list-workspaces.md": [],
+  "api/rest/search/search-workspaces.md": [],
+  "api/rest/search/search-users.md": [],
+  "api/rest/search/search-documents.md": [],
+  "api/rest/ai/analyze-text.md": [],
+  "api/rest/ai/generate-content.md": [],
+  "api/rest/ai/enhance-content.md": [],
+  "api/rest/ai/analyze-diagram.md": [],
+  "api/rest/ai/summarize.md": [],
+  "api/rest/ai/analyze-code.md": [],
+  "api/rest/users/update-user.md": [],
+  "api/rest/users/user-preferences.md": [],
+  "api/rest/users/delete-user.md": [],
+  "api/rest/users/get-user.md": [],
+  "api/rest/users/list-users.md": [],
+  "api/rest/files/upload-file.md": [],
+  "api/rest/files/delete-file.md": [],
+  "api/rest/files/get-file.md": [],
+  "api/rest/files/list-files.md": [],
+  "api/rest/documents/list-documents.md": [],
+  "api/rest/documents/document-permissions.md": [],
+  "api/rest/documents/get-document.md": [],
+  "api/rest/documents/document-versions.md": [],
+  "api/rest/documents/delete-document.md": [],
+  "api/rest/documents/create-document.md": [],
+  "api/rest/documents/update-document.md": [],
+  "customer/ignore/collaboration/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/collaboration/comments.md": [],
+  "customer/ignore/collaboration/mentions.md": [],
+  "customer/ignore/collaboration/conflict-resolution.md": [],
+  "customer/ignore/collaboration/presence.md": [],
+  "customer/ignore/collaboration/offline-mode.md": [],
+  "customer/ignore/security/authentication.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "customer/ignore/security/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/security/audit-logs.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "customer/ignore/security/access-controls.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "customer/ignore/security/gdpr-compliance.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "customer/ignore/security/data-encryption.md": [
+    "architecture-overview.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/operations/service-doc-10.mdx"
+  ],
+  "customer/ignore/workspaces/managing-members.md": [],
+  "customer/ignore/workspaces/roles-permissions.md": [],
+  "customer/ignore/workspaces/creating-workspaces.md": [],
+  "customer/ignore/workspaces/billing.md": [],
+  "customer/ignore/workspaces/workspace-settings.md": [],
+  "customer/ignore/integrations/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/integrations/slack.md": [],
+  "customer/ignore/integrations/github.md": [],
+  "customer/ignore/integrations/webhooks.md": [],
+  "customer/ignore/integrations/notion.md": [],
+  "customer/ignore/integrations/google-drive.md": [],
+  "customer/ignore/getting-started/invite-team.md": [],
+  "customer/ignore/getting-started/workspace-setup.md": [],
+  "customer/ignore/getting-started/sign-up.md": [],
+  "customer/ignore/getting-started/first-document.md": [],
+  "customer/ignore/support/contact-support.md": [],
+  "customer/ignore/support/troubleshooting.md": [],
+  "customer/ignore/support/keyboard-shortcuts.md": [],
+  "customer/ignore/support/faq.md": [],
+  "customer/ignore/support/video-tutorials.md": [],
+  "customer/ignore/ai/summarization.md": [],
+  "customer/ignore/ai/overview.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/ai/content-generation.md": [],
+  "customer/ignore/ai/code-analysis.md": [],
+  "customer/ignore/ai/diagram-analysis.md": [],
+  "customer/ignore/ai/enhancement-suggestions.md": [],
+  "customer/ignore/ai/safety-gates.md": [],
+  "customer/ignore/documents/templates.md": [],
+  "customer/ignore/documents/creating-documents.md": [],
+  "customer/ignore/documents/editing-documents.md": [],
+  "customer/ignore/documents/version-history.md": [],
+  "customer/ignore/documents/sharing-documents.md": [],
+  "customer/ignore/documents/organizing-documents.md": [],
+  "customer/ignore/overview/pricing.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/overview/key-features.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/overview/what-is-materi.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ],
+  "customer/ignore/overview/use-cases.md": [
+    "developer/products/canvas/architecture.md",
+    "developer/introduction/architecture.md",
+    "developer/platform/intelligence/scribe/architecture.mdx",
+    "developer/domain/shield/authentication.md",
+    "developer/domain/shield/database-schema.mdx"
+  ]
+}

@@ -1,0 +1,353 @@
+---
+title: Printery Service Overview
+description: Event-driven consumer group management and processing service
+icon: printer
+source: /Users/alexarno/materi/domain/printery/README.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.275015Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+---
+
+# Printery Project: Complete Overview & Next Steps
+
+**Status**: Ecosystem-Aware Architecture Complete | Awaiting Approval  
+**Date**: 2025-12-15  
+**Scope**: 7-service event-driven ecosystem (Shield, API, Relay, Aria, Folio, Arena)  
+**Next**: Await confirmation to proceed with Step 0 (Proto Unification)
+
+---
+
+## What Has Been Delivered
+
+Six comprehensive architectural documents have been created in `/Users/alexarno/materi/domain/printery/`:
+
+### 1. \*\*APPROVAL_ECOSYSTEM_AWARE
+
+### 1. **APPROVAL_REQUEST.md** ← START HERE
+
+-   Executive summary: Printery is unified hub for all 7 services (not just Shield worker)
+-   Based on source code analysis of actual implementations (Shield, API, Relay)
+-   7 critical ecosystem issues Printery solves
+-   Technology stack (locked in: Go, Redis Streams, PostgreSQL, OTEL)
+-   5 clarification questions for your input
+-   10-taskset implementation roadmap
+-   **Asks for your approval to proceed**
+
+### 2. **IMPLEMENTATION_STRATEGY.md** (Detailed - Ecosystem-Aware)
+
+-   Part 1: Source code analysis of all 7 services (verified from actual implementations)
+-   Part 2: Ecosystem-Aware Architecture (7 independent streams, unified hub pattern)
+-   Part 3: Printery architecture overview (consumer pool, handler registry, resilience, observability)
+-   Part 4: Distributed tracing example (end-to-end trace across all 7 services)
+-   Part 5: Resilience patterns (circuit breaker, idempotency, DLQ, recovery)
+-   Part 6: Scalability (consumer auto-rebalancing, per-topic scaling)
+-   Part 7: **Implementation roadmap (Step 0 + 10 Tasksets = 3-4 weeks)**
+-   Part 8: Success criteria (ecosystem-aware; functional, operational, non-functional)
+-   Part 9: Next steps (explicit execution model)
+
+### 3. **ARCHITECTURE_DECISIONS.md** (Decision Records)
+
+-   ADR-001: Programming Language Selection (Go)
+-   ADR-002: Message Broker Strategy (Redis Streams + PostgreSQL)
+-   ADR-003: Resilience Patterns (Retry + Circuit Breaker + Idempotency + DLQ)
+-   ADR-004: Observability Strategy (OTEL + Prometheus + JSON Logs)
+-   ADR-005: Consumer Group Strategy (per-topic; auto-rebalance)
+
+### 4. **ARCHITECTURE_DIAGRAMS.md** (Visual Reference)
+
+-   System context diagram (Shield, API, Printery, Redis, PostgreSQL)
+-   Event lifecycle flow (publishing → consumption → DLQ recovery)
+-   Printery internal architecture (consumer pool, handlers, resilience, observability)
+-   Kubernetes deployment diagram
+-   Scaling example (HPA, pod failures, database scaling)
+
+---
+
+## Key Decisions (Locked In)
+
+| Dimension            | Choice                                      | Reason                                                      |
+| -------------------- | ------------------------------------------- | ----------------------------------------------------------- |
+| **Language**         | Go                                          | Native concurrency, single binary, ecosystem match with API |
+| **Event Broker**     | Redis Streams + PostgreSQL                  | Already in stack; low overhead; durable audit log           |
+| **Consumer Pattern** | Per-topic consumer groups                   | Isolation, independent scaling, failure domain separation   |
+| **Resilience**       | Retry + Circuit Breaker + Idempotency + DLQ | Comprehensive failure handling; no events lost              |
+| **Observability**    | OTEL + Prometheus + JSON Logs               | Vendor-agnostic; Go-native; debuggable end-to-end           |
+| **Deployment**       | Kubernetes                                  | Matches existing infrastructure                             |
+
+---
+
+## Implementation Roadmap (Step 0 + 10 Tasksets = 3-4 weeks)
+
+```
+STEP 0: Proto Unification                           (1 day) ← PREREQUISITE
+  → Consolidate event schemas from all 7 services into unified proto
+
+TASKSET 1: Foundation & Setup                      (1-2 days)
+  → Go project structure, Makefile, docker-compose, CI/CD
+
+TASKSET 2: Consumer Pool & Handler Framework        (2-3 days)
+  → XREADGROUP consumer, handler registry, 15+ sample handlers
+
+TASKSET 3: Resilience Patterns                      (2-3 days)
+  → Circuit breaker, retry policy, Redis idempotency, DLQ
+
+TASKSET 4: Observability & Telemetry               (1-2 days)
+  → OTEL tracing, Prometheus metrics, JSON logs, Grafana dashboard
+
+TASKSET 5: Integration & Testing                    (2-3 days)
+  → RPC clients to all 7 services, load test 1K events/sec
+
+TASKSET 6: Admin APIs & Operations                  (1-2 days)
+  → /health, /metrics, /admin/dlq, /admin/replay, /admin/status
+
+TASKSET 7: Kubernetes & Deployment                  (1 day)
+  → Dockerfile, K8s manifests (Deployment, Service, HPA), probes
+
+TASKSET 8: Service Integration (5 services)         (2-3 days)
+  → Shield (remove RobustEventConsumer), API (handlers), Relay (Streams),
+    Aria (event subscription), Folio (real-time alerts)
+
+TASKSET 9: Documentation & Knowledge Transfer       (1-2 days)
+  → ADRs, event catalog, handler contracts, operations runbook, tutorials
+
+TASKSET 10: Production Hardening                    (2-3 days)
+  → Performance profiling, security review, disaster recovery, canary deploy
+
+TOTAL: ~3-4 weeks
+```
+
+**Execution Model**:
+
+-   Step 0 must complete before Taskset 1
+-   Each taskset requires explicit "GO TASKSET N" confirmation before proceeding
+-   Evidence at each step: working code, tests, metrics, traces
+
+---
+
+## Current State (Problems to Solve)
+
+### Shield Event System Fragmentation
+
+```
+Shield (Django)          API (Go)              Printery (Undefined)
+  │                        │                        │
+  ├─ Publishes to         ├─ Stores in            ├─ Currently:
+  │  Redis Streams        │  PostgreSQL            │  MILL-IDEAS only
+  │                       │                        │  (no code)
+  └─ Consumes in          └─ No event flow        │
+     RobustEventConsumer      to Shield            └─ Will be:
+     (coupled to Shield)                              Autonomous
+```
+
+### Problems
+
+1. Event consumption tightly coupled to Shield → hard to scale independently
+2. No unified semantics (Streams vs. PostgreSQL event sourcing)
+3. Manual consumer group management → fragile
+4. No distributed recovery (crashes = lost messages)
+5. Operational blind spots (monitoring fragmented)
+
+### Solution (Printery)
+
+-   **Decouple**: Shield publishes; Printery consumes independently
+-   **Unify**: Single semantics (Streams for distribution, PostgreSQL for audit)
+-   **Automate**: Consumer groups, retries, DLQ recovery built-in
+-   **Observe**: OTEL tracing + Prometheus + structured logs
+-   **Scale**: Horizontal scaling without code changes
+
+---
+
+## Printery Architecture (One-Pager)
+
+```
+Shield/API publish events to Redis Streams + PostgreSQL
+                 ↓
+         (Real-time distribution)
+                 ↓
+     Printery Worker Service (Go) ← Autonomous
+     ├─ Consumer Pool (N goroutines reading from Streams)
+     ├─ Handler Registry (event type → handler function)
+     ├─ Resilience (circuit breaker, retry, idempotency, DLQ)
+     ├─ Observability (OTEL tracing, Prometheus, structured logs)
+     └─ Admin APIs (/health, /metrics, /admin/dlq, /admin/replay)
+                 ↓
+        (RPC calls back to services)
+                 ↓
+     Update Shield, API, or external services
+```
+
+**Key Properties**:
+
+-   ✓ Horizontally scalable (add instances → load distributed)
+-   ✓ Resilient (transient failures retried, cascading failures isolated)
+-   ✓ Observable (every operation traced with correlation ID)
+-   ✓ Operational (DLQ inspection + replay without code changes)
+
+---
+
+## Success Metrics
+
+### Functional
+
+-   [ ] All events consumed within 50ms p99 of publication
+-   [ ] No events lost (captured in DLQ; recovery available)
+-   [ ] Handlers idempotent (safe to replay)
+-   [ ] Horizontal scaling works (add instances, load distributed)
+
+### Operational
+
+-   [ ] Every event traced end-to-end with correlation ID
+-   [ ] DLQ dashboard + replay UI operational
+-   [ ] Alerting on circuit breaker/DLQ triggered
+-   [ ] Runbook enables human operators to debug/recover
+-   [ ] No manual intervention needed for transient failures
+
+### Non-Functional
+
+-   [ ] <100MB RAM per instance
+-   [ ] <10% CPU at 1K events/sec
+-   [ ] DB connection pool stable
+-   [ ] No goroutine leaks
+-   [ ] Deploy time <5 minutes (canary + rolling restart)
+
+---
+
+## Questions for You (Before Approval)
+
+1. **Go Language**: Are you comfortable with this choice? (Alternatives: Python + Celery, but with documented tradeoffs.)
+2. **Timeline**: Any hard deadline? (Affects prioritization of hardening vs. core features.)
+3. **Team Availability**: Can Shield team participate in Taskset 8 (integration)?
+4. **Observability Backend**: Preference for trace exporter? (Jaeger, Datadog, CloudWatch, etc.?)
+5. **Kubernetes Flavor**: Vanilla K8s, EKS, GKE, other?
+
+---
+
+## How to Proceed
+
+### Option 1: Approve & Start (RECOMMENDED)
+
+Respond with:
+
+```
+APPROVAL CONFIRMED: GO TASKSET 1
+```
+
+I will immediately:
+
+1. Create Go project structure (`/Users/alexarno/materi/domain/printery/`)
+2. Initialize Go module, Makefile, docker-compose
+3. Scaffold logger, config, health check
+4. Set up test framework + CI stubs
+5. **Await your "GO TASKSET 2" before proceeding further**
+
+### Option 2: Request Changes
+
+Specify which architectural decisions you want reconsidered:
+
+-   Language choice (Go vs. Python vs. Node)
+-   Event broker strategy (Redis vs. Kafka vs. SQS)
+-   Resilience patterns (retry + circuit breaker vs. other)
+-   Observability stack (OTEL vs. other)
+
+I will revise and re-submit.
+
+### Option 3: Ask Questions
+
+Ask anything about architecture, tradeoffs, implementation, or risks. I will clarify before you commit.
+
+---
+
+## Reference Materials Included
+
+### In This Folder (`/Users/alexarno/materi/domain/printery/`)
+
+1. **APPROVAL_REQUEST.md** → 2-page executive brief (start here)
+2. **IMPLEMENTATION_STRATEGY.md** → 25-page detailed architecture
+3. **ARCHITECTURE_DECISIONS.md** → 20-page decision records (ADRs)
+4. **ARCHITECTURE_DIAGRAMS.md** → 20-page visual diagrams
+5. **README.md** → This document
+
+### Existing Context (Already in Workspace)
+
+-   [Shield event system](shield/apps/events/) → RobustEventConsumer (source of truth)
+-   [API event sourcing](domain/api/internal/eventsourcing/) → PostgreSQL event store
+-   [Event proto definitions](domain/.proto/events.proto) → Shared event schemas
+-   [MILL-IDEAS](MILL-IDEAS) → Original brainstorm (now superseded by this architecture)
+
+---
+
+## Timeline Estimate
+
+| Phase                                  | Duration      | Confidence                                |
+| -------------------------------------- | ------------- | ----------------------------------------- |
+| Taskset 1-4 (Foundation + Core)        | 1 week        | High                                      |
+| Taskset 5-7 (Integration + Deployment) | 1 week        | High                                      |
+| Taskset 8 (Shield Integration)         | 2-3 days      | Medium (depends on Shield team)           |
+| Taskset 9-10 (Docs + Hardening)        | 3-5 days      | Medium (depends on perfiling bottlenecks) |
+| **Total**                              | **3-4 weeks** | **Medium**                                |
+
+---
+
+## Risk Mitigation
+
+| Risk                              | Probability | Impact | Mitigation                                    |
+| --------------------------------- | ----------- | ------ | --------------------------------------------- |
+| Go unfamiliar to Shield team      | Medium      | High   | API engineers mentor; patterns shared         |
+| Redis Streams bottleneck at scale | Low         | Medium | Cluster upgrade path exists                   |
+| Shield integration complexity     | Medium      | High   | Clean RPC boundaries; Shield = publisher only |
+| Operator training on DLQ          | High        | Low    | Built-in admin UI + runbook from day 1        |
+| Performance regression            | Medium      | Medium | Load testing + profiling in Taskset 5 + 10    |
+
+---
+
+## Next Action Required
+
+**Please respond with**:
+
+```
+APPROVAL CONFIRMED: GO TASKSET 1
+
+(Optional: answers to 5 questions above, or requests for changes)
+```
+
+Once I receive this, I will immediately begin Taskset 1 and create:
+
+-   ✓ Go project structure
+-   ✓ Makefile (build, test, docker targets)
+-   ✓ docker-compose.yml (local dev setup)
+-   ✓ Health check handler
+-   ✓ Config scaffolding
+-   ✓ Test skeleton
+-   ✓ README for building/running locally
+
+Then I'll await your **"GO TASKSET 2"** before building the consumer and handler framework.
+
+---
+
+## Document Navigation
+
+Start here:
+
+1. → Read [APPROVAL_REQUEST.md](APPROVAL_REQUEST.md) (2 pages) for executive summary
+2. → Ask questions or request changes
+3. → Respond with "GO TASKSET 1"
+4. → (Implementation begins)
+
+Deep dives:
+
+-   [IMPLEMENTATION_STRATEGY.md](IMPLEMENTATION_STRATEGY.md) → Full strategic plan + tasksets
+-   [ARCHITECTURE_DECISIONS.md](ARCHITECTURE_DECISIONS.md) → Each decision justified + tradeoffs
+-   [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md) → Visual reference (system, flow, deployment)
+
+---
+
+**You are in control. Take time to review, ask questions, and approve when ready.**
+
+**The goal**: Clear, disciplined execution with verifiable checkpoints.

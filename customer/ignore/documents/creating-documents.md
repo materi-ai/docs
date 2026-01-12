@@ -1,7 +1,8 @@
 ---
-title: 'Creating Documents'
-description: 'Learn all the ways to create documents in Materi'
-icon: 'file-plus'
+title: Creating Documents
+description: Learn all the ways to create documents in Materi
+icon: file-plus
+relatedPages: []
 ---
 
 Documents are the core unit of content in Materi. This guide covers all the ways to create documents and get started with your content.

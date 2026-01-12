@@ -1,3 +1,16 @@
+---
+title: "Atlas Docs Verification (TASKSET 7 & 8)"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # Atlas Docs Verification (TASKSET 7 & 8)
 
 This document describes the verification gates that keep the Atlas docs permanently

@@ -1,7 +1,8 @@
 ---
-title: "AI Summarization"
-description: "Condense documents, extract key points, and create executive briefings with Aria's intelligent summarization"
-icon: "compress"
+title: AI Summarization
+description: Condense documents, extract key points, and create executive briefings with Aria's intelligent summarization
+icon: compress
+relatedPages: []
 ---
 
 # AI Summarization

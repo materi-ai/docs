@@ -1,6 +1,9 @@
 ---
-title: 'Send pipeline metrics to Shield'
-description: 'Post a signed pipeline metrics payload to the Shield webhook endpoint'
+title: Send pipeline metrics to Shield
+description: Post a signed pipeline metrics payload to the Shield webhook endpoint
+relatedPages:
+  - architecture-overview.mdx
+  - developer/products/specifications/overview.md
 ---
 
 Shield includes a pipeline metrics webhook endpoint designed for services to report CI/CD outcomes.

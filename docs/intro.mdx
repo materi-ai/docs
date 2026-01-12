@@ -1,0 +1,35 @@
+---
+title: 'The Platform Atlas'
+sidebarTitle: 'Introduction'
+description: 'A living laboratory for the Network-Aware CTO Hero stack.'
+---
+
+# Welcome to the Living Atlas
+
+The **Platform Atlas** is not just documentation; it is a deployable, verifiable, and observable micro-platform contained within the `platform/atlas` directory.
+
+It serves two purposes:
+
+1.  **Reference Implementation**: Golden paths for Rust, Go, Python, and Zig services, fully instrumented with OpenTelemetry.
+2.  **Operational Sandbox**: A safe "Game Day" environment to test new observability patterns (Grafana Alloy, Loki, Tempo) without touching production.
+
+## The "Network-Aware" Philosophy
+
+We follow the instructions laid out in the **Network-Aware CTO Hero** manifesto:
+
+> "You reach '100' when you can spin up a realistic multi-service stack locally in < 2 minutes and observe everything."
+
+## Launching the Atlas
+
+To spin up the operational backbone:
+
+```bash
+cd platform/atlas/infrastructure
+docker-compose up -d
+```
+
+This provisions:
+
+-   **Networking**: Traefik (L7 Ingress)
+-   **Observability**: Grafana, Alloy, Loki, Tempo, Prometheus
+-   **Telemetry**: OTel gRPC/HTTP endpoints ready to receive data.

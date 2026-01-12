@@ -1,0 +1,871 @@
+---
+title: CI/CD Runbook
+description: Comprehensive guide for CI/CD pipeline operations and management
+icon: document
+source: /Users/alexarno/materi/docs/operations/cicd-runbook.md
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:55:33.004353Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+# Materi Platform - CI/CD Pipeline Runbook
+
+## Overview
+
+This runbook provides operational procedures for the Materi CI/CD pipeline system, including workflow management, troubleshooting, metrics collection, and deployment orchestration.
+
+---
+
+## Table of Contents
+
+1. [Pipeline Architecture](#1-pipeline-architecture)
+2. [Workflow Reference](#2-workflow-reference)
+3. [Triggering Pipelines](#3-triggering-pipelines)
+4. [Monitoring and Observability](#4-monitoring-and-observability)
+5. [Canary Deployments](#5-canary-deployments)
+6. [Rollback Procedures](#6-rollback-procedures)
+7. [Security Pipeline](#7-security-pipeline)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Maintenance Operations](#9-maintenance-operations)
+
+---
+
+## 1. Pipeline Architecture
+
+### 1.1 Pipeline Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CI/CD Pipeline Flow                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  PR Created/Updated                                                          │
+│       │                                                                      │
+│       ▼                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                        Service CI Pipelines                          │    │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌──────────┐ │    │
+│  │  │   API   │  │ Shield  │  │  Relay  │  │ Printery │  │Manuscript│ │    │
+│  │  │  (Go)   │  │(Python) │  │ (Rust)  │  │   (Go)   │  │  (Go)    │ │    │
+│  │  └────┬────┘  └────┬────┘  └────┬────┘  └────┬─────┘  └────┬─────┘ │    │
+│  │       │            │            │             │             │       │    │
+│  │       └────────────┴────────────┴─────────────┴─────────────┘       │    │
+│  │                              │                                       │    │
+│  └──────────────────────────────┼───────────────────────────────────────┘    │
+│                                 ▼                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                      Integration Tests                               │    │
+│  │  • Cross-service API tests                                          │    │
+│  │  • Event flow verification                                          │    │
+│  │  • Database integration                                             │    │
+│  └─────────────────────────────┬───────────────────────────────────────┘    │
+│                                 │                                            │
+│                                 ▼                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                      Security Tests                                  │    │
+│  │  • SAST (gosec, bandit, cargo-audit)                               │    │
+│  │  • Dependency scanning (cargo-deny)                                 │    │
+│  │  • Secret detection (trufflehog, gitleaks)                         │    │
+│  │  • Container scanning (Trivy)                                       │    │
+│  └─────────────────────────────┬───────────────────────────────────────┘    │
+│                                 │                                            │
+│                                 ▼                                            │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                       Security Gate                                  │    │
+│  │  • Blocks deployment on critical/high vulnerabilities               │    │
+│  │  • Enforces security policy compliance                              │    │
+│  └─────────────────────────────┬───────────────────────────────────────┘    │
+│                                 │                                            │
+│                    ┌────────────┴────────────┐                               │
+│                    ▼                         ▼                               │
+│  ┌─────────────────────────┐   ┌─────────────────────────────┐              │
+│  │  Unified Deployment     │   │  Canary Deployment          │              │
+│  │  (Rolling updates)      │   │  (Progressive traffic)      │              │
+│  │  - staging/production   │   │  - 10% → 25% → 50% → 100%  │              │
+│  └─────────────────────────┘   └─────────────────────────────┘              │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │                    Pipeline Metrics Collector                        │    │
+│  │  • Reports to Shield webhook                                        │    │
+│  │  • Pushes to Folio Prometheus                                       │    │
+│  │  • Updates Grafana dashboards                                       │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 1.2 Technology Stack
+
+| Component | Technology | Version |
+|-----------|------------|---------|
+| CI Platform | GitHub Actions | - |
+| Go | golang | 1.22 |
+| Python | python | 3.11 |
+| Rust | rust | 1.78 |
+| Container Registry | GHCR | ghcr.io |
+| Container Scanning | Trivy | Latest |
+| Secret Detection | trufflehog, gitleaks | Latest |
+| Deployment | kubectl, Flagger | Latest |
+| Metrics | Prometheus, Grafana | 2.x, 10.x |
+
+### 1.3 Required Secrets
+
+| Secret Name | Purpose | Scope |
+|-------------|---------|-------|
+| `GHCR_PAT` | Container registry authentication | All builds |
+| `KUBE_CONFIG` | Kubernetes cluster access | Deployments |
+| `SHIELD_WEBHOOK_URL` | Pipeline event reporting | Observability |
+| `FOLIO_PUSHGATEWAY_URL` | Metrics collection | Observability |
+| `PAGERDUTY_INTEGRATION_KEY` | Incident alerting | Critical failures |
+| `SLACK_WEBHOOK_URL` | Team notifications | All workflows |
+
+---
+
+## 2. Workflow Reference
+
+### 2.1 Service CI Pipelines
+
+| Workflow | Trigger | Services | Key Jobs |
+|----------|---------|----------|----------|
+| `ci.yml` | PR, push to main | API (Go) | lint, test, build, docker |
+| `shield.yml` | PR, push to main | Shield (Python) | lint, test, migrations, docker |
+| `relay.yml` | PR, push to main | Relay (Rust) | lint, test, audit, docker |
+| `printery.yml` | PR, push to main | Printery (Go) | lint, test, build, docker |
+| `manuscript.yml` | PR, push to main | Manuscript (Go) | lint, test, build, docker |
+| `folio.yml` | PR, push to main | Folio (Go) | lint, test, build, docker |
+
+### 2.2 Integration & Security
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `integration-tests.yml` | After service CI | Cross-service API tests |
+| `security-tests.yml` | PR, push to main | SAST, dependency, container scanning |
+| `security-gate.yml` | Before deployment | Block on security violations |
+| `vulnerability-remediation.yml` | Daily schedule | Track and report vulnerabilities |
+
+### 2.3 Deployment Workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `deploy.yml` | Manual, after CI | Unified deployment to staging/production |
+| `canary-deploy.yml` | Manual | Progressive canary rollout |
+| `rollback-verification.yml` | Manual, automatic | Verify rollback success |
+
+### 2.4 Observability Workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `pipeline-metrics.yml` | On workflow_run | Collect and report CI/CD metrics |
+| `credential-rotation-notify.yml` | On rotation events | Notify teams of credential changes |
+
+---
+
+## 3. Triggering Pipelines
+
+### 3.1 Automatic Triggers
+
+Pipelines trigger automatically on:
+
+```yaml
+# PR events
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'api/**'      # API service changes
+      - 'shield/**'   # Shield service changes
+      - 'relay/**'    # Relay service changes
+
+# Push to main (post-merge)
+on:
+  push:
+    branches: [main]
+```
+
+### 3.2 Manual Workflow Dispatch
+
+```bash
+# Trigger unified deployment
+gh workflow run deploy.yml \
+  -f environment=staging \
+  -f version=v1.2.3
+
+# Trigger canary deployment
+gh workflow run canary-deploy.yml \
+  -f service=api \
+  -f version=v1.2.3 \
+  -f canary_percent=10 \
+  -f progressive=true
+
+# Trigger rollback verification
+gh workflow run rollback-verification.yml \
+  -f service=api \
+  -f version=v1.2.2 \
+  -f reason=manual_rollback
+
+# Trigger security scan
+gh workflow run security-tests.yml \
+  -f full_scan=true
+
+# Trigger integration tests
+gh workflow run integration-tests.yml
+```
+
+### 3.3 Repository Dispatch (API Trigger)
+
+```bash
+# Trigger workflow via API
+curl -X POST \
+  -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  https://api.github.com/repos/materi/materi/dispatches \
+  -d '{"event_type":"deploy","client_payload":{"environment":"staging"}}'
+```
+
+---
+
+## 4. Monitoring and Observability
+
+### 4.1 Grafana Dashboard
+
+Access the CI/CD Pipeline dashboard at:
+- **URL**: `https://grafana.materi.dev/d/materi-cicd-pipeline`
+- **Dashboard UID**: `materi-cicd-pipeline`
+
+Dashboard panels:
+- Pipeline success rate (24h)
+- Average build duration by service
+- Deployments by status
+- Canary analysis results
+- Security scan findings
+- Rollback frequency
+
+### 4.2 Shield Webhook Events
+
+The pipeline reports these events to Shield:
+
+| Event | Trigger | Payload |
+|-------|---------|---------|
+| `pipeline_completed` | Any workflow completes | Run ID, status, duration, service |
+| `deployment_started` | Deploy workflow begins | Service, version, environment |
+| `deployment_completed` | Deploy workflow ends | Service, version, status |
+| `canary_started` | Canary begins | Service, version, percent |
+| `canary_promoted` | Canary promoted to 100% | Service, version, duration |
+| `canary_rolled_back` | Canary failed | Service, version, reason |
+| `rollback_verified` | Rollback complete | Service, version, tests_passed |
+| `security_scan_completed` | Security scan ends | Findings count, severity |
+
+### 4.3 Prometheus Metrics
+
+Metrics pushed to Folio Pushgateway:
+
+```prometheus
+# Pipeline metrics
+cicd_pipeline_duration_seconds{workflow, service, status}
+cicd_pipeline_runs_total{workflow, service, conclusion}
+cicd_build_duration_seconds{service, stage}
+
+# Deployment metrics
+cicd_deployment_total{service, environment, status}
+cicd_deployment_duration_seconds{service, environment}
+cicd_canary_analysis_score{service, version}
+cicd_rollback_total{service, reason}
+
+# Security metrics
+cicd_security_findings_total{service, severity, scanner}
+cicd_vulnerability_age_days{service, cve}
+```
+
+### 4.4 Checking Pipeline Status
+
+```bash
+# List recent workflow runs
+gh run list --limit 20
+
+# Get specific run details
+gh run view <run_id>
+
+# Watch running workflow
+gh run watch <run_id>
+
+# Download artifacts
+gh run download <run_id> -n test-results
+
+# View workflow logs
+gh run view <run_id> --log
+
+# Filter by workflow
+gh run list --workflow=ci.yml --limit 10
+
+# Filter by status
+gh run list --status=failure --limit 10
+```
+
+### 4.5 Alert Rules
+
+Configured in `operations/folio/prometheus/alerts.yml`:
+
+| Alert | Condition | Severity |
+|-------|-----------|----------|
+| `HighPipelineFailureRate` | >30% failure rate in 1h | warning |
+| `CriticalPipelineFailure` | Main branch build failed | critical |
+| `DeploymentRollback` | Any rollback occurred | warning |
+| `CriticalVulnerabilityDetected` | Critical CVE found | critical |
+| `PipelineStuck` | No completion in 30m | warning |
+| `CanaryFailure` | Canary auto-rolled back | critical |
+
+---
+
+## 5. Canary Deployments
+
+### 5.1 Canary Configuration
+
+```yaml
+# Canary deployment inputs
+inputs:
+  service: api                    # Service to deploy
+  version: v1.2.3                # Version tag
+  canary_percent: 10             # Initial traffic percentage
+  progressive: true              # Use progressive rollout
+  analysis_interval: 5           # Minutes between checks
+  success_threshold: 95          # Required success rate
+  max_latency_ms: 500           # Maximum p99 latency
+```
+
+### 5.2 Progressive Traffic Stages
+
+| Stage | Traffic | Duration | Auto-advance |
+|-------|---------|----------|--------------|
+| 1 | 10% | 5 min | Yes, if healthy |
+| 2 | 25% | 5 min | Yes, if healthy |
+| 3 | 50% | 5 min | Yes, if healthy |
+| 4 | 75% | 5 min | Yes, if healthy |
+| 5 | 100% | - | Manual promote |
+
+### 5.3 Starting a Canary
+
+```bash
+# Start basic canary
+gh workflow run canary-deploy.yml \
+  -f service=api \
+  -f version=v1.2.3 \
+  -f canary_percent=10
+
+# Start progressive canary
+gh workflow run canary-deploy.yml \
+  -f service=api \
+  -f version=v1.2.3 \
+  -f canary_percent=10 \
+  -f progressive=true \
+  -f analysis_interval=5
+
+# With custom thresholds
+gh workflow run canary-deploy.yml \
+  -f service=api \
+  -f version=v1.2.3 \
+  -f canary_percent=10 \
+  -f success_threshold=99 \
+  -f max_latency_ms=200
+```
+
+### 5.4 Monitoring Canary Progress
+
+```bash
+# Check Flagger canary status
+kubectl get canary -n materi
+
+# Describe canary details
+kubectl describe canary api -n materi
+
+# Watch canary events
+kubectl get events -n materi --field-selector reason=CanaryProgressing
+
+# Check Istio traffic split
+kubectl get virtualservice api -n materi -o yaml | grep -A10 "route:"
+
+# View canary metrics in Grafana
+# Dashboard: CI/CD Pipeline Metrics > Canary Analysis
+```
+
+### 5.5 Manual Canary Control
+
+```bash
+# Promote canary immediately
+kubectl patch canary api -n materi \
+  --type=merge -p '{"spec":{"skipAnalysis":true}}'
+
+# Rollback canary
+kubectl patch canary api -n materi \
+  --type=merge -p '{"status":{"phase":"Failed"}}'
+
+# Pause canary analysis
+kubectl annotate canary api -n materi \
+  flagger.app/halt=true
+
+# Resume canary analysis
+kubectl annotate canary api -n materi \
+  flagger.app/halt-
+```
+
+---
+
+## 6. Rollback Procedures
+
+### 6.1 Automatic Rollback Triggers
+
+Rollbacks trigger automatically when:
+- Canary error rate exceeds threshold
+- Canary latency exceeds threshold
+- Health checks fail for 3+ consecutive checks
+- Flagger analysis score drops below 95
+
+### 6.2 Manual Rollback
+
+```bash
+# Trigger rollback verification workflow
+gh workflow run rollback-verification.yml \
+  -f service=api \
+  -f version=v1.2.2 \
+  -f reason=manual_rollback
+
+# Direct Kubernetes rollback
+kubectl rollout undo deployment/api -n materi
+
+# Rollback to specific revision
+kubectl rollout history deployment/api -n materi
+kubectl rollout undo deployment/api -n materi --to-revision=5
+```
+
+### 6.3 Rollback Verification
+
+The `rollback-verification.yml` workflow performs:
+
+1. **State Verification**
+   - Confirm deployment version matches target
+   - Verify replica count is correct
+   - Check container image tags
+
+2. **Health Verification**
+   - All pods ready and healthy
+   - Health endpoint returns 200
+   - Ready endpoint returns 200
+
+3. **Smoke Tests**
+   - Core API endpoints responding
+   - Authentication working
+   - Database connectivity verified
+
+4. **Metrics Verification**
+   - Error rate below threshold
+   - Latency within acceptable range
+   - No crash loops detected
+
+### 6.4 Emergency Rollback
+
+For critical incidents requiring immediate rollback:
+
+```bash
+# 1. Scale down canary immediately
+kubectl scale deployment/api-canary -n materi --replicas=0
+
+# 2. Route all traffic to stable
+kubectl patch virtualservice api -n materi --type=merge -p '
+spec:
+  http:
+  - route:
+    - destination:
+        host: api
+        subset: stable
+      weight: 100
+'
+
+# 3. Verify stable is healthy
+kubectl get pods -l app=api,version!=canary -n materi
+
+# 4. Trigger verification workflow
+gh workflow run rollback-verification.yml \
+  -f service=api \
+  -f version=$(kubectl get deployment api -n materi -o jsonpath='{.spec.template.spec.containers[0].image}' | cut -d: -f2) \
+  -f reason=incident_response
+```
+
+---
+
+## 7. Security Pipeline
+
+### 7.1 Security Scanners
+
+| Scanner | Target | Blocks Deploy |
+|---------|--------|---------------|
+| gosec | Go code (API, Printery, Manuscript, Folio) | Critical |
+| bandit | Python code (Shield) | Critical/High |
+| cargo-audit | Rust dependencies (Relay) | Critical |
+| cargo-deny | Rust licenses/deps (Relay) | Critical |
+| Trivy | Container images | Critical/High |
+| trufflehog | Secret detection | Any finding |
+| gitleaks | Secret detection | Any finding |
+
+### 7.2 Security Gate Policy
+
+The security gate blocks deployment when:
+- Any critical vulnerability detected
+- High vulnerability without approved waiver
+- Secrets detected in code
+- License violation (cargo-deny)
+- Unmaintained dependency
+
+### 7.3 Waiver Process
+
+For approved vulnerabilities that can't be immediately fixed:
+
+```yaml
+# security-waivers.yml
+waivers:
+  - cve: CVE-2023-XXXXX
+    reason: "No fix available, not exploitable in our context"
+    approved_by: "security@materi.dev"
+    expires: "2024-03-01"
+    services: [api]
+```
+
+### 7.4 Security Scan Commands
+
+```bash
+# Trigger full security scan
+gh workflow run security-tests.yml -f full_scan=true
+
+# View security scan results
+gh run view <run_id> --log | grep -A5 "VULNERABILITY"
+
+# Download SARIF results
+gh run download <run_id> -n sarif-results
+
+# Check vulnerability remediation status
+gh workflow run vulnerability-remediation.yml
+```
+
+### 7.5 Container Image Scanning
+
+```bash
+# Scan image locally with Trivy
+trivy image ghcr.io/materi/api:v1.2.3
+
+# Generate SBOM
+trivy image ghcr.io/materi/api:v1.2.3 --format spdx-json > sbom.json
+
+# Scan for specific severity
+trivy image ghcr.io/materi/api:v1.2.3 --severity CRITICAL,HIGH
+```
+
+---
+
+## 8. Troubleshooting
+
+### 8.1 Build Failures
+
+**Symptom**: CI workflow fails at build stage
+
+```bash
+# Check build logs
+gh run view <run_id> --log --job=build
+
+# Common issues:
+# 1. Dependency resolution
+#    - Clear cache: Delete workflow run artifacts
+#    - Update go.sum/Cargo.lock/requirements.txt
+
+# 2. Compilation errors
+#    - Check for syntax errors in recent commits
+#    - Verify Go/Rust/Python version matches workflow
+
+# 3. Test failures
+#    - Run tests locally: make test
+#    - Check for flaky tests
+```
+
+### 8.2 Docker Build Failures
+
+**Symptom**: Docker build/push fails
+
+```bash
+# Check Docker build logs
+gh run view <run_id> --log --job=docker
+
+# Common issues:
+# 1. Registry authentication
+#    - Verify GHCR_PAT secret is valid
+#    - Check token permissions (read:packages, write:packages)
+
+# 2. Build context issues
+#    - Verify .dockerignore isn't excluding needed files
+#    - Check Dockerfile COPY paths
+
+# 3. Multi-platform build failures
+#    - Check buildx builder availability
+#    - Verify base image supports target architecture
+```
+
+### 8.3 Deployment Failures
+
+**Symptom**: Deploy workflow fails
+
+```bash
+# Check deployment logs
+gh run view <run_id> --log --job=deploy
+
+# Common issues:
+# 1. Kubernetes authentication
+#    - Verify KUBE_CONFIG secret is current
+#    - Check cluster connectivity
+
+# 2. Image pull failures
+kubectl describe pod -l app=api -n materi | grep -A5 "Events:"
+# - Verify image tag exists in registry
+# - Check imagePullSecrets
+
+# 3. Resource constraints
+kubectl describe pod -l app=api -n materi | grep -A10 "Conditions:"
+# - Check node resources: kubectl top nodes
+# - Verify resource requests/limits
+
+# 4. Readiness probe failures
+kubectl logs -l app=api -n materi --tail=50
+# - Check application startup logs
+# - Verify database connectivity
+```
+
+### 8.4 Canary Failures
+
+**Symptom**: Canary auto-rollback triggered
+
+```bash
+# Check Flagger events
+kubectl describe canary api -n materi
+
+# Check canary pod logs
+kubectl logs -l app=api,version=canary -n materi --tail=100
+
+# Check metrics that triggered rollback
+# In Grafana: CI/CD Pipeline > Canary Analysis
+
+# Common causes:
+# 1. Error rate spike
+#    - Check application logs for errors
+#    - Verify database migrations ran
+
+# 2. Latency increase
+#    - Check resource utilization
+#    - Verify no blocking operations
+
+# 3. Health check failures
+#    - Verify health endpoint implementation
+#    - Check dependencies (DB, Redis, external services)
+```
+
+### 8.5 Security Gate Blocks
+
+**Symptom**: Security gate blocks deployment
+
+```bash
+# View security findings
+gh run view <run_id> --log --job=security-gate
+
+# Get detailed SARIF report
+gh run download <run_id> -n security-report
+
+# Common resolutions:
+# 1. Vulnerability in dependency
+#    - Update dependency to patched version
+#    - If no patch, request waiver with mitigation
+
+# 2. Secret detected
+#    - Remove secret from code immediately
+#    - Rotate compromised credentials
+#    - Add to .gitignore / pre-commit hooks
+
+# 3. License violation
+#    - Replace dependency with compatible license
+#    - Request legal review for commercial licenses
+```
+
+### 8.6 Pipeline Stuck/Hanging
+
+**Symptom**: Workflow running for extended time
+
+```bash
+# Check workflow status
+gh run view <run_id>
+
+# Check which job is stuck
+gh run view <run_id> --json jobs --jq '.jobs[] | select(.status=="in_progress")'
+
+# Common causes:
+# 1. Resource exhaustion
+#    - Check runner availability
+#    - Large build taking time
+
+# 2. External service timeout
+#    - Database connectivity
+#    - Registry push
+
+# 3. Test hanging
+#    - Integration test waiting for service
+#    - Deadlock in test code
+
+# Cancel stuck workflow
+gh run cancel <run_id>
+```
+
+---
+
+## 9. Maintenance Operations
+
+### 9.1 Cache Management
+
+```bash
+# View GitHub Actions cache usage
+gh api repos/materi/materi/actions/cache/usage
+
+# List caches
+gh api repos/materi/materi/actions/caches --jq '.actions_caches[] | "\(.key): \(.size_in_bytes)"'
+
+# Delete specific cache
+gh api -X DELETE repos/materi/materi/actions/caches?key=<cache-key>
+
+# Clear all caches (use sparingly)
+gh api repos/materi/materi/actions/caches --jq '.actions_caches[].id' | while read id; do
+  gh api -X DELETE repos/materi/materi/actions/caches/$id
+done
+```
+
+### 9.2 Secret Rotation
+
+When rotating CI/CD secrets:
+
+```bash
+# 1. Update secret in GitHub
+gh secret set GHCR_PAT < new-token.txt
+
+# 2. Verify secret is accessible
+gh workflow run ci.yml  # Trigger test build
+
+# 3. Monitor for authentication failures
+gh run list --workflow=ci.yml --limit 5
+```
+
+### 9.3 Workflow Updates
+
+When updating workflow files:
+
+1. Test changes in a branch first
+2. Use `workflow_dispatch` for testing
+3. Monitor first runs after merge
+4. Check for breaking changes in action versions
+
+```bash
+# Test workflow syntax
+actionlint .github/workflows/ci.yml
+
+# Check for deprecated actions
+grep -r "uses:" .github/workflows/ | grep -v "@v"
+```
+
+### 9.4 Runner Management
+
+For self-hosted runners (if applicable):
+
+```bash
+# Check runner status
+gh api repos/materi/materi/actions/runners --jq '.runners[] | "\(.name): \(.status)"'
+
+# View runner labels
+gh api repos/materi/materi/actions/runners --jq '.runners[] | "\(.name): \(.labels | map(.name))"'
+```
+
+### 9.5 Metrics Reset
+
+To reset pipeline metrics:
+
+```bash
+# Clear Pushgateway metrics
+curl -X DELETE "https://pushgateway.materi.dev/metrics/job/cicd_pipeline"
+
+# Note: Historical data in Prometheus is retained
+# Only use this for testing or after major pipeline changes
+```
+
+---
+
+## Appendix A: Quick Reference
+
+### Workflow Dispatch Commands
+
+```bash
+# Deploy to staging
+gh workflow run deploy.yml -f environment=staging -f version=latest
+
+# Deploy to production
+gh workflow run deploy.yml -f environment=production -f version=v1.2.3
+
+# Start canary
+gh workflow run canary-deploy.yml -f service=api -f version=v1.2.3
+
+# Verify rollback
+gh workflow run rollback-verification.yml -f service=api -f version=v1.2.2
+
+# Full security scan
+gh workflow run security-tests.yml -f full_scan=true
+```
+
+### Common kubectl Commands
+
+```bash
+# Check deployment status
+kubectl rollout status deployment/api -n materi
+
+# View deployment history
+kubectl rollout history deployment/api -n materi
+
+# Check canary status
+kubectl get canary -n materi
+
+# View pod logs
+kubectl logs -l app=api -n materi --tail=100 -f
+
+# Describe failing pod
+kubectl describe pod -l app=api -n materi | tail -50
+```
+
+### Monitoring URLs
+
+| Service | URL |
+|---------|-----|
+| GitHub Actions | https://github.com/materi/materi/actions |
+| Grafana CI/CD Dashboard | https://grafana.materi.dev/d/materi-cicd-pipeline |
+| Prometheus | https://prometheus.materi.dev |
+| Shield Pipeline Metrics | https://shield.materi.dev/admin/cicd/ |
+
+---
+
+## Appendix B: Contact Information
+
+| Role | Contact | Escalation |
+|------|---------|------------|
+| Platform Team | #platform-team Slack | Build failures, deployments |
+| Security Team | #security Slack | Security gate blocks, vulnerabilities |
+| On-Call Engineer | PagerDuty | Critical pipeline failures |
+| DevOps Lead | @devops-lead | Workflow changes, infrastructure |
+
+---
+
+## Appendix C: Related Documentation
+
+- [Deployment Runbook](./deployment-runbook.md)
+- [Production Readiness Checklist](./production-readiness-checklist.md)
+- [Architecture Overview](./architecture-overview.md)
+- [IMPLEMENTATION_GAPS.md](../../IMPLEMENTATION_GAPS.md)
+- [Service Integrations](../../.materi/folio/service-integrations.yml)

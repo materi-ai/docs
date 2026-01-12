@@ -1,6 +1,12 @@
 ---
-title: 'What is Materi?'
-description: 'An AI-native content platform for teams who need real-time collaboration, strong security, and seamless integrations'
+title: What is Materi?
+description: An AI-native content platform for teams who need real-time collaboration, strong security, and seamless integrations
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Materi is an AI-native content management platform designed for modern teams. Whether you're drafting documentation, collaborating on proposals, or managing knowledge bases, Materi brings together real-time collaboration, intelligent AI assistance, and enterprise-grade security in one seamless experience.

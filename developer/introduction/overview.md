@@ -1,6 +1,12 @@
 ---
-title: 'Developer guide'
-description: 'How to integrate with Materi and understand service boundaries'
+title: Developer guide
+description: How to integrate with Materi and understand service boundaries
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 This guide is for developers integrating with Materi or contributing to the platform.

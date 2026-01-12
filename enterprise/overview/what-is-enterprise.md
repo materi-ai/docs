@@ -1,6 +1,12 @@
 ---
-title: 'What is Materi Enterprise'
-description: 'Deployment, security, and operational capabilities for regulated environments'
+title: What is Materi Enterprise
+description: Deployment, security, and operational capabilities for regulated environments
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Materi Enterprise focuses on operating Materi at scale and in regulated environments.

@@ -1,0 +1,363 @@
+---
+title: Production deployment workflow
+description: Production deployment workflow
+icon: cog
+source: operations/.workflows/deploy-production.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.044669Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+name: 🔴 Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to deploy (api, shield, relay, or all)"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - api
+          - shield
+          - relay
+          - all
+      approval_ticket:
+        description: "Approval ticket/issue number (required)"
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  ARGOCD_SERVER: argocd-prod.materi.dev
+  KUBECONFIG_PATH: ${{ github.workspace }}/kubeconfig
+
+jobs:
+  # ============================================================================
+  # Pre-Deployment Checks
+  # ============================================================================
+
+  pre-deployment-checks:
+    name: 🔍 Pre-Deployment Verification
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify main branch
+        run: |
+          if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+            echo "❌ Production deployments only allowed from main branch"
+            exit 1
+          fi
+          echo "✅ Branch verification passed"
+
+      - name: Verify approval ticket exists
+        run: |
+          TICKET="${{ inputs.approval_ticket }}"
+          if [[ -z "$TICKET" ]]; then
+            echo "❌ Approval ticket is required"
+            exit 1
+          fi
+          echo "✅ Approval ticket: $TICKET"
+
+      - name: Verify Git tag exists
+        run: |
+          VERSION=$(git describe --tags --abbrev=0 || echo "")
+          if [[ -z "$VERSION" ]]; then
+            echo "⚠️  Warning: No git tag found. Continuing anyway..."
+          else
+            echo "✅ Version tag: $VERSION"
+          fi
+
+      - name: Check recent deployments
+        run: |
+          echo "⏱️  Checking deployment frequency..."
+          echo "ℹ️  Recommended: Max 3 deployments per day to production"
+
+  # ============================================================================
+  # n8n Approval Workflow Trigger
+  # ============================================================================
+
+  n8n-approval:
+    name: 📋 n8n Approval Workflow
+    runs-on: ubuntu-latest
+    needs: pre-deployment-checks
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger n8n approval workflow
+        run: |
+          WEBHOOK_URL="${{ secrets.N8N_APPROVAL_WEBHOOK }}"
+          
+          curl -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "service": "${{ inputs.service }}",
+              "approval_ticket": "${{ inputs.approval_ticket }}",
+              "commit_sha": "${{ github.sha }}",
+              "repository": "${{ github.repository }}",
+              "actor": "${{ github.actor }}",
+              "environment": "production"
+            }' || exit 1
+
+      - name: Wait for approval
+        run: |
+          echo "⏳ Waiting for n8n approval workflow..."
+          echo "📧 Approval email sent to engineering leads"
+          echo "🔗 Approval ticket: ${{ inputs.approval_ticket }}"
+          
+          # In a real scenario, this would poll for approval status
+          # For now, we'll use a simple delay
+          sleep 5
+
+  # ============================================================================
+  # Production Deployment
+  # ============================================================================
+
+  deploy-production:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: n8n-approval
+    permissions:
+      contents: read
+      packages: read
+      deployments: write
+
+    environment:
+      name: production
+      url: https://console.materi.dev
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create deployment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.ref,
+              environment: 'production',
+              required_contexts: [],
+              auto_merge: false,
+              description: 'Deploying ${{ inputs.service }} to production'
+            });
+            console.log('Deployment created:', deployment.data.id);
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Get kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name materi-prod-cluster \
+            --region us-east-1 \
+            --kubeconfig ${{ env.KUBECONFIG_PATH }}
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL https://github.com/argoproj/argo-cd/releases/download/v2.9.0/argocd-linux-amd64 \
+            -o /usr/local/bin/argocd
+          chmod +x /usr/local/bin/argocd
+
+      - name: Login to ArgoCD
+        run: |
+          argocd login ${{ env.ARGOCD_SERVER }} \
+            --insecure \
+            --username admin \
+            --password ${{ secrets.ARGOCD_PASSWORD }}
+
+      - name: Update ArgoCD manifests
+        run: |
+          cd gitops/kustomize/overlays/production
+          kustomize build . | kubectl apply -f -
+
+      - name: Sync ${{ inputs.service }} to production
+        run: |
+          SERVICES="${{ inputs.service }}"
+          
+          if [[ "$SERVICES" == "all" ]]; then
+            SERVICES="api shield relay"
+          fi
+          
+          for service in $SERVICES; do
+            echo "🔄 Syncing $service to production..."
+            argocd app sync materi-$service-prod \
+              --prune \
+              --wait \
+              --timeout 10m || {
+                echo "❌ Sync failed for $service"
+                exit 1
+              }
+          done
+
+      - name: Verify deployment rollout
+        run: |
+          SERVICES="${{ inputs.service }}"
+          
+          if [[ "$SERVICES" == "all" ]]; then
+            SERVICES="api shield relay"
+          fi
+          
+          for service in $SERVICES; do
+            echo "⏳ Waiting for $service rollout..."
+            kubectl rollout status deployment/$service-deployment \
+              -n materi-prod \
+              --timeout=10m || exit 1
+            echo "✅ $service rollout complete"
+          done
+
+      - name: Run production smoke tests
+        run: |
+          echo "🧪 Running production smoke tests..."
+          
+          API_URL=$(kubectl get svc api-service -n materi-prod -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          SHIELD_URL=$(kubectl get svc shield-service -n materi-prod -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          
+          # Health checks
+          echo "🔍 Testing API health: http://$API_URL/health"
+          curl -f -s -m 5 http://$API_URL/health || {
+            echo "❌ API health check failed"
+            exit 1
+          }
+          
+          echo "🔍 Testing Shield health: http://$SHIELD_URL/health"
+          curl -f -s -m 5 http://$SHIELD_URL/health || {
+            echo "❌ Shield health check failed"
+            exit 1
+          }
+          
+          echo "✅ Production smoke tests passed"
+
+      - name: Create deployment status
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment.id,
+              state: 'success',
+              environment_url: 'https://console.materi.dev',
+              description: 'Production deployment successful'
+            });
+
+      - name: Create deployment status (failed)
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: context.payload.deployment.id,
+              state: 'failure',
+              description: 'Production deployment failed'
+            });
+
+      - name: Notify production deployment
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "🚀 Production Deployment - ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*🔴 PRODUCTION DEPLOYMENT* - ${{ job.status }}\n*Services:* ${{ inputs.service }}\n*Approval Ticket:* ${{ inputs.approval_ticket }}\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+                  }
+                }
+              ]
+            }
+
+  # ============================================================================
+  # Post-Deployment Validation
+  # ============================================================================
+
+  post-deployment-validation:
+    name: ✅ Post-Deployment Validation
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: always()
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Get kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name materi-prod-cluster \
+            --region us-east-1 \
+            --kubeconfig ${{ env.KUBECONFIG_PATH }}
+
+      - name: Verify pod status
+        run: |
+          echo "📊 Production Pod Status:"
+          kubectl get pods -n materi-prod -o wide || true
+
+      - name: Check service health
+        run: |
+          echo "🌐 Production Services:"
+          kubectl get svc -n materi-prod -o wide || true
+
+      - name: Verify database migrations
+        run: |
+          echo "🗄️  Checking database status..."
+          kubectl get jobs -n materi-prod -o wide || true
+
+      - name: Generate deployment report
+        run: |
+          cat > production-deployment-report.md << EOF
+          # Production Deployment Report
+          
+          **Date:** $(date -Iseconds)
+          **Services:** ${{ inputs.service }}
+          **Status:** ${{ job.status }}
+          **Approval Ticket:** ${{ inputs.approval_ticket }}
+          **Commit:** ${{ github.sha }}
+          
+          ## Environment Status
+          
+          EOF
+          
+          echo "### Pod Status" >> production-deployment-report.md
+          echo "\`\`\`" >> production-deployment-report.md
+          kubectl get pods -n materi-prod -o wide >> production-deployment-report.md 2>&1 || true
+          echo "\`\`\`" >> production-deployment-report.md
+
+      - name: Upload deployment report
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-deployment-report
+          path: production-deployment-report.md

@@ -1,0 +1,55 @@
+{
+    "$schema": "https://mintlify.com/schema.json",
+    "name": "Platform Atlas",
+    "logo": {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
+    },
+    "favicon": "/favicon.png",
+    "colors": {
+        "primary": "#0D9373",
+        "light": "#07C983",
+        "dark": "#0D9373",
+        "anchors": "#0D9373"
+    },
+    "topbarLinks": [
+        {
+            "name": "Support",
+            "url": "mailto:support@example.com"
+        }
+    ],
+    "topbarCtaButton": {
+        "name": "Launch Shield",
+        "url": "https://shield.internal"
+    },
+    "anchors": [
+        {
+            "name": "Documentation",
+            "icon": "book-open",
+            "url": "documentation"
+        },
+        {
+            "name": "API Reference",
+            "icon": "code",
+            "url": "api-reference"
+        }
+    ],
+    "navigation": [
+        {
+            "group": "The Core Architecture",
+            "pages": ["intro", "infrastructure-architecture"]
+        },
+        {
+            "group": "Operational Case Studies",
+            "pages": [
+                "case-studies/rust-telemetry",
+                "case-studies/go-control-plane",
+                "case-studies/python-ops"
+            ]
+        }
+    ],
+    "footerSocials": {
+        "github": "https://github.com",
+        "discord": "https://discord.gg"
+    }
+}

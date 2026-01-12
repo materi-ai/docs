@@ -1,14 +1,20 @@
 ---
 id: sdd-sys-concept-of-operations-document
-title: 'Materi Platform Concept of Operations (CONOPS)'
-subtitle: 'Comprehensive Operational Framework for AI-Native Document Collaboration'
-version: '2.0'
-date: 'December 2025'
-classification: 'L1-Strategic'
-authority: 'CTO + Chief Product Officer'
-status: 'Approved'
-sidebar_label: '(COD) Concept of Operations'
-pagination_label: 'Concept of Operations (L1)'
+title: Materi Platform Concept of Operations (CONOPS)
+subtitle: Comprehensive Operational Framework for AI-Native Document Collaboration
+version: 2.0
+date: December 2025
+classification: L1-Strategic
+authority: CTO + Chief Product Officer
+status: Approved
+sidebar_label: (COD) Concept of Operations
+pagination_label: Concept of Operations (L1)
+relatedPages:
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+  - developer/domain/shield/authorization.md
+  - developer/domain/shield/user-management.md
+  - developer/domain/shield/oauth-saml.md
 ---
 
 import Link from "@docusaurus/Link";

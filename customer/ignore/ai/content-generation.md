@@ -1,7 +1,8 @@
 ---
-title: "AI Content Generation"
-description: "Create drafts, expand ideas, and generate structured content with Aria's intelligent writing assistance"
-icon: "pen-fancy"
+title: AI Content Generation
+description: Create drafts, expand ideas, and generate structured content with Aria's intelligent writing assistance
+icon: pen-fancy
+relatedPages: []
 ---
 
 # AI Content Generation

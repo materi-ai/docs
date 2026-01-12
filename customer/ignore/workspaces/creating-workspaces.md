@@ -1,7 +1,8 @@
 ---
-title: "Creating Workspaces"
-description: "Learn how to create, configure, and set up workspaces in Materi for your team's content management needs"
-icon: "folder-plus"
+title: Creating Workspaces
+description: Learn how to create, configure, and set up workspaces in Materi for your team's content management needs
+icon: folder-plus
+relatedPages: []
 ---
 
 # Creating Workspaces

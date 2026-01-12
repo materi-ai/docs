@@ -1,0 +1,242 @@
+---
+title: Staging deployment workflow
+description: Staging deployment workflow
+icon: cog
+source: operations/.workflows/deploy-staging.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.045432Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+name: 🚀 Deploy to Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Service to deploy (api, shield, relay, or all)"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - api
+          - shield
+          - relay
+          - all
+      skip_tests:
+        description: "Skip tests (emergency only)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+env:
+  REGISTRY: ghcr.io
+  ARGOCD_SERVER: argocd-staging.materi.dev
+  KUBECONFIG_PATH: ${{ github.workspace }}/kubeconfig
+
+jobs:
+  # ============================================================================
+  # Deployment to Staging
+  # ============================================================================
+
+  deploy-staging:
+    name: 📦 Deploy to Staging Cluster
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      deployments: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Get kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name materi-staging-cluster \
+            --region us-east-1 \
+            --kubeconfig ${{ env.KUBECONFIG_PATH }}
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL https://github.com/argoproj/argo-cd/releases/download/v2.9.0/argocd-linux-amd64 \
+            -o /usr/local/bin/argocd
+          chmod +x /usr/local/bin/argocd
+
+      - name: Login to ArgoCD
+        run: |
+          argocd login ${{ env.ARGOCD_SERVER }} \
+            --insecure \
+            --username admin \
+            --password ${{ secrets.ARGOCD_PASSWORD }}
+
+      - name: Update ArgoCD ApplicationSet
+        run: |
+          cd gitops/argocd
+          kubectl apply -f app-of-apps.yaml -n argocd
+          kubectl apply -f applicationsets/ -n argocd
+
+      - name: Sync ${{ inputs.service }} to staging
+        run: |
+          SERVICES="${{ inputs.service }}"
+          
+          if [[ "$SERVICES" == "all" ]]; then
+            SERVICES="api shield relay"
+          fi
+          
+          for service in $SERVICES; do
+            echo "🔄 Syncing $service to staging..."
+            argocd app sync materi-$service-staging \
+              --prune \
+              --wait \
+              --timeout 5m
+          done
+
+      - name: Verify deployment health
+        run: |
+          SERVICES="${{ inputs.service }}"
+          
+          if [[ "$SERVICES" == "all" ]]; then
+            SERVICES="api shield relay"
+          fi
+          
+          for service in $SERVICES; do
+            echo "✅ Checking $service health..."
+            kubectl rollout status deployment/$service-deployment \
+              -n materi-staging \
+              --timeout=5m || exit 1
+          done
+
+      - name: Run smoke tests
+        if: inputs.skip_tests == 'false'
+        run: |
+          echo "🧪 Running smoke tests..."
+          
+          # Get service endpoints
+          API_URL=$(kubectl get svc api-service -n materi-staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          SHIELD_URL=$(kubectl get svc shield-service -n materi-staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          
+          echo "🔍 Testing API endpoint: http://$API_URL/health"
+          curl -f -s http://$API_URL/health || exit 1
+          
+          echo "🔍 Testing Shield endpoint: http://$SHIELD_URL/health"
+          curl -f -s http://$SHIELD_URL/health || exit 1
+          
+          echo "✅ Smoke tests passed"
+
+      - name: Create deployment record
+        run: |
+          SERVICES="${{ inputs.service }}"
+          DEPLOYMENT_ID=$(date +%s)
+          
+          echo "Deployment ID: $DEPLOYMENT_ID"
+          echo "Services: $SERVICES"
+          echo "Environment: staging"
+          echo "Timestamp: $(date -Iseconds)"
+
+      - name: Notify deployment status
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "🚀 Staging Deployment - ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Deployment to Staging* - ${{ job.status }}\n*Services:* ${{ inputs.service }}\n*Commit:* <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+                  }
+                }
+              ]
+            }
+
+  # ============================================================================
+  # Post-Deployment Validation
+  # ============================================================================
+
+  validate-deployment:
+    name: ✅ Validate Staging Deployment
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: always()
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Get kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --name materi-staging-cluster \
+            --region us-east-1 \
+            --kubeconfig ${{ env.KUBECONFIG_PATH }}
+
+      - name: Check pod status
+        run: |
+          echo "📊 Staging Pod Status:"
+          kubectl get pods -n materi-staging -o wide
+
+      - name: Check service endpoints
+        run: |
+          echo "🌐 Staging Service Endpoints:"
+          kubectl get svc -n materi-staging -o wide
+
+      - name: Check persistent volumes
+        run: |
+          echo "💾 Persistent Volumes:"
+          kubectl get pv -n materi-staging
+
+      - name: Collect metrics from Prometheus
+        run: |
+          echo "📈 Recent error rates (if any):"
+          kubectl port-forward -n monitoring svc/prometheus 9090:9090 &
+          sleep 2
+          curl -s 'http://localhost:9090/api/v1/query?query=increase(http_requests_total{job="api"}[5m])' | jq .
+          kill %1 || true
+
+      - name: Generate deployment report
+        run: |
+          echo "# Staging Deployment Report" > deployment-report.md
+          echo "" >> deployment-report.md
+          echo "**Date:** $(date -Iseconds)" >> deployment-report.md
+          echo "**Services:** ${{ inputs.service }}" >> deployment-report.md
+          echo "**Status:** ${{ job.status }}" >> deployment-report.md
+          echo "**Commit:** ${{ github.sha }}" >> deployment-report.md
+          echo "" >> deployment-report.md
+          echo "## Pod Status" >> deployment-report.md
+          echo "\`\`\`" >> deployment-report.md
+          kubectl get pods -n materi-staging -o wide >> deployment-report.md 2>&1 || true
+          echo "\`\`\`" >> deployment-report.md
+
+      - name: Upload deployment report
+        uses: actions/upload-artifact@v3
+        with:
+          name: staging-deployment-report
+          path: deployment-report.md

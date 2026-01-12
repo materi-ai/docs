@@ -1,0 +1,73 @@
+---
+title: 'The Backbone Architecture'
+sidebarTitle: 'Infrastructure'
+description: 'How the Atlas Observability stack functions.'
+---
+
+# The Observability Backbone
+
+The Atlas is built on a "Network-Aware" principle where a central observability bus listens to all services.
+
+## Architecture
+
+```mermaid
+graph TD
+    subgraph Host [MacOS via OrbStack]
+        Browser
+        PythonOps[Python Operations]
+    end
+
+    subgraph AtlasNet [Docker Network]
+        Traefik[Traefik Ingress]
+
+        subgraph Apps
+            Rust[Rust API]
+            Go[Go Controller]
+            Zig[Zig Probe]
+        end
+
+        subgraph Observability
+            Alloy[Grafana Alloy]
+            Loki[Loki (Logs)]
+            Tempo[Tempo (Traces)]
+            Prom[Prometheus (Metrics)]
+            Grafana[Grafana (UI)]
+        end
+    end
+
+    Browser -->|HTTP :80| Traefik
+    PythonOps -->|HTTP| Traefik
+
+    Traefik --> Rust
+    Traefik --> Go
+    Traefik --> Grafana
+
+    Rust -->|OTLP Traces| Alloy
+    Go -->|Scrape| Prom
+    Zig -->|Network Chk| Go
+
+    Alloy -->|Write Metrics| Prom
+    Alloy -->|Write Logs| Loki
+    Alloy -->|Write Traces| Tempo
+
+    Grafana --> Prom
+    Grafana --> Loki
+    Grafana --> Tempo
+```
+
+## Service Directory
+
+| Service           | Internal Host   | Port       | Role                       |
+| :---------------- | :-------------- | :--------- | :------------------------- |
+| **Rust API**      | `rust-api`      | 3000       | Core Transactional Service |
+| **Go Controller** | `go-controller` | 8081       | Control Plane / Exporter   |
+| **Zig Probe**     | `zig-probe`     | -          | Latency Diagnostics        |
+| **Traefik**       | `traefik`       | 80         | Ingress Layer              |
+| **Alloy**         | `alloy`         | 12345/4317 | Observability Collector    |
+| **Grafana**       | `grafana`       | 3000       | Dashboard UI               |
+
+## Launching
+
+```bash
+docker-compose up -d --build
+```

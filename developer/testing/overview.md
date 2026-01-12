@@ -1,6 +1,12 @@
 ---
-title: 'Testing Overview'
-description: 'Comprehensive testing strategy for validating Materi services'
+title: Testing Overview
+description: Comprehensive testing strategy for validating Materi services
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 # Testing Overview

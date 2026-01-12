@@ -1,7 +1,8 @@
 ---
-title: "Managing Members"
-description: "Add, remove, and manage workspace members effectively with invitations, bulk operations, and access controls"
-icon: "users"
+title: Managing Members
+description: Add, remove, and manage workspace members effectively with invitations, bulk operations, and access controls
+icon: users
+relatedPages: []
 ---
 
 # Managing Workspace Members

@@ -1,7 +1,8 @@
 ---
-title: "Notion Integration"
-description: "Migrate your Notion workspace to Materi with full formatting and structure preservation"
-icon: "book"
+title: Notion Integration
+description: Migrate your Notion workspace to Materi with full formatting and structure preservation
+icon: book
+relatedPages: []
 ---
 
 # Notion Integration

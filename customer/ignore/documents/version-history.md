@@ -1,7 +1,8 @@
 ---
-title: 'Version History'
-description: 'Track changes, compare versions, and restore previous document states'
-icon: 'clock-rotate-left'
+title: Version History
+description: Track changes, compare versions, and restore previous document states
+icon: clock-rotate-left
+relatedPages: []
 ---
 
 Materi automatically tracks every change to your documents. View the complete history, compare versions, and restore previous states at any time.

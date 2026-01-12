@@ -1,0 +1,456 @@
+---
+title: Multi-Repo Synchronization Workflow
+description: Multi-repository synchronization
+icon: cog
+source: operations/.workflows/multi-repo-sync.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.046453Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+# Multi-Repo Synchronization Workflow
+# Synchronizes shared configurations across repositories
+name: 🔄 Multi-Repo Sync
+
+on:
+    workflow_dispatch:
+        inputs:
+            targets:
+                description: "Target repositories (comma-separated, or 'all')"
+                required: false
+                default: "all"
+            strategy:
+                description: "Sync strategy"
+                required: false
+                default: ""
+                type: choice
+                options: ["", "copy", "template", "merge"]
+            auto_commit:
+                description: "Auto-commit changes"
+                required: false
+                default: false
+                type: boolean
+            auto_pr:
+                description: "Auto-create pull requests"
+                required: false
+                default: true
+                type: boolean
+    schedule:
+        # Daily sync to propagate shared configurations
+        - cron: "0 6 * * *"
+    push:
+        paths:
+            - "shared/**"
+        branches: [main]
+
+env:
+    GO_VERSION: "1.21"
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+concurrency:
+    group: sync-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    # ==============================================
+    # PREPARATION
+    # ==============================================
+    prepare:
+        name: 📋 Prepare Sync
+        runs-on: ubuntu-latest
+        outputs:
+            targets: ${{ steps.config.outputs.targets }}
+            strategy: ${{ steps.config.outputs.strategy }}
+            auto_commit: ${{ steps.config.outputs.auto_commit }}
+            auto_pr: ${{ steps.config.outputs.auto_pr }}
+            sync_id: ${{ steps.config.outputs.sync_id }}
+            changed_files: ${{ steps.changes.outputs.files }}
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
+
+            - name: Detect changed shared files
+              id: changes
+              run: |
+                  if [[ "${{ github.event_name }}" == "push" ]]; then
+                    # Get changed files from push
+                    CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "^shared/" | tr '\n' ',' | sed 's/,$//')
+                  else
+                    # For manual/scheduled runs, sync all shared files
+                    CHANGED_FILES="all"
+                  fi
+
+                  echo "files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+                  echo "📁 Changed files: ${CHANGED_FILES}"
+
+            - name: Determine configuration
+              id: config
+              run: |
+                  # Determine targets
+                  if [[ "${{ github.event.inputs.targets }}" == "" || "${{ github.event.inputs.targets }}" == "all" ]]; then
+                    TARGETS="all"
+                  else
+                    TARGETS="${{ github.event.inputs.targets }}"
+                  fi
+
+                  # Determine strategy
+                  STRATEGY="${{ github.event.inputs.strategy }}"
+
+                  # Auto-commit and PR settings
+                  if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+                    AUTO_COMMIT="${{ github.event.inputs.auto_commit }}"
+                    AUTO_PR="${{ github.event.inputs.auto_pr }}"
+                  else
+                    AUTO_COMMIT="false"
+                    AUTO_PR="true"  # Always create PRs for automated syncs
+                  fi
+
+                  # Generate sync ID
+                  SYNC_ID="sync-$(date +%Y%m%d-%H%M%S)-${{ github.run_number }}"
+
+                  echo "targets=${TARGETS}" >> $GITHUB_OUTPUT
+                  echo "strategy=${STRATEGY}" >> $GITHUB_OUTPUT
+                  echo "auto_commit=${AUTO_COMMIT}" >> $GITHUB_OUTPUT
+                  echo "auto_pr=${AUTO_PR}" >> $GITHUB_OUTPUT
+                  echo "sync_id=${SYNC_ID}" >> $GITHUB_OUTPUT
+
+                  echo "🎯 Targets: ${TARGETS}"
+                  echo "📋 Strategy: ${STRATEGY}"
+                  echo "💾 Auto-commit: ${AUTO_COMMIT}"
+                  echo "🔄 Auto-PR: ${AUTO_PR}"
+                  echo "🆔 Sync ID: ${SYNC_ID}"
+
+    # ==============================================
+    # BUILD ORCHESTRATOR
+    # ==============================================
+    build-orchestrator:
+        name: 🏗️ Build Orchestrator
+        runs-on: ubuntu-latest
+        needs: prepare
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: ${{ env.GO_VERSION }}
+                  cache: true
+
+            - name: Build orchestrator
+              working-directory: orchestrator
+              run: |
+                  go mod tidy
+                  go build -o ../bin/orchestrator \
+                    -ldflags "-X main.version=${{ github.ref_name }} -X main.commit=${{ github.sha }} -X main.buildTime=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+                    ./main.go
+
+            - name: Upload orchestrator binary
+              uses: actions/upload-artifact@v4
+              with:
+                  name: orchestrator-binary
+                  path: bin/orchestrator
+                  retention-days: 3
+
+    # ==============================================
+    # EXECUTE SYNC
+    # ==============================================
+    sync:
+        name: 🔄 Execute Sync
+        runs-on: ubuntu-latest
+        needs: [prepare, build-orchestrator]
+        timeout-minutes: 20
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Download orchestrator binary
+              uses: actions/download-artifact@v4
+              with:
+                  name: orchestrator-binary
+                  path: bin/
+
+            - name: Make orchestrator executable
+              run: chmod +x bin/orchestrator
+
+            - name: Validate sync configuration
+              run: |
+                  echo "🔍 Validating sync configuration..."
+                  ./bin/orchestrator validate --config assembly.yml
+
+            - name: Execute dry-run sync
+              run: |
+                  echo "🧪 Executing sync dry-run..."
+
+                  ARGS="--config assembly.yml --log-level info --dry-run"
+
+                  # Add targets filter
+                  if [[ "${{ needs.prepare.outputs.targets }}" != "all" ]]; then
+                    IFS=',' read -ra TARGETS <<< "${{ needs.prepare.outputs.targets }}"
+                    for target in "${TARGETS[@]}"; do
+                      ARGS="${ARGS} --targets ${target}"
+                    done
+                  fi
+
+                  # Add strategy
+                  if [[ "${{ needs.prepare.outputs.strategy }}" != "" ]]; then
+                    ARGS="${ARGS} --strategy ${{ needs.prepare.outputs.strategy }}"
+                  fi
+
+                  echo "Dry-run command: ./bin/orchestrator sync ${ARGS}"
+                  ./bin/orchestrator sync ${ARGS}
+
+            - name: Execute actual sync
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  echo "🚀 Executing actual sync..."
+
+                  ARGS="--config assembly.yml --log-level info"
+
+                  # Add targets filter
+                  if [[ "${{ needs.prepare.outputs.targets }}" != "all" ]]; then
+                    IFS=',' read -ra TARGETS <<< "${{ needs.prepare.outputs.targets }}"
+                    for target in "${TARGETS[@]}"; do
+                      ARGS="${ARGS} --targets ${target}"
+                    done
+                  fi
+
+                  # Add strategy
+                  if [[ "${{ needs.prepare.outputs.strategy }}" != "" ]]; then
+                    ARGS="${ARGS} --strategy ${{ needs.prepare.outputs.strategy }}"
+                  fi
+
+                  # Add auto-commit flag
+                  if [[ "${{ needs.prepare.outputs.auto_commit }}" == "true" ]]; then
+                    ARGS="${ARGS} --auto-commit"
+                  fi
+
+                  # Add auto-PR flag
+                  if [[ "${{ needs.prepare.outputs.auto_pr }}" == "true" ]]; then
+                    ARGS="${ARGS} --auto-pr"
+                  fi
+
+                  echo "Command: ./bin/orchestrator sync ${ARGS}"
+                  ./bin/orchestrator sync ${ARGS}
+
+    # ==============================================
+    # CREATE SYNC PULL REQUESTS
+    # ==============================================
+    create-pull-requests:
+        name: 📝 Create Sync PRs
+        runs-on: ubuntu-latest
+        needs: [prepare, sync]
+        if: success() && needs.prepare.outputs.auto_pr == 'true'
+
+        strategy:
+            matrix:
+                repository: [api, shield, collaboration, web, workers, console, infra]
+
+        steps:
+            - name: Checkout main repository
+              uses: actions/checkout@v4
+
+            - name: Check if target repository needs sync
+              id: check
+              run: |
+                  # This is a placeholder - in real implementation, this would check
+                  # if the target repository actually has changes to sync
+                  echo "needs_sync=true" >> $GITHUB_OUTPUT
+
+            - name: Checkout target repository
+              if: steps.check.outputs.needs_sync == 'true'
+              uses: actions/checkout@v4
+              with:
+                  repository: your-org/materi-${{ matrix.repository }}
+                  token: ${{ secrets.GITHUB_TOKEN }}
+                  path: target-repo
+
+            - name: Create sync branch
+              if: steps.check.outputs.needs_sync == 'true'
+              working-directory: target-repo
+              run: |
+                  BRANCH_NAME="sync/${{ needs.prepare.outputs.sync_id }}"
+                  git checkout -b "${BRANCH_NAME}"
+                  echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
+
+            - name: Apply sync changes
+              if: steps.check.outputs.needs_sync == 'true'
+              working-directory: target-repo
+              run: |
+                  # This is where the actual file synchronization would happen
+                  # For now, we'll create a placeholder file to demonstrate
+
+                  echo "# Sync from materi-platform" > .sync-${{ needs.prepare.outputs.sync_id }}
+                  echo "Sync ID: ${{ needs.prepare.outputs.sync_id }}" >> .sync-${{ needs.prepare.outputs.sync_id }}
+                  echo "Timestamp: $(date -u)" >> .sync-${{ needs.prepare.outputs.sync_id }}
+                  echo "Repository: ${{ matrix.repository }}" >> .sync-${{ needs.prepare.outputs.sync_id }}
+
+                  git add .sync-${{ needs.prepare.outputs.sync_id }}
+
+            - name: Commit sync changes
+              if: steps.check.outputs.needs_sync == 'true'
+              working-directory: target-repo
+              run: |
+                  git config user.name "Materi Sync Bot"
+                  git config user.email "sync@materi.dev"
+
+                  git commit -m "sync: update shared configurations
+
+                  - Sync ID: ${{ needs.prepare.outputs.sync_id }}
+                  - Source: ${{ github.sha }}
+                  - Changed files: ${{ needs.prepare.outputs.changed_files }}
+
+                  This is an automated sync from the materi-platform repository."
+
+            - name: Push sync branch
+              if: steps.check.outputs.needs_sync == 'true'
+              working-directory: target-repo
+              run: |
+                  git push origin "${BRANCH_NAME}"
+
+            - name: Create pull request
+              if: steps.check.outputs.needs_sync == 'true'
+              working-directory: target-repo
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  cat > pr-body.md << 'EOF'
+                  ## 🔄 Automated Configuration Sync
+
+                  This PR contains automated synchronization of shared configurations from the main materi-platform repository.
+
+                  ### 📋 Sync Details
+                  - **Sync ID**: `${{ needs.prepare.outputs.sync_id }}`
+                  - **Source Commit**: `${{ github.sha }}`
+                  - **Changed Files**: ${{ needs.prepare.outputs.changed_files }}
+                  - **Timestamp**: $(date -u)
+
+                  ### 🔍 Review Checklist
+                  - [ ] Verify configuration changes are correct
+                  - [ ] Check for any conflicts with local changes
+                  - [ ] Ensure tests pass
+                  - [ ] Validate deployment configurations
+
+                  ### 🤖 Automation
+                  This PR was created automatically by the multi-repo synchronization system. 
+
+                  **Workflow**: [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+                  EOF
+
+                  gh pr create \
+                    --title "sync: update shared configurations (${{ needs.prepare.outputs.sync_id }})" \
+                    --body-file pr-body.md \
+                    --head "${BRANCH_NAME}" \
+                    --base main \
+                    --label "sync,automated" \
+                    --reviewer "devops-team"
+
+    # ==============================================
+    # VALIDATION AND TESTING
+    # ==============================================
+    validate-sync:
+        name: 🔬 Validate Sync Results
+        runs-on: ubuntu-latest
+        needs: [prepare, sync]
+        if: success()
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Validate sync consistency
+              run: |
+                  echo "🔍 Validating sync consistency..."
+
+                  # Check if shared files are properly structured
+                  if [[ -d "shared" ]]; then
+                    echo "✅ Shared directory exists"
+                    find shared -type f | head -10
+                  else
+                    echo "❌ Shared directory not found"
+                    exit 1
+                  fi
+
+            - name: Check for sync conflicts
+              run: |
+                  echo "🔍 Checking for potential sync conflicts..."
+
+                  # This would check for files that might conflict during sync
+                  # For now, just a placeholder validation
+                  echo "✅ No sync conflicts detected"
+
+            - name: Validate file permissions
+              run: |
+                  echo "🔍 Validating file permissions..."
+
+                  # Check that shared files have appropriate permissions
+                  find shared -type f -executable | while read file; do
+                    echo "📄 Executable file: $file"
+                  done
+
+    # ==============================================
+    # NOTIFICATION
+    # ==============================================
+    notify:
+        name: 📢 Notify Sync Results
+        runs-on: ubuntu-latest
+        needs: [prepare, sync, create-pull-requests, validate-sync]
+        if: always()
+
+        steps:
+            - name: Determine overall status
+              id: status
+              run: |
+                  if [[ "${{ needs.sync.result }}" == "success" && "${{ needs.validate-sync.result }}" == "success" ]]; then
+                    echo "status=success" >> $GITHUB_OUTPUT
+                    echo "emoji=✅" >> $GITHUB_OUTPUT
+                    echo "message=Synchronization completed successfully" >> $GITHUB_OUTPUT
+                  else
+                    echo "status=failure" >> $GITHUB_OUTPUT
+                    echo "emoji=❌" >> $GITHUB_OUTPUT
+                    echo "message=Synchronization failed" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Post to Slack
+              if: env.SLACK_WEBHOOK_URL != ''
+              env:
+                  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+              run: |
+                  curl -X POST -H 'Content-type: application/json' \
+                    --data '{
+                      "text": "${{ steps.status.outputs.emoji }} Multi-Repo Sync",
+                      "blocks": [
+                        {
+                          "type": "section",
+                          "text": {
+                            "type": "mrkdwn",
+                            "text": "${{ steps.status.outputs.emoji }} *Multi-Repo Sync*\n*Status:* ${{ steps.status.outputs.status }}\n*Sync ID:* `${{ needs.prepare.outputs.sync_id }}`\n*Targets:* ${{ needs.prepare.outputs.targets }}\n*Changed Files:* ${{ needs.prepare.outputs.changed_files }}\n*Message:* ${{ steps.status.outputs.message }}"
+                          }
+                        },
+                        {
+                          "type": "actions",
+                          "elements": [
+                            {
+                              "type": "button",
+                              "text": {
+                                "type": "plain_text",
+                                "text": "View Workflow"
+                              },
+                              "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                            }
+                          ]
+                        }
+                      ]
+                    }' \
+                    $SLACK_WEBHOOK_URL

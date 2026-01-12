@@ -1,7 +1,8 @@
 ---
-title: 'Invite Your Team'
-description: 'Add team members to your workspace and configure their roles and permissions'
-icon: 'user-plus'
+title: Invite Your Team
+description: Add team members to your workspace and configure their roles and permissions
+icon: user-plus
+relatedPages: []
 ---
 
 Collaboration is at the heart of Materi. This guide shows you how to invite team members, assign appropriate roles, and manage access effectively.

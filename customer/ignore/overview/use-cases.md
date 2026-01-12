@@ -1,6 +1,12 @@
 ---
-title: 'Use Cases'
-description: 'Discover how teams across industries use Materi to create, collaborate, and ship faster'
+title: Use Cases
+description: Discover how teams across industries use Materi to create, collaborate, and ship faster
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Materi is built for teams that need to create content together. Here's how different teams use Materi to work more effectively.

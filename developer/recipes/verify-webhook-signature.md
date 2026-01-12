@@ -1,6 +1,9 @@
 ---
-title: 'Verify webhook signatures (HMAC-SHA256)'
-description: 'How to validate X-Hub-Signature-256 in webhook receivers (matches Shield)'
+title: Verify webhook signatures (HMAC-SHA256)
+description: How to validate X-Hub-Signature-256 in webhook receivers (matches Shield)
+relatedPages:
+  - architecture-overview.mdx
+  - developer/products/specifications/overview.md
 ---
 
 Materi uses GitHub-style webhook signatures in several places: a request body is signed with

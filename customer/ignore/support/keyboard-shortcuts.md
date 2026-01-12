@@ -1,7 +1,8 @@
 ---
-title: "Keyboard Shortcuts"
-description: "Complete reference guide for all Materi keyboard shortcuts on Mac and Windows"
-icon: "keyboard"
+title: Keyboard Shortcuts
+description: Complete reference guide for all Materi keyboard shortcuts on Mac and Windows
+icon: keyboard
+relatedPages: []
 ---
 
 # Keyboard Shortcuts

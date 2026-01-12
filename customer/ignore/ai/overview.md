@@ -1,7 +1,13 @@
 ---
-title: "Aria AI Overview"
-description: "Introduction to Materi's intelligent AI assistant for content creation, analysis, and enhancement"
-icon: "sparkles"
+title: Aria AI Overview
+description: Introduction to Materi's intelligent AI assistant for content creation, analysis, and enhancement
+icon: sparkles
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 # Aria AI Overview

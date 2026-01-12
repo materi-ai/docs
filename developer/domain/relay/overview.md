@@ -1,6 +1,12 @@
 ---
-title: 'Relay service'
-description: 'WebSocket collaboration engine (operations + presence)'
+title: Relay service
+description: WebSocket collaboration engine (operations + presence)
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Relay provides real-time collaboration over WebSockets.

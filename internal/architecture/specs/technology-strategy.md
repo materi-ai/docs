@@ -1,15 +1,21 @@
 ---
 id: sdd-sys-technology-strategy-document
 slug: /strategy/technology-roadmap
-title: 'Materi Technology Strategy Document'
-subtitle: 'Strategic Technology Architecture and Decision Framework for Enterprise AI-Native Collaboration'
-version: '3.0'
-date: 'December 2025'
-classification: 'L1-Strategic'
-authority: 'CTO + VP Engineering + Chief Architect'
-sidebar_label: '(TSD) Technology Strategy'
-pagination_label: 'Technology Strategy (L1)'
-status: 'Approved'
+title: Materi Technology Strategy Document
+subtitle: Strategic Technology Architecture and Decision Framework for Enterprise AI-Native Collaboration
+version: 3.0
+date: December 2025
+classification: L1-Strategic
+authority: CTO + VP Engineering + Chief Architect
+sidebar_label: (TSD) Technology Strategy
+pagination_label: Technology Strategy (L1)
+status: Approved
+relatedPages:
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+  - developer/domain/shield/authorization.md
+  - developer/domain/shield/user-management.md
+  - developer/domain/shield/oauth-saml.md
 ---
 
 # Technology Strategy Document

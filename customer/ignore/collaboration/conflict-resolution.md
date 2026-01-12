@@ -1,7 +1,8 @@
 ---
-title: "Conflict Resolution"
-description: "How Materi's Operational Transform technology handles simultaneous edits without data loss"
-icon: "code-merge"
+title: Conflict Resolution
+description: How Materi's Operational Transform technology handles simultaneous edits without data loss
+icon: code-merge
+relatedPages: []
 ---
 
 # Conflict Resolution

@@ -1,3 +1,16 @@
+---
+title: "Atlas Docs Ownership"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # Atlas Docs Ownership
 
 This file defines **who owns what** in the documentation.

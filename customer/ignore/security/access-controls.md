@@ -1,7 +1,11 @@
 ---
-title: "Access Controls"
-description: "Configure role-based access control (RBAC), permissions, and granular access policies for your Materi workspace"
-icon: "users-gear"
+title: Access Controls
+description: Configure role-based access control (RBAC), permissions, and granular access policies for your Materi workspace
+icon: users-gear
+relatedPages:
+  - architecture-overview.mdx
+  - developer/domain/shield/authentication.md
+  - developer/operations/service-doc-10.mdx
 ---
 
 # Access Controls

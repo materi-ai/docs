@@ -1,7 +1,8 @@
 ---
-title: 'Document Templates'
-description: 'Create, use, and manage reusable document templates for consistent content'
-icon: 'copy'
+title: Document Templates
+description: Create, use, and manage reusable document templates for consistent content
+icon: copy
+relatedPages: []
 ---
 
 Templates help your team create consistent, high-quality documents quickly. This guide covers using built-in templates, creating custom templates, and managing your template library.

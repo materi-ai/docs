@@ -1,0 +1,1214 @@
+---
+title: System Design Document - Relay
+description: System design document for Relay service
+icon: package
+source: "/Users/alexarno/materi/.atlas/.spec/__blueprints__/sdd:sys:relay.md"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T08:53:26.267107Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
+  - developer/domain/shield/authorization.md
+  - developer/domain/shield/user-management.md
+  - developer/domain/shield/oauth-saml.md
+---
+
+---
+id: srd-relay-realtime-messaging
+title: "Relay Real-time Messaging Service Requirements"
+subtitle: "WebSocket Communication Engine - Axum + Tokyo + Redis Streams Architecture"
+version: "1.0"
+date: "November 2025"
+classification: "L2-System"
+authority: "CTO + Principal Architect + Real-time Engineering Lead"
+sidebar_label: "Relay Service Specification"
+pagination_label: "Relay Requirements (L2)"
+status: "Draft"
+---
+
+# Relay Real-time Messaging Service Requirements
+
+:::info readme
+The **Relay Service** is Materi's high-performance real-time communication engine, built on Rust Axum + Tokyo async runtime with Redis Streams for message persistence. Relay handles all real-time interactions including document collaboration, live cursors, presence awareness, direct messaging, and system notifications across the Materi platform.
+
+**Performance Target:** Sub-25ms message delivery, 100K+ concurrent connections per instance
+**Reliability Target:** 99.99% uptime, zero message loss
+**Scale Target:** Millions of simultaneous collaborators
+:::
+
+:::note srd
+| Category | Details | Notes |
+|----------|---------|-------|
+| **Classification** | L2-System | Real-time communication service specification |
+| **Authority** | CTO + Principal Architect + Real-time Engineering Lead | Technical architecture authority |
+| **Impact** | Critical | Core platform functionality, user experience foundation |
+| **Targets** | **Latency:** P95 < 25ms message delivery<br/>**Throughput:** 100K+ concurrent connections<br/>**Availability:** 99.99% uptime SLA<br/>**Consistency:** Eventual consistency with conflict resolution | Performance-critical service |
+| **Dependencies** | Shield Authentication, Redis Cluster, PostgreSQL, Load Balancer | Infrastructure and auth dependencies |
+| **Implements** | Real-time collaboration, messaging, presence, notifications | Complete real-time communication stack |
+| **Verification Method** | Load testing, latency benchmarks, chaos engineering, user acceptance | Comprehensive performance validation |
+| **Approval Gates** | Architecture review, security assessment, performance validation | Quality and security gates |
+:::
+
+## Executive Summary
+
+The Relay service establishes Materi's real-time communication backbone, enabling seamless collaboration experiences that outperform existing solutions. Built on Rust's memory-safe, high-performance foundation with Tokyo async runtime and Redis Streams message persistence, Relay delivers sub-25ms message latency while maintaining 99.99% availability.
+
+**Core Capabilities:**
+
+-   **Document Collaboration**: Real-time editing with operational transform and CRDT algorithms
+-   **Live Presence**: User awareness, cursor tracking, selection sharing
+-   **Direct Messaging**: 1:1 and group conversations with delivery guarantees
+-   **System Notifications**: Real-time alerts, updates, and status changes
+-   **Connection Management**: WebSocket lifecycle, authentication, heartbeat monitoring
+
+**Technical Foundation:**
+
+-   **Rust Axum**: Type-safe WebSocket handling with zero-cost abstractions
+-   **Tokyo Runtime**: Async I/O for massive concurrency (100K+ connections)
+-   **Redis Streams**: Message persistence, ordering, and replay capabilities
+-   **Operational Transform**: Conflict-free collaborative editing algorithms
+
+## 1. Business Requirements
+
+### BR-REL-001: Industry-Leading Real-time Performance
+
+**Requirement Statement:** Relay SHALL deliver real-time messaging performance that exceeds all major collaboration platforms by providing sub-25ms message delivery for same-region connections and maintaining consistent performance under high load.
+
+**Business Justification:**
+
+-   Competitive differentiation through superior user experience
+-   Developer productivity gains from instant feedback loops
+-   Enterprise sales advantage with quantifiable performance metrics
+-   Reduced user frustration and increased engagement
+
+**Success Metrics:**
+
+-   P95 message latency < 25ms (same region)
+-   P99 message latency < 100ms (same region)
+-   5x faster than Google Docs baseline
+-   3x faster than Notion real-time updates
+-   Zero message loss under normal operations
+
+### BR-REL-002: Massive Scale Concurrent Collaboration
+
+**Requirement Statement:** Relay SHALL support unlimited concurrent document collaborators, enabling large-scale team collaboration scenarios that exceed current platform limitations.
+
+**Business Justification:**
+
+-   Enterprise customer requirements for company-wide collaboration
+-   Event-driven use cases (conferences, workshops, training)
+-   Competitive advantage over session-limited platforms
+-   Revenue opportunities from high-user-count enterprise deals
+
+**Success Metrics:**
+
+-   10,000+ simultaneous collaborators per document
+-   100,000+ concurrent connections per service instance
+-   Linear scaling with horizontal deployment
+-   Consistent performance regardless of user count
+
+### BR-REL-003: Real-time Communication Integration
+
+**Requirement Statement:** Relay SHALL provide comprehensive real-time communication capabilities including messaging, notifications, and presence awareness as integrated platform features.
+
+**Business Justification:**
+
+-   Reduced context switching between collaboration and communication tools
+-   Enhanced user engagement through seamless interaction flows
+-   Platform stickiness through integrated communication workflows
+-   Competitive differentiation from document-only solutions
+
+**Success Metrics:**
+
+-   Sub-100ms presence update propagation
+-   Message delivery success rate > 99.9%
+-   Real-time notification delivery < 500ms
+-   User session persistence across network interruptions
+
+## 2. Functional Requirements
+
+### FR-REL-WS-001: WebSocket Connection Management
+
+**Requirement Statement:** Relay SHALL manage WebSocket connections with authentication, lifecycle management, connection pooling, and graceful handling of network interruptions.
+
+**Technical Specifications:**
+
+```rust
+// Connection lifecycle management
+pub struct ConnectionManager {
+    connections: DashMap<UserId, UserConnection>,
+    connection_pool: ConnectionPool,
+    heartbeat_manager: HeartbeatManager,
+    auth_validator: JWTValidator,
+}
+
+impl ConnectionManager {
+    // Connection establishment with JWT validation
+    async fn establish_connection(
+        &self,
+        websocket: WebSocket,
+        auth_token: &str
+    ) -> Result<ConnectionId, ConnectionError>;
+
+    // Connection termination and cleanup
+    async fn terminate_connection(
+        &self,
+        connection_id: ConnectionId
+    ) -> Result<(), ConnectionError>;
+
+    // Heartbeat management
+    async fn handle_heartbeat(
+        &self,
+        connection_id: ConnectionId
+    ) -> Result<(), ConnectionError>;
+}
+```
+
+**Functional Details:**
+
+-   **Authentication Integration**: Validate JWT tokens from Shield service
+-   **Connection Pooling**: Efficient resource management for concurrent connections
+-   **Heartbeat Protocol**: Ping/pong mechanism with configurable intervals
+-   **Graceful Shutdown**: Clean connection termination during service updates
+-   **Auto-Reconnection**: Client-side reconnection with exponential backoff
+-   **Connection State**: Track user presence, active documents, subscription topics
+
+**Verification Criteria:**
+
+-   Connection establishment < 100ms
+-   JWT validation integrated with Shield authentication
+-   Heartbeat detection of disconnections within 30 seconds
+-   Zero memory leaks during connection churn
+-   Graceful handling of 10,000+ concurrent connections
+
+### FR-REL-MSG-001: Message Routing and Delivery
+
+**Requirement Statement:** Relay SHALL provide reliable message routing with delivery guarantees, message ordering, and efficient distribution to relevant recipients.
+
+**Technical Specifications:**
+
+```rust
+// Message routing engine
+pub struct MessageRouter {
+    subscribers: DashMap<TopicId, Vec<ConnectionId>>,
+    message_store: RedisStreamStore,
+    delivery_tracker: DeliveryTracker,
+    routing_rules: RoutingEngine,
+}
+
+pub enum MessageType {
+    DocumentEdit { document_id: DocumentId, operation: Operation },
+    DirectMessage { from: UserId, to: UserId, content: String },
+    PresenceUpdate { user_id: UserId, status: PresenceStatus },
+    SystemNotification { notification_type: NotificationType, payload: Value },
+    LiveCursor { user_id: UserId, position: CursorPosition },
+}
+
+impl MessageRouter {
+    // Route message to appropriate recipients
+    async fn route_message(
+        &self,
+        message: Message
+    ) -> Result<DeliveryReceipt, RoutingError>;
+
+    // Subscribe connection to topics
+    async fn subscribe(
+        &self,
+        connection_id: ConnectionId,
+        topics: Vec<TopicId>
+    ) -> Result<(), SubscriptionError>;
+
+    // Broadcast to topic subscribers
+    async fn broadcast_to_topic(
+        &self,
+        topic_id: TopicId,
+        message: Message
+    ) -> Result<Vec<DeliveryResult>, BroadcastError>;
+}
+```
+
+**Functional Details:**
+
+-   **Topic-Based Routing**: Document-specific, user-specific, and system-wide topics
+-   **Message Persistence**: Redis Streams for message history and replay
+-   **Delivery Guarantees**: At-least-once delivery with deduplication
+-   **Message Ordering**: FIFO ordering within document contexts
+-   **Subscription Management**: Dynamic topic subscription and unsubscription
+-   **Message Filtering**: User permission-based message filtering
+
+**Verification Criteria:**
+
+-   Message delivery success rate > 99.9%
+-   Message ordering preserved within topics
+-   Subscription updates propagated within 100ms
+-   Message persistence survives service restarts
+-   Permission-based filtering prevents unauthorized access
+
+### FR-REL-COLLAB-001: Document Collaboration Engine
+
+**Requirement Statement:** Relay SHALL implement operational transform and CRDT algorithms for conflict-free collaborative document editing with real-time synchronization.
+
+**Technical Specifications:**
+
+```rust
+// Collaborative editing engine
+pub struct CollaborationEngine {
+    ot_engine: OperationalTransform,
+    crdt_state: CRDTState,
+    document_state: DashMap<DocumentId, DocumentVersion>,
+    conflict_resolver: ConflictResolver,
+}
+
+pub struct Operation {
+    operation_id: OperationId,
+    author_id: UserId,
+    timestamp: i64,
+    transform: TransformType,
+    position: usize,
+    content: Option<String>,
+    vector_clock: VectorClock,
+}
+
+impl CollaborationEngine {
+    // Apply operation with conflict resolution
+    async fn apply_operation(
+        &self,
+        document_id: DocumentId,
+        operation: Operation
+    ) -> Result<TransformedOperation, CollaborationError>;
+
+    // Resolve concurrent operations
+    async fn resolve_conflicts(
+        &self,
+        operations: Vec<Operation>
+    ) -> Result<Vec<TransformedOperation>, ConflictError>;
+
+    // Synchronize document state
+    async fn sync_document_state(
+        &self,
+        document_id: DocumentId,
+        user_id: UserId
+    ) -> Result<DocumentSnapshot, SyncError>;
+}
+```
+
+**Functional Details:**
+
+-   **Operational Transform**: Conflict resolution for concurrent text edits
+-   **CRDT Implementation**: Conflict-free replicated data types for distributed editing
+-   **Vector Clocks**: Causality tracking for operation ordering
+-   **Document Snapshots**: Periodic state snapshots for efficient synchronization
+-   **Merge Strategies**: Automated conflict resolution with user override options
+-   **Undo/Redo Support**: Operation reversal and replay capabilities
+
+**Verification Criteria:**
+
+-   All concurrent edit conflicts resolved automatically
+-   Document convergence achieved within 100ms
+-   Operation history maintained for undo/redo
+-   No data loss during concurrent editing
+-   Consistent document state across all clients
+
+### FR-REL-PRESENCE-001: User Presence and Awareness
+
+**Requirement Statement:** Relay SHALL provide real-time user presence tracking, live cursor positions, and user awareness features for enhanced collaboration experience.
+
+**Technical Specifications:**
+
+```rust
+// Presence management system
+pub struct PresenceManager {
+    user_sessions: DashMap<UserId, UserSession>,
+    document_cursors: DashMap<DocumentId, Vec<CursorState>>,
+    presence_broadcaster: PresenceBroadcaster,
+    activity_tracker: ActivityTracker,
+}
+
+pub struct UserSession {
+    user_id: UserId,
+    connection_id: ConnectionId,
+    status: PresenceStatus,
+    active_documents: HashSet<DocumentId>,
+    last_activity: Instant,
+    cursor_positions: HashMap<DocumentId, CursorPosition>,
+}
+
+pub enum PresenceStatus {
+    Online,
+    Away,
+    Busy,
+    Offline,
+    InDocument(DocumentId),
+}
+
+impl PresenceManager {
+    // Update user presence status
+    async fn update_presence(
+        &self,
+        user_id: UserId,
+        status: PresenceStatus
+    ) -> Result<(), PresenceError>;
+
+    // Update cursor position in document
+    async fn update_cursor(
+        &self,
+        user_id: UserId,
+        document_id: DocumentId,
+        position: CursorPosition
+    ) -> Result<(), CursorError>;
+
+    // Get document collaborators
+    async fn get_document_collaborators(
+        &self,
+        document_id: DocumentId
+    ) -> Result<Vec<UserSession>, PresenceError>;
+}
+```
+
+**Functional Details:**
+
+-   **Real-time Status**: Online, away, busy, offline presence states
+-   **Live Cursors**: Real-time cursor position updates with user identification
+-   **Document Awareness**: Track users actively viewing/editing each document
+-   **Activity Detection**: Automatic status updates based on user activity
+-   **Presence Persistence**: Maintain presence during brief network interruptions
+-   **Privacy Controls**: User-configurable presence visibility settings
+
+**Verification Criteria:**
+
+-   Presence updates propagated within 100ms
+-   Cursor positions updated in real-time during editing
+-   Accurate collaborator lists for all documents
+-   Presence state recovery after reconnection
+-   Configurable privacy settings respected
+
+### FR-REL-MSG-002: Direct and Group Messaging
+
+**Requirement Statement:** Relay SHALL support real-time direct messages, group conversations, and system notifications with delivery receipts and message history.
+
+**Technical Specifications:**
+
+```rust
+// Messaging system
+pub struct MessagingEngine {
+    conversations: DashMap<ConversationId, Conversation>,
+    message_store: MessageStore,
+    delivery_tracker: DeliveryTracker,
+    notification_engine: NotificationEngine,
+}
+
+pub struct Conversation {
+    conversation_id: ConversationId,
+    participants: HashSet<UserId>,
+    conversation_type: ConversationType,
+    last_message: Option<MessageId>,
+    created_at: DateTime<Utc>,
+    updated_at: DateTime<Utc>,
+}
+
+pub enum ConversationType {
+    Direct { users: [UserId; 2] },
+    Group { name: String, admin: UserId },
+    System { topic: SystemTopic },
+}
+
+impl MessagingEngine {
+    // Send direct message
+    async fn send_direct_message(
+        &self,
+        from: UserId,
+        to: UserId,
+        content: String
+    ) -> Result<MessageId, MessagingError>;
+
+    // Send group message
+    async fn send_group_message(
+        &self,
+        from: UserId,
+        group_id: ConversationId,
+        content: String
+    ) -> Result<MessageId, MessagingError>;
+
+    // Get conversation history
+    async fn get_conversation_history(
+        &self,
+        conversation_id: ConversationId,
+        limit: usize,
+        offset: usize
+    ) -> Result<Vec<Message>, MessagingError>;
+}
+```
+
+**Functional Details:**
+
+-   **Direct Messaging**: 1:1 conversations with real-time delivery
+-   **Group Messaging**: Multi-user conversations with participant management
+-   **System Notifications**: Platform-wide announcements and alerts
+-   **Message History**: Persistent storage with pagination and search
+-   **Delivery Receipts**: Sent, delivered, and read status tracking
+-   **Rich Content**: Support for text, links, mentions, and reactions
+
+**Verification Criteria:**
+
+-   Message delivery within 50ms for online users
+-   Message history preserved indefinitely
+-   Delivery receipts accurately tracked
+-   Group conversation management functions correctly
+-   System notifications delivered to all relevant users
+
+## 3. Non-Functional Requirements
+
+### NFR-REL-PERF-001: Message Delivery Performance
+
+**Requirement Statement:** Relay SHALL deliver messages with sub-25ms latency for same-region connections and maintain consistent performance under high concurrent load.
+
+**Performance Specifications:**
+
+```rust
+// Performance monitoring and enforcement
+pub struct PerformanceMonitor {
+    latency_histogram: Histogram,
+    throughput_counter: Counter,
+    connection_gauge: Gauge,
+    error_rate_counter: Counter,
+}
+
+// Performance targets
+const PERFORMANCE_TARGETS: PerformanceTargets = PerformanceTargets {
+    p50_latency_ms: 10,
+    p95_latency_ms: 25,
+    p99_latency_ms: 100,
+    max_connections_per_instance: 100_000,
+    throughput_messages_per_second: 1_000_000,
+    memory_usage_max_gb: 16,
+};
+```
+
+**Technical Details:**
+
+-   **Message Latency**: P95 < 25ms, P99 < 100ms same-region
+-   **Connection Capacity**: 100,000+ concurrent WebSocket connections per instance
+-   **Message Throughput**: 1M+ messages/second processing capacity
+-   **Memory Efficiency**: < 16GB memory usage at maximum capacity
+-   **CPU Utilization**: < 80% CPU usage under normal load
+-   **Network Bandwidth**: Efficient protocol minimizing bandwidth usage
+
+**Verification Criteria:**
+
+-   Load testing with 100K concurrent connections
+-   Latency measurement under various load conditions
+-   Memory profiling during sustained high load
+-   Bandwidth usage optimization validation
+-   Performance regression testing in CI/CD
+
+### NFR-REL-SCALE-001: Horizontal Scaling Capability
+
+**Requirement Statement:** Relay SHALL scale horizontally across multiple instances with automatic load distribution and consistent performance characteristics.
+
+**Scaling Architecture:**
+
+```rust
+// Horizontal scaling support
+pub struct ScalingManager {
+    instance_registry: InstanceRegistry,
+    load_balancer: LoadBalancer,
+    message_distribution: MessageDistributor,
+    state_synchronization: StateSynchronizer,
+}
+
+pub struct InstanceInfo {
+    instance_id: InstanceId,
+    endpoint: String,
+    current_connections: usize,
+    cpu_utilization: f64,
+    memory_usage: u64,
+    health_status: HealthStatus,
+}
+```
+
+**Technical Details:**
+
+-   **Stateless Design**: No server affinity required for connection management
+-   **Load Distribution**: Even distribution of connections across instances
+-   **Message Routing**: Efficient cross-instance message delivery
+-   **State Consistency**: Eventual consistency across distributed instances
+-   **Auto-Discovery**: Dynamic instance registration and health monitoring
+-   **Graceful Shutdown**: Zero-downtime deployments with connection migration
+
+**Verification Criteria:**
+
+-   Linear performance scaling with added instances
+-   Automatic load redistribution during instance changes
+-   Zero message loss during scaling events
+-   Consistent latency across all instances
+-   Successful zero-downtime deployment testing
+
+### NFR-REL-REL-001: Reliability and Fault Tolerance
+
+**Requirement Statement:** Relay SHALL maintain 99.99% uptime with automatic failure detection, recovery mechanisms, and comprehensive error handling.
+
+**Reliability Architecture:**
+
+```rust
+// Fault tolerance and recovery
+pub struct ReliabilityManager {
+    health_checker: HealthChecker,
+    circuit_breaker: CircuitBreaker,
+    retry_manager: RetryManager,
+    failover_coordinator: FailoverCoordinator,
+}
+
+pub struct HealthChecker {
+    redis_health: RedisHealthCheck,
+    database_health: DatabaseHealthCheck,
+    service_dependencies: Vec<DependencyHealth>,
+    self_diagnostics: SelfDiagnostics,
+}
+```
+
+**Technical Details:**
+
+-   **Health Monitoring**: Continuous health checks for all dependencies
+-   **Circuit Breakers**: Automatic failure detection and service protection
+-   **Retry Logic**: Exponential backoff with jitter for transient failures
+-   **Graceful Degradation**: Reduced functionality during partial failures
+-   **Message Durability**: No message loss during service interruptions
+-   **Automatic Recovery**: Self-healing capabilities without manual intervention
+
+**Verification Criteria:**
+
+-   99.99% uptime achievement in production
+-   Automatic recovery from Redis connection failures
+-   Message persistence during service restarts
+-   Graceful degradation testing with dependency failures
+-   Zero data loss during planned and unplanned outages
+
+### NFR-REL-SEC-001: Security and Authentication
+
+**Requirement Statement:** Relay SHALL integrate with Shield authentication service and enforce secure communication with comprehensive access controls.
+
+**Security Architecture:**
+
+```rust
+// Security enforcement
+pub struct SecurityManager {
+    jwt_validator: JWTValidator,
+    permission_enforcer: PermissionEnforcer,
+    rate_limiter: RateLimiter,
+    audit_logger: AuditLogger,
+}
+
+pub struct PermissionCheck {
+    user_id: UserId,
+    action: Action,
+    resource: Resource,
+    context: SecurityContext,
+}
+```
+
+**Technical Details:**
+
+-   **JWT Authentication**: Token validation against Shield authentication service
+-   **Permission Enforcement**: Role-based access control for all operations
+-   **Rate Limiting**: Per-user and per-connection rate limiting
+-   **Audit Logging**: Comprehensive logging of all security-relevant events
+-   **Message Encryption**: End-to-end encryption for sensitive communications
+-   **Connection Security**: TLS 1.3 for all WebSocket connections
+
+**Verification Criteria:**
+
+-   JWT validation integrated with Shield service
+-   Access control enforced for all message types
+-   Rate limiting prevents abuse and DoS attacks
+-   Audit trail captures all security events
+-   Encrypted communication verified with security testing
+
+### NFR-REL-CONC-001: Concurrent Operation Safety
+
+**Requirement Statement:** Relay SHALL handle 1000+ concurrent operations without deadlocks, race conditions, or data corruption, ensuring thread-safe execution across all subsystems.
+
+**Concurrency Architecture:**
+
+```rust
+// Concurrency control and thread safety
+pub struct ConcurrencyManager {
+    operation_locks: DashMap<DocumentId, Arc<RwLock<()>>>,
+    connection_semaphore: Arc<Semaphore>,
+    presence_coordinator: Arc<RwLock<PresenceState>>,
+    message_queue: Arc<Mutex<VecDeque<Message>>>,
+}
+```
+
+**Technical Details:**
+
+-   **Lock-Free Operations**: Minimize lock contention with lock-free data structures
+-   **Race Condition Prevention**: Atomic operations and memory ordering guarantees
+-   **Deadlock Prevention**: Lock ordering and timeout mechanisms
+-   **Thread Pool Management**: Optimal thread pool sizing for async workloads
+-   **Connection Fairness**: Fair scheduling across concurrent connections
+-   **Resource Isolation**: Per-document operation isolation
+
+**Verification Criteria:**
+
+-   CONC-RELAY001-001: 1000+ concurrent OT operations without deadlocks (tests/concurrency_tests.rs:45)
+-   CONC-RELAY001-002: 500 concurrent presence updates race-free (tests/concurrency_tests.rs:98)
+-   CONC-RELAY001-003: 500 rapid connection cycles without memory leaks (tests/concurrency_tests.rs:193)
+-   CONC-RELAY001-004: Parallel message delivery without duplication (tests/concurrency_tests.rs:262)
+-   CONC-RELAY001-005: Thread-safe document access validation (tests/concurrency_tests.rs:320)
+-   CONC-RELAY001-006: Zero data races under stress load (tests/concurrency_tests.rs:378)
+
+### NFR-REL-IDEM-001: Idempotency and Determinism
+
+**Requirement Statement:** Relay SHALL ensure all operations are idempotent and deterministic, enabling safe retries and predictable state reconstruction.
+
+**Idempotency Architecture:**
+
+```rust
+// Idempotency enforcement
+pub struct IdempotencyManager {
+    operation_log: Arc<RwLock<HashMap<OperationId, OperationResult>>>,
+    deduplication_cache: Arc<DashMap<MessageId, DeliveryStatus>>,
+    vector_clocks: Arc<RwLock<HashMap<ClientId, VectorClock>>>,
+    deterministic_ordering: OrderingEngine,
+}
+```
+
+**Technical Details:**
+
+-   **Operation Deduplication**: Detect and prevent duplicate operation application
+-   **Deterministic Ordering**: Consistent operation ordering across all replicas
+-   **Event Sourcing**: Complete operation history for replay scenarios
+-   **State Reconstruction**: Reproducible state from operation log
+-   **Message Deduplication**: Prevent duplicate message delivery
+-   **Retry Safety**: Safe operation retry without side effects
+
+**Verification Criteria:**
+
+-   IDEM-RELAY001-001: Operations safe with 10+ retries (tests/idempotency_determinism_tests.rs:42)
+-   IDEM-RELAY001-002: Deterministic ordering across 10 runs (tests/idempotency_determinism_tests.rs:94)
+-   IDEM-RELAY001-003: Event sourcing replay validation (tests/idempotency_determinism_tests.rs:154)
+-   IDEM-RELAY001-004: State reproducibility testing (tests/idempotency_determinism_tests.rs:213)
+-   IDEM-RELAY001-005: Message deduplication enforcement (tests/idempotency_determinism_tests.rs:279)
+-   IDEM-RELAY001-006: Complete history replay integrity (tests/idempotency_determinism_tests.rs:344)
+
+### NFR-REL-CHAOS-001: Chaos Engineering and Resilience
+
+**Requirement Statement:** Relay SHALL demonstrate resilience under failure conditions including service crashes, network partitions, and dependency outages, with automatic recovery mechanisms.
+
+**Chaos Engineering Architecture:**
+
+```rust
+// Chaos and resilience management
+pub struct ResilienceManager {
+    crash_recovery: CrashRecoveryEngine,
+    partition_handler: NetworkPartitionHandler,
+    circuit_breakers: HashMap<ServiceId, CircuitBreaker>,
+    degradation_controller: GracefulDegradationController,
+}
+```
+
+**Technical Details:**
+
+-   **Crash Recovery**: Automatic state recovery within 30 seconds
+-   **Partition Tolerance**: Operation queueing during network splits
+-   **Dependency Resilience**: Graceful handling of database/Redis failures
+-   **Circuit Breakers**: Fast failure for unhealthy dependencies
+-   **Cascading Prevention**: Failure isolation across subsystems
+-   **Degraded Mode**: Read-only mode during maintenance
+
+**Verification Criteria:**
+
+-   CHAOS-RELAY001-001: Service restart recovery within 30s (tests/chaos_resilience_tests.rs:38)
+-   CHAOS-RELAY001-002: Network partition tolerance (tests/chaos_resilience_tests.rs:98)
+-   CHAOS-RELAY001-003: Database outage graceful handling (tests/chaos_resilience_tests.rs:160)
+-   CHAOS-RELAY001-004: Redis failure recovery mechanisms (tests/chaos_resilience_tests.rs:237)
+-   CHAOS-RELAY001-005: Cascading failure prevention (tests/chaos_resilience_tests.rs:313)
+-   CHAOS-RELAY001-006: Circuit breaker fast failure (tests/chaos_resilience_tests.rs:413)
+-   CHAOS-RELAY001-007: Graceful degradation mode (tests/chaos_resilience_tests.rs:476)
+-   CHAOS-RELAY001-008: Performance under stress and failures (tests/chaos_resilience_tests.rs:527)
+
+### NFR-REL-SEC-002: Comprehensive Security Testing
+
+**Requirement Statement:** Relay SHALL implement comprehensive security testing covering authentication, authorization, injection prevention, rate limiting, and session security.
+
+**Security Testing Architecture:**
+
+```rust
+// Security validation and enforcement
+pub struct SecurityValidator {
+    jwt_validator: JWTSecurityValidator,
+    injection_detector: InjectionDetector,
+    rate_limiter: AdaptiveRateLimiter,
+    session_manager: SecureSessionManager,
+}
+```
+
+**Technical Details:**
+
+-   **JWT Validation**: Valid, empty, malformed, and expired token handling
+-   **Injection Prevention**: SQL injection and XSS attack prevention
+-   **Rate Limiting**: Per-user and global rate limiting (100 req/min)
+-   **Input Validation**: Malformed input rejection
+-   **Path Traversal**: Directory traversal attack prevention
+-   **Authorization Boundaries**: Privilege escalation prevention
+-   **Session Security**: Session hijacking prevention
+
+**Verification Criteria:**
+
+-   SEC-RELAY001-001: JWT token validation comprehensive (tests/security_tests.rs:28)
+-   SEC-RELAY001-002: SQL injection prevention with 5 attack vectors (tests/security_tests.rs:98)
+-   SEC-RELAY001-003: XSS prevention validation (tests/security_tests.rs:154)
+-   SEC-RELAY001-004: Rate limiting enforcement (tests/security_tests.rs:205)
+-   SEC-RELAY001-005: Input validation testing (tests/security_tests.rs:259)
+-   SEC-RELAY001-006: Path traversal prevention (tests/security_tests.rs:311)
+-   SEC-RELAY001-007: Authorization boundary testing (tests/security_tests.rs:364)
+-   SEC-RELAY001-008: Session hijacking prevention (tests/security_tests.rs:417)
+
+### NFR-REL-PROP-001: Property-Based Testing and Invariants
+
+**Requirement Statement:** Relay SHALL validate algorithmic properties and invariants through property-based testing, ensuring correctness across randomized input scenarios.
+
+**Property Testing Architecture:**
+
+```rust
+// Property-based testing framework
+use proptest::prelude::*;
+
+pub struct PropertyValidator {
+    ot_properties: OperationalTransformProperties,
+    crdt_properties: CRDTProperties,
+    ordering_properties: MessageOrderingProperties,
+    state_properties: StateMachineProperties,
+}
+```
+
+**Technical Details:**
+
+-   **OT Commutativity**: Operational transform commutativity property
+-   **CRDT Convergence**: Distributed replica convergence guarantees
+-   **Vector Clock Properties**: Transitivity and monotonicity
+-   **Ordering Invariants**: Message FIFO ordering preservation
+-   **State Machine Validity**: All state transitions valid
+-   **Idempotency Properties**: Multiple applications safety
+-   **Input Fuzzing**: Random input crash prevention
+
+**Verification Criteria:**
+
+-   PROP-RELAY001-001: OT commutativity with 20 runs (tests/property_fuzzing_tests.rs:45)
+-   PROP-RELAY001-002: CRDT convergence with 3 replicas (tests/property_fuzzing_tests.rs:103)
+-   PROP-RELAY001-003: Vector clock transitivity 50 tests (tests/property_fuzzing_tests.rs:167)
+-   PROP-RELAY001-004: Message ordering invariants (tests/property_fuzzing_tests.rs:226)
+-   PROP-RELAY001-005: State transition validity (tests/property_fuzzing_tests.rs:272)
+-   PROP-RELAY001-006: Idempotency property validation (tests/property_fuzzing_tests.rs:328)
+-   PROP-RELAY001-007: Input fuzzing crash prevention (tests/property_fuzzing_tests.rs:382)
+-   PROP-RELAY001-008: Operation position bounds (tests/property_fuzzing_tests.rs:44)
+-   PROP-RELAY001-009: Vector clock monotonicity (tests/property_fuzzing_tests.rs:66)
+
+## 4. Interface Requirements
+
+### IR-REL-EXT-001: Shield Authentication Integration
+
+**Requirement Statement:** Relay SHALL integrate with Shield service for user authentication, authorization, and session management.
+
+**Integration Specifications:**
+
+```rust
+// Shield service integration
+pub struct ShieldIntegration {
+    auth_client: ShieldAuthClient,
+    user_cache: UserCache,
+    permission_cache: PermissionCache,
+    session_validator: SessionValidator,
+}
+
+pub struct ShieldAuthClient {
+    base_url: String,
+    client: reqwest::Client,
+    jwt_validator: JWTValidator,
+}
+
+impl ShieldIntegration {
+    // Validate JWT token with Shield
+    async fn validate_token(
+        &self,
+        token: &str
+    ) -> Result<UserClaims, AuthenticationError>;
+
+    // Check user permissions
+    async fn check_permission(
+        &self,
+        user_id: UserId,
+        permission: Permission
+    ) -> Result<bool, AuthorizationError>;
+
+    // Get user profile information
+    async fn get_user_profile(
+        &self,
+        user_id: UserId
+    ) -> Result<UserProfile, UserError>;
+}
+```
+
+**Technical Details:**
+
+-   **JWT Validation**: Real-time token validation against Shield public keys
+-   **User Information**: Cached user profile data for presence display
+-   **Permission Checking**: Document and feature access control
+-   **Session Management**: Integration with Shield session lifecycle
+-   **Error Handling**: Graceful degradation when Shield is unavailable
+-   **Performance Optimization**: Caching and batching for efficiency
+
+### IR-REL-EXT-002: Redis Streams Integration
+
+**Requirement Statement:** Relay SHALL utilize Redis Streams for message persistence, ordering, and cross-instance communication.
+
+**Redis Integration Specifications:**
+
+```rust
+// Redis Streams integration
+pub struct RedisStreamManager {
+    client_pool: RedisClientPool,
+    stream_config: StreamConfiguration,
+    consumer_groups: HashMap<String, ConsumerGroup>,
+    message_serializer: MessageSerializer,
+}
+
+pub struct StreamConfiguration {
+    max_length: Option<usize>,
+    retention_policy: RetentionPolicy,
+    partitioning_strategy: PartitioningStrategy,
+    replication_factor: u8,
+}
+```
+
+**Technical Details:**
+
+-   **Message Persistence**: Durable storage in Redis Streams
+-   **Consumer Groups**: Multiple instance consumption with load balancing
+-   **Message Ordering**: FIFO ordering within stream partitions
+-   **Cross-Instance Communication**: Inter-service message delivery
+-   **Retention Policies**: Configurable message retention and cleanup
+-   **Performance Optimization**: Connection pooling and pipelining
+
+### IR-REL-EXT-003: WebSocket Client Protocol
+
+**Requirement Statement:** Relay SHALL define a comprehensive WebSocket protocol for client communication with versioning and extensibility.
+
+**Protocol Specifications:**
+
+```rust
+// WebSocket protocol definition
+#[derive(Serialize, Deserialize)]
+pub struct WebSocketMessage {
+    version: ProtocolVersion,
+    message_id: MessageId,
+    message_type: MessageType,
+    timestamp: i64,
+    payload: MessagePayload,
+}
+
+#[derive(Serialize, Deserialize)]
+pub enum MessagePayload {
+    Authentication { token: String },
+    Subscribe { topics: Vec<TopicId> },
+    Unsubscribe { topics: Vec<TopicId> },
+    DocumentEdit { document_id: DocumentId, operation: Operation },
+    DirectMessage { to: UserId, content: String },
+    PresenceUpdate { status: PresenceStatus },
+    Heartbeat { timestamp: i64 },
+    Error { error_code: ErrorCode, message: String },
+}
+```
+
+**Technical Details:**
+
+-   **Message Format**: JSON-based protocol with binary optimization options
+-   **Version Management**: Protocol versioning for backward compatibility
+-   **Error Handling**: Comprehensive error codes and messages
+-   **Extensibility**: Plugin architecture for custom message types
+-   **Compression**: Optional message compression for bandwidth optimization
+-   **Client Libraries**: Official SDK support for JavaScript, React, Mobile
+
+## 5. Implementation Architecture
+
+### 5.1 Service Architecture
+
+```rust
+// Main service architecture
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize telemetry and logging
+    tracing_subscriber::init();
+
+    // Load configuration
+    let config = Config::from_env()?;
+
+    // Initialize Redis connection pool
+    let redis_pool = RedisPool::new(&config.redis_url).await?;
+
+    // Initialize Shield integration
+    let shield_client = ShieldClient::new(&config.shield_url);
+
+    // Create core services
+    let connection_manager = ConnectionManager::new();
+    let message_router = MessageRouter::new(redis_pool.clone());
+    let collaboration_engine = CollaborationEngine::new();
+    let presence_manager = PresenceManager::new();
+
+    // Build service container
+    let app_state = AppState {
+        connection_manager: Arc::new(connection_manager),
+        message_router: Arc::new(message_router),
+        collaboration_engine: Arc::new(collaboration_engine),
+        presence_manager: Arc::new(presence_manager),
+        shield_client: Arc::new(shield_client),
+    };
+
+    // Configure routes
+    let app = Router::new()
+        .route("/ws", get(websocket_handler))
+        .route("/health", get(health_check))
+        .route("/metrics", get(metrics_handler))
+        .with_state(app_state)
+        .layer(TraceLayer::new_for_http());
+
+    // Start server
+    let listener = tokio::net::TcpListener::bind(&config.bind_address).await?;
+    tracing::info!("Relay service listening on {}", config.bind_address);
+
+    axum::serve(listener, app).await?;
+
+    Ok(())
+}
+```
+
+### 5.2 Performance Optimization
+
+**Memory Management:**
+
+-   Zero-copy message passing where possible
+-   Efficient data structures for connection tracking
+-   Memory pool allocation for frequent allocations
+-   Garbage collection avoidance through ownership
+
+**Network Optimization:**
+
+-   HTTP/2 for service-to-service communication
+-   WebSocket compression for client connections
+-   Connection keep-alive and pooling
+-   Efficient serialization protocols
+
+**Concurrency Management:**
+
+-   Tokyo async runtime for maximum concurrency
+-   Lock-free data structures where possible
+-   Work-stealing task scheduler optimization
+-   Connection-specific async tasks
+
+## 6. Deployment and Operations
+
+### 6.1 Container Configuration
+
+```dockerfile
+# Multi-stage Rust build for optimized container
+FROM rust:1.74-alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN cargo build --release --bin relay
+
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
+
+COPY --from=builder /app/target/release/relay .
+CMD ["./relay"]
+```
+
+### 6.2 Kubernetes Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: relay-service
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: relay-service
+    template:
+        metadata:
+            labels:
+                app: relay-service
+        spec:
+            containers:
+                - name: relay
+                  image: materi/relay:latest
+                  ports:
+                      - containerPort: 8080
+                  env:
+                      - name: REDIS_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: redis-config
+                                key: url
+                      - name: SHIELD_URL
+                        value: "http://shield-service:8000"
+                  resources:
+                      requests:
+                          memory: "512Mi"
+                          cpu: "250m"
+                      limits:
+                          memory: "4Gi"
+                          cpu: "2000m"
+                  readinessProbe:
+                      httpGet:
+                          path: /health
+                          port: 8080
+                      initialDelaySeconds: 5
+                      periodSeconds: 10
+                  livenessProbe:
+                      httpGet:
+                          path: /health
+                          port: 8080
+                      initialDelaySeconds: 15
+                      periodSeconds: 20
+```
+
+### 6.3 Monitoring and Observability
+
+**Metrics Collection:**
+
+-   Prometheus metrics for performance monitoring
+-   Custom metrics for business logic tracking
+-   Real-time dashboards with Grafana
+-   Alert manager integration for incident response
+
+**Distributed Tracing:**
+
+-   Jaeger integration for request tracing
+-   Cross-service correlation tracking
+-   Performance bottleneck identification
+-   Error propagation analysis
+
+**Structured Logging:**
+
+-   JSON-based log format for machine parsing
+-   Correlation IDs for request tracking
+-   Log aggregation with ELK stack
+-   Security event logging and monitoring
+
+## 7. Testing Strategy
+
+### 7.1 Performance Testing
+
+**Load Testing Framework:**
+
+-   Custom load generator for WebSocket connections
+-   Gradual ramp-up to target connection count
+-   Message throughput and latency measurement
+-   Resource utilization monitoring during tests
+
+**Chaos Engineering:**
+
+-   Network partition simulation
+-   Service dependency failures
+-   Resource constraint testing
+-   Recovery behavior validation
+
+### 7.2 Functional Testing
+
+**Unit Testing:**
+
+-   Comprehensive test coverage for all modules
+-   Property-based testing for collaboration algorithms
+-   Mock dependencies for isolated testing
+-   Benchmark tests for performance regression detection
+
+**Integration Testing:**
+
+-   Cross-service communication validation
+-   Redis integration testing
+-   WebSocket protocol compliance testing
+-   End-to-end collaboration scenarios
+
+## 8. Security Considerations
+
+### 8.1 Threat Model
+
+**Identified Threats:**
+
+-   Unauthorized WebSocket connections
+-   Message injection and manipulation
+-   Denial of service attacks
+-   Information disclosure through presence data
+-   Cross-user message delivery errors
+
+**Mitigation Strategies:**
+
+-   JWT-based authentication for all connections
+-   Rate limiting per user and connection
+-   Input validation and sanitization
+-   Audit logging for security events
+-   Network-level DDoS protection
+
+### 8.2 Data Protection
+
+**Message Security:**
+
+-   Optional end-to-end encryption for sensitive content
+-   Secure message routing and validation
+-   User permission enforcement for all operations
+-   Message retention policies for compliance
+-   GDPR compliance for user data handling
+
+## 9. Compliance and Standards
+
+### 9.1 Technical Standards
+
+**Protocol Compliance:**
+
+-   WebSocket RFC 6455 compliance
+-   HTTP/2 for service communication
+-   TLS 1.3 for encryption
+-   JWT RFC 7519 for authentication
+-   Redis protocol compatibility
+
+**Code Quality Standards:**
+
+-   Rust standard library patterns
+-   Comprehensive error handling
+-   Security-first development practices
+-   Performance optimization guidelines
+-   Documentation and code comments
+
+### 9.2 Operational Standards
+
+**Deployment Standards:**
+
+-   Container security scanning
+-   Dependency vulnerability management
+-   Configuration management
+-   Secret handling and rotation
+-   Environment isolation
+
+**Monitoring Standards:**
+
+-   SLA monitoring and alerting
+-   Performance baseline tracking
+-   Error rate monitoring
+-   Capacity planning metrics
+-   Incident response procedures
+
+---
+
+**Document Status:** 🔄 **Draft - Under Review**  
+**Version:** 1.0  
+**Next Review:** December 2025  
+**Authority:** CTO + Principal Architect + Real-time Engineering Lead  
+**Compliance:** WebSocket RFC 6455, Rust security guidelines
+
+This comprehensive requirements specification establishes the foundation for Materi's high-performance real-time messaging service, ensuring enterprise-grade scalability, reliability, and security for collaborative document workflows.

@@ -1,0 +1,152 @@
+---
+title: PR quality checks workflow
+description: PR quality checks workflow
+icon: cog
+source: operations/.workflows/pr-quality-checks.yml
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T09:14:19.047160Z"
+status: migrated
+tags: 
+relatedPages:
+  - developer/operations/folio/prometheus-advanced.mdx
+  - developer/operations/service-doc-10.mdx
+---
+
+name: 📋 Pull Request Quality Checks
+
+on:
+    pull_request:
+        branches: [main, develop]
+        types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+    group: pr-checks-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    lint-and-format:
+        name: 🎨 Lint & Format
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: "1.25"
+                  cache: true
+
+            - name: Run go fmt check
+              working-directory: ./api
+              run: |
+                  if ! go fmt ./...; then
+                    echo "❌ Code formatting issues found. Run 'go fmt ./...' to fix."
+                    exit 1
+                  fi
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+
+            - name: Check Python formatting (Shield)
+              working-directory: ./shield
+              run: |
+                  pip install black isort
+                  black --check . || echo "❌ Black formatting issues found"
+                  isort --check-only . || echo "❌ isort issues found"
+
+            - name: Check Python formatting (Aria)
+              working-directory: ./aria
+              run: |
+                  pip install black isort
+                  black --check src/ tests/ || echo "❌ Aria: Black formatting issues found"
+                  isort --check-only src/ tests/ || echo "❌ Aria: isort issues found"
+
+            - name: Setup Rust
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  toolchain: "1.78"
+
+            - name: Check Rust formatting
+              working-directory: ./relay
+              run: cargo fmt -- --check
+
+    dependency-check:
+        name: 📦 Dependency Security
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Check Go dependencies
+              working-directory: ./api
+              run: |
+                  go mod tidy
+                  if [ -n "$(git diff go.mod go.sum)" ]; then
+                    echo "❌ go.mod/go.sum not tidied. Run 'go mod tidy'"
+                    exit 1
+                  fi
+
+            - name: Check Python dependencies (Shield)
+              working-directory: ./shield
+              run: |
+                  pip install safety
+                  safety check || true
+
+            - name: Check Python dependencies (Aria)
+              working-directory: ./aria
+              run: |
+                  pip install poetry safety
+                  poetry export -f requirements.txt --without-hashes | safety check --stdin || true
+
+            - name: Check Rust dependencies
+              working-directory: ./relay
+              run: |
+                  cargo deny check licenses
+                  cargo deny check bans
+
+    documentation:
+        name: 📖 Documentation Check
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Check commit messages
+              run: |
+                  echo "Checking commit messages follow conventional commits..."
+                  # This would validate conventional commit format
+
+            - name: Check for TODO comments
+              run: |
+                  echo "Checking for unresolved TODOs..."
+                  if grep -r "TODO:" api/ shield/ relay/ aria/ 2>/dev/null | grep -v ".git" | head -5; then
+                    echo "ℹ️ Found TODO comments - please resolve before merge"
+                  fi
+
+    pr-review:
+        name: 👥 PR Review Requirements
+        runs-on: ubuntu-latest
+        needs: [lint-and-format, dependency-check, documentation]
+
+        steps:
+            - name: Check PR description
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  echo "✅ PR quality checks completed"
+                  echo "Before merging, ensure:"
+                  echo "  • At least 1 approval from code owners"
+                  echo "  • All CI checks passing"
+                  echo "  • For main branch: 2 approvals required"
+                  echo "  • Security scans passing"

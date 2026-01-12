@@ -1,7 +1,8 @@
 ---
-title: "Frequently Asked Questions"
-description: "Find answers to the most common questions about using Materi"
-icon: "circle-question"
+title: Frequently Asked Questions
+description: Find answers to the most common questions about using Materi
+icon: circle-question
+relatedPages: []
 ---
 
 # Frequently Asked Questions

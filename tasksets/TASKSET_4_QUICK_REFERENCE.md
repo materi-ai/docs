@@ -1,3 +1,16 @@
+---
+title: "TASKSET 4 - Quick Reference Index"
+description: "Documentation"
+icon: "file"
+source: "[consolidated]"
+sourceRepo: "https://github.com/materi-ai/materi"
+lastMigrated: "2026-01-09T16:00:00Z"
+status: "migrated"
+tags: []
+relatedPages:
+  []
+---
+
 # TASKSET 4 - Quick Reference Index
 
 ## 📋 Quick Start

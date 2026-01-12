@@ -1,7 +1,11 @@
 ---
-title: "Audit Logs"
-description: "Monitor user activity, track changes, and maintain compliance with comprehensive audit logging"
-icon: "scroll"
+title: Audit Logs
+description: Monitor user activity, track changes, and maintain compliance with comprehensive audit logging
+icon: scroll
+relatedPages:
+  - architecture-overview.mdx
+  - developer/domain/shield/authentication.md
+  - developer/operations/service-doc-10.mdx
 ---
 
 # Audit Logs

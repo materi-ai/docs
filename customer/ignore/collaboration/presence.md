@@ -1,7 +1,8 @@
 ---
-title: "User Presence & Awareness"
-description: "See who's working on documents in real-time with cursor tracking, selections, and activity indicators"
-icon: "eye"
+title: User Presence & Awareness
+description: See who's working on documents in real-time with cursor tracking, selections, and activity indicators
+icon: eye
+relatedPages: []
 ---
 
 # User Presence & Awareness

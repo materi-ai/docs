@@ -1,7 +1,8 @@
 ---
-title: 'Organizing Documents'
-description: 'Structure your workspace with folders, tags, and smart organization features'
-icon: 'folder-tree'
+title: Organizing Documents
+description: Structure your workspace with folders, tags, and smart organization features
+icon: folder-tree
+relatedPages: []
 ---
 
 A well-organized workspace helps your team find content quickly and maintain productivity. This guide covers all the tools available for organizing your documents.

@@ -1,7 +1,13 @@
 ---
-title: "Integrations Overview"
-description: "Connect Materi with your favorite tools and services to streamline your content workflow"
-icon: "plug"
+title: Integrations Overview
+description: Connect Materi with your favorite tools and services to streamline your content workflow
+icon: plug
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 # Integrations Overview

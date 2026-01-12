@@ -1,6 +1,12 @@
 ---
-title: 'Self-hosted overview'
-description: 'How Materi self-hosting is structured, what you need, and where to go next'
+title: Self-hosted overview
+description: How Materi self-hosting is structured, what you need, and where to go next
+relatedPages:
+  - developer/products/canvas/architecture.md
+  - developer/introduction/architecture.md
+  - developer/platform/intelligence/scribe/architecture.mdx
+  - developer/domain/shield/authentication.md
+  - developer/domain/shield/database-schema.mdx
 ---
 
 Self-hosting Materi means you operate the services and data plane in your own environment.

@@ -1,7 +1,8 @@
 ---
-title: "Roles & Permissions"
-description: "Comprehensive guide to Materi's role-based access control (RBAC) system, permission hierarchy, and custom role configuration"
-icon: "shield-check"
+title: Roles & Permissions
+description: Comprehensive guide to Materi's role-based access control (RBAC) system, permission hierarchy, and custom role configuration
+icon: shield-check
+relatedPages: []
 ---
 
 # Roles & Permissions
